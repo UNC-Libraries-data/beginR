@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="University of North Carolina at Chapel Hill">
+
+<title>beginR: Joining, Reshaping &amp; Models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="join_reshape_models_files/libs/clipboard/clipboard.min.js"></script>
+<script src="join_reshape_models_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="join_reshape_models_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="join_reshape_models_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="join_reshape_models_files/libs/quarto-html/popper.min.js"></script>
+<script src="join_reshape_models_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="join_reshape_models_files/libs/quarto-html/anchor.min.js"></script>
+<link href="join_reshape_models_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="join_reshape_models_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="join_reshape_models_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="join_reshape_models_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="join_reshape_models_files/libs/bootstrap/bootstrap-e261b86ae15e22bf333780d8a72f25c9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#data-and-other-downloads" id="toc-data-and-other-downloads" class="nav-link active" data-scroll-target="#data-and-other-downloads">Data and other downloads</a></li>
+  <li><a href="#today" id="toc-today" class="nav-link" data-scroll-target="#today">Today</a></li>
+  <li><a href="#motivation-joining-and-reshaping-with-tidyr" id="toc-motivation-joining-and-reshaping-with-tidyr" class="nav-link" data-scroll-target="#motivation-joining-and-reshaping-with-tidyr">Motivation: Joining and Reshaping with tidyr</a></li>
+  <li><a href="#merging-joining-dataframes" id="toc-merging-joining-dataframes" class="nav-link" data-scroll-target="#merging-joining-dataframes">Merging / Joining Dataframes</a>
+  <ul class="collapse">
+  <li><a href="#appending" id="toc-appending" class="nav-link" data-scroll-target="#appending">Appending</a></li>
+  <li><a href="#merging" id="toc-merging" class="nav-link" data-scroll-target="#merging">Merging</a></li>
+  <li><a href="#types-of-joins" id="toc-types-of-joins" class="nav-link" data-scroll-target="#types-of-joins">Types of Joins</a></li>
+  <li><a href="#extensions" id="toc-extensions" class="nav-link" data-scroll-target="#extensions">Extensions</a></li>
+  </ul></li>
+  <li><a href="#reshaping-with-tidyr" id="toc-reshaping-with-tidyr" class="nav-link" data-scroll-target="#reshaping-with-tidyr">Reshaping with tidyr</a>
+  <ul class="collapse">
+  <li><a href="#pivot_longer" id="toc-pivot_longer" class="nav-link" data-scroll-target="#pivot_longer"><code>pivot_longer</code></a></li>
+  <li><a href="#pivot_wider" id="toc-pivot_wider" class="nav-link" data-scroll-target="#pivot_wider"><code>pivot_wider</code></a></li>
+  </ul></li>
+  <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling">Modeling</a>
+  <ul class="collapse">
+  <li><a href="#what-is-a-model" id="toc-what-is-a-model" class="nav-link" data-scroll-target="#what-is-a-model">What is a model?</a></li>
+  <li><a href="#simple-linear-models-with-plots" id="toc-simple-linear-models-with-plots" class="nav-link" data-scroll-target="#simple-linear-models-with-plots">Simple Linear Models with Plots</a></li>
+  <li><a href="#multiple-regression---formula-notation-in-r" id="toc-multiple-regression---formula-notation-in-r" class="nav-link" data-scroll-target="#multiple-regression---formula-notation-in-r">Multiple Regression - Formula notation in R</a></li>
+  <li><a href="#more-on-modeling" id="toc-more-on-modeling" class="nav-link" data-scroll-target="#more-on-modeling">More on modeling</a></li>
+  <li><a href="#simulations" id="toc-simulations" class="nav-link" data-scroll-target="#simulations">Simulations</a></li>
+  <li><a href="#sample-size-and-the-sampling-distribution-of-the-regression-slope" id="toc-sample-size-and-the-sampling-distribution-of-the-regression-slope" class="nav-link" data-scroll-target="#sample-size-and-the-sampling-distribution-of-the-regression-slope">Sample size and the sampling distribution of the regression slope</a></li>
+  <li><a href="#what-is-a-95-confidence-interval" id="toc-what-is-a-95-confidence-interval" class="nav-link" data-scroll-target="#what-is-a-95-confidence-interval">What is a 95% confidence interval?</a></li>
+  </ul></li>
+  <li><a href="#reproducible-simulations" id="toc-reproducible-simulations" class="nav-link" data-scroll-target="#reproducible-simulations">Reproducible simulations</a></li>
+  <li><a href="#exercise-data" id="toc-exercise-data" class="nav-link" data-scroll-target="#exercise-data">Exercise Data</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises:</a>
+  <ul class="collapse">
+  <li><a href="#merge-and-reshape" id="toc-merge-and-reshape" class="nav-link" data-scroll-target="#merge-and-reshape">Merge and Reshape</a></li>
+  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models">Models</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">beginR: Joining, Reshaping &amp; Models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>University of North Carolina at Chapel Hill </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="data-and-other-downloads" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-other-downloads">Data and other downloads</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("gridExtra")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra) <span class="co">#combining and organizing multiple ggplots</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="today" class="level2">
+<h2 class="anchored" data-anchor-id="today">Today</h2>
+<ul>
+<li>Joining / Merging datasets
+<ul>
+<li><code>bind_rows</code> and <code>bind_cols</code></li>
+<li><code>inner_join</code></li>
+<li>“Outer Joins” - <code>full_join</code>,<code>left_join</code>,<code>right_join</code></li>
+</ul></li>
+<li>Reshaping data
+<ul>
+<li><code>pivot_longer</code></li>
+<li><code>pivot_wider</code></li>
+</ul></li>
+<li><strong>Basic</strong> intution about modeling in R.</li>
+</ul>
+<p><a href="https://r4ds.hadley.nz/data-tidy.html">Chapter 5</a></p>
+<p><a href="https://r4ds.hadley.nz/joins.html">Chapter 19</a></p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/model-intro.html">R for Data Science 1st edition, Chapters 22-25</a></li>
+</ul>
+<p>Note: we are referring you to the first edition of R4DS here because the second edition dropped the chapters on modeling. The second edition refers readers to the <a href="https://www.tmwr.org/">Tidy Modeling with R</a>, which is the Tidyverse framework for predictive modeling, but we feel it is better to start with the material from the first edition.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="motivation-joining-and-reshaping-with-tidyr" class="level2">
+<h2 class="anchored" data-anchor-id="motivation-joining-and-reshaping-with-tidyr">Motivation: Joining and Reshaping with tidyr</h2>
+<p>In most of our lessons so far, we’ve typically focused on a single dataset. This week, we’ll cover different methods for combining multiple datasets and transforming the shape of our data.</p>
+<p>When using data that includes similar observational units collected by different sources, we will often find ourselves with multiple datasets that need to be combined before we can begin analysis. For example, if we wanted to gather various pieces of information for all of the countries in the world, we’d need to <strong>merge</strong> or <strong>join</strong> multiple datasets coming from the UN, the World Bank, the World Health Organization, etc. Or, we may simply need to add observations to an existing dataset (e.g.&nbsp;if we have multiple datasets coming from the World Bank, but each dataset only covers a single year.)</p>
+<p>In other cases, we might need to reshape data we already have to make it more appropriate for other software, for analysis, or easier to use within R. If you’re planning to export data from R to another software package, you may need a particular format. For example, mapping software like ArcGIS needs each row of a dataset to represent a geographic location.</p>
+</section>
+<section id="merging-joining-dataframes" class="level2">
+<h2 class="anchored" data-anchor-id="merging-joining-dataframes">Merging / Joining Dataframes</h2>
+<section id="appending" class="level3">
+<h3 class="anchored" data-anchor-id="appending">Appending</h3>
+<p>Sometimes we’ll have two datasets with similar columns that we need to combine. Essentially, we are stacking the rows of those datasets on top of each other. We can combine rows in <code>dplyr</code> with <code>bind_rows</code>:</p>
+<p><strong>Dataset 1</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a0 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"StudentID"</span><span class="ot">=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"GPA_change"</span><span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(a0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  StudentID  GPA_change
+1         1  0.09423537
+2         2 -1.61822122</code></pre>
+</div>
+</div>
+<p><strong>Dataset 2</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"StudentID"</span><span class="ot">=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>),</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"GPA_change"</span><span class="ot">=</span><span class="fu">rnorm</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Semester"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"Spring"</span>,<span class="st">"Fall"</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(a1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  StudentID GPA_change Semester
+1         3  0.5456792   Spring
+2         4  0.9071179     Fall</code></pre>
+</div>
+</div>
+<p><strong>Datasets combined</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(a0,a1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  StudentID  GPA_change Semester
+1         1  0.09423537     &lt;NA&gt;
+2         2 -1.61822122     &lt;NA&gt;
+3         3  0.54567923   Spring
+4         4  0.90711790     Fall</code></pre>
+</div>
+</div>
+<p>When we refer to <strong>merging</strong> or <strong>joining</strong>, we usually do not mean appending or adding observations to a dataset in this way. Instead, joining usuallly intends to add columns or variables to our dataframe. R does have a bind_cols function, but in the context below, using bind_cols is unhelpful and results in mismatched records.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"name"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"Marcos"</span>,<span class="st">"Crystal"</span>),</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"year"</span><span class="ot">=</span><span class="fu">c</span>(<span class="dv">1993</span>,<span class="dv">1996</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"name"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"Crystal"</span>,<span class="st">"Marcos"</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"project_num"</span><span class="ot">=</span><span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">3</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_cols</span>(b0,b1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `name` -&gt; `name...1`
+• `name` -&gt; `name...3`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  name...1 year name...3 project_num
+1   Marcos 1993  Crystal           6
+2  Crystal 1996   Marcos           3</code></pre>
+</div>
+</div>
+<p>Instead, we want to add columns while making sure certain identifying variables, often called <strong>keys</strong> (e.g.&nbsp;<code>name</code> and <code>name1</code> above) line up correctly. That way, each row represents information about a single observational unit.</p>
+</section>
+<section id="merging" class="level3">
+<h3 class="anchored" data-anchor-id="merging">Merging</h3>
+<section id="keys" class="level4">
+<h4 class="anchored" data-anchor-id="keys">Keys</h4>
+<p>To properly line up observations between two datasets, we need a common variable (or group of variables) that uniquely identifies an observation in at least one of the datasets, and identifies it in the same way across both datasets. This variable is usually called a “key”. In our example above, <code>b0</code> and <code>b1</code> have the key “name”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(b0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name year
+1  Marcos 1993
+2 Crystal 1996</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(b1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name project_num
+1 Crystal           6
+2  Marcos           3</code></pre>
+</div>
+</div>
+<p>Once we have matching key variable(s) in our datasets, we can join our datasets into consistent observations. There are two major categories of joins - “Inner Joins” and “Outer Joins”.</p>
+</section>
+</section>
+<section id="types-of-joins" class="level3">
+<h3 class="anchored" data-anchor-id="types-of-joins">Types of Joins</h3>
+<p>We need several different types of joins to facillitate the different ways datasets are organized.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 50%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Join Type</th>
+<th>Want to keep</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Inner Join</strong></td>
+<td>Only the rows in both datasets</td>
+<td><code>inner_join()</code></td>
+</tr>
+<tr class="even">
+<td><strong>Full (Outer) Join</strong></td>
+<td>All of the rows</td>
+<td><code>full_join()</code></td>
+</tr>
+<tr class="odd">
+<td><strong>Left (Outer) Join</strong></td>
+<td>All of the rows in the first (left) dataset, only the matches from the second (right) dataset</td>
+<td><code>left_join()</code></td>
+</tr>
+<tr class="even">
+<td><strong>Right (Outer) Join</strong></td>
+<td>All of the rows in the second (left) dataset, only the matches from the first (right) dataset</td>
+<td><code>right_join()</code></td>
+</tr>
+</tbody>
+</table>
+<p>The join types can be represented as Venn Diagrams. The lighter parts of the circles represent unmatched records we are leaving out of the join, while the darker parts represent both matched and unmached records we are keeping in the join.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/join-venn-dark.png" class="img-fluid figure-img"></p>
+<figcaption>Join Types from R for Data Science 13.4.3</figcaption>
+</figure>
+</div>
+<p>Take a look at these two datasets:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"name"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"Marcos"</span>,<span class="st">"Crystal"</span>,<span class="st">"Devin"</span>,<span class="st">"Lilly"</span>),</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"year"</span><span class="ot">=</span><span class="fu">c</span>(<span class="dv">1993</span>,<span class="dv">1996</span>,<span class="dv">1985</span>,<span class="dv">2001</span>))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"person"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"Marcos"</span>,<span class="st">"Crystal"</span>,<span class="st">"Devin"</span>,<span class="st">"Tamera"</span>),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"project_num"</span><span class="ot">=</span><span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">9</span>,<span class="dv">8</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(b0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name year
+1  Marcos 1993
+2 Crystal 1996
+3   Devin 1985
+4   Lilly 2001</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(b1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   person project_num
+1  Marcos           6
+2 Crystal           3
+3   Devin           9
+4  Tamera           8</code></pre>
+</div>
+</div>
+<p>Now, let’s merge them using each of the different join types.</p>
+<section id="inner-join" class="level4">
+<h4 class="anchored" data-anchor-id="inner-join">Inner Join</h4>
+<section id="inner_join" class="level5">
+<h5 class="anchored" data-anchor-id="inner_join"><code>inner_join</code></h5>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inner_join</span>(b0,b1,<span class="at">by=</span><span class="fu">c</span>(<span class="st">"name"</span><span class="ot">=</span><span class="st">"person"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name year project_num
+1  Marcos 1993           6
+2 Crystal 1996           3
+3   Devin 1985           9</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="outer-joins" class="level4">
+<h4 class="anchored" data-anchor-id="outer-joins">Outer Joins</h4>
+<section id="full_join" class="level5">
+<h5 class="anchored" data-anchor-id="full_join"><code>full_join</code></h5>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">full_join</span>(b0,b1,<span class="at">by=</span><span class="fu">c</span>(<span class="st">"name"</span><span class="ot">=</span><span class="st">"person"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name year project_num
+1  Marcos 1993           6
+2 Crystal 1996           3
+3   Devin 1985           9
+4   Lilly 2001          NA
+5  Tamera   NA           8</code></pre>
+</div>
+</div>
+</section>
+<section id="left_join" class="level5">
+<h5 class="anchored" data-anchor-id="left_join"><code>left_join</code></h5>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(b0,b1,<span class="at">by=</span><span class="fu">c</span>(<span class="st">"name"</span><span class="ot">=</span><span class="st">"person"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name year project_num
+1  Marcos 1993           6
+2 Crystal 1996           3
+3   Devin 1985           9
+4   Lilly 2001          NA</code></pre>
+</div>
+</div>
+</section>
+<section id="right_join" class="level5">
+<h5 class="anchored" data-anchor-id="right_join"><code>right_join</code></h5>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">right_join</span>(b0,b1,<span class="at">by=</span><span class="fu">c</span>(<span class="st">"name"</span><span class="ot">=</span><span class="st">"person"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name year project_num
+1  Marcos 1993           6
+2 Crystal 1996           3
+3   Devin 1985           9
+4  Tamera   NA           8</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="extensions" class="level3">
+<h3 class="anchored" data-anchor-id="extensions">Extensions</h3>
+<section id="multiple-keys" class="level4">
+<h4 class="anchored" data-anchor-id="multiple-keys">Multiple Keys</h4>
+<p>In some cases, we may need multiple keys to uniquely identify an observation. For example, our datasets below have two different observations for each person, so we need to join them by both name and year.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>multi0 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"name"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"Tamera"</span>,<span class="st">"Zakir"</span>,<span class="st">"Zakir"</span>,<span class="st">"Tamera"</span>),</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"year"</span><span class="ot">=</span><span class="fu">c</span>(<span class="dv">1990</span>,<span class="dv">1990</span>,<span class="dv">1991</span>,<span class="dv">1991</span>),</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"state"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"NC"</span>,<span class="st">"VA"</span>,<span class="st">"VA"</span>,<span class="st">"NY"</span>))</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>multi1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"person"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"Tamera"</span>,<span class="st">"Zakir"</span>,<span class="st">"Zakir"</span>,<span class="st">"Tamera"</span>),</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"year"</span><span class="ot">=</span><span class="fu">c</span>(<span class="dv">1990</span>,<span class="dv">1990</span>,<span class="dv">1991</span>,<span class="dv">1991</span>),</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"project_num"</span><span class="ot">=</span><span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">9</span>,<span class="dv">8</span>))</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>multijoined <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(multi0,multi1,</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">by=</span><span class="fu">c</span>(<span class="st">"name"</span><span class="ot">=</span><span class="st">"person"</span>,<span class="st">"year"</span><span class="ot">=</span><span class="st">"year"</span>))</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>multijoined</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    name year state project_num
+1 Tamera 1990    NC           6
+2  Zakir 1990    VA           3
+3  Zakir 1991    VA           9
+4 Tamera 1991    NY           8</code></pre>
+</div>
+</div>
+</section>
+<section id="many-to-one-and-one-to-many-joins" class="level4">
+<h4 class="anchored" data-anchor-id="many-to-one-and-one-to-many-joins">Many-to-one and One-to-many Joins</h4>
+<p>If we only specify enough key variables to uniquely identify observations in one dataset and not the other, each unique value from the first dataset will be joined to each instance of that value in the other dataset.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>statedata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"state"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"NC"</span>,<span class="st">"VA"</span>,<span class="st">"NY"</span>),</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"region"</span><span class="ot">=</span><span class="fu">c</span>(<span class="st">"Southeast"</span>,<span class="st">"Southeast"</span>,<span class="st">"Northeast"</span>))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">inner_join</span>(statedata,multijoined,<span class="at">by=</span><span class="fu">c</span>(<span class="st">"state"</span><span class="ot">=</span><span class="st">"state"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  state    region   name year project_num
+1    NC Southeast Tamera 1990           6
+2    VA Southeast  Zakir 1990           3
+3    VA Southeast  Zakir 1991           9
+4    NY Northeast Tamera 1991           8</code></pre>
+</div>
+</div>
+<p><em>Note: We can equivalently omit <code>by=c("state"="state")</code> since the key variables have the same name here.</em></p>
+</section>
+</section>
+</section>
+<section id="reshaping-with-tidyr" class="level2">
+<h2 class="anchored" data-anchor-id="reshaping-with-tidyr">Reshaping with tidyr</h2>
+<p>Once we have a single dataset, we may still need to change its shape. When we talk about the <strong>shape</strong> of a dataset, we are often referring to whether it is wide or long.</p>
+<ul>
+<li><p><strong>Wide dataset</strong> - typically includes more columns and fewer rows with a single row for each observation</p></li>
+<li><p><strong>Long dataset</strong> - typically includes fewer columns and more rows with multiple rows for each observation</p></li>
+</ul>
+<p>The many functions used in R for changing a datasets’ shape have varied over the years along with the terminology (e.g.&nbsp;“reshape”, “melt”, “cast”, “tidy”, “gather”, “spread”, “pivot”, etc.) We will now be working with the new reshaping functions recommended by <a href="https://tidyr.tidyverse.org/articles/pivot.html">tidyverse</a>, <code>pivot_longer()</code> and <code>pivot_wider()</code>.</p>
+<p><em>Hadley Wickham’s <a href="http://vita.had.co.nz/papers/tidy-data.html">Tidy Data</a> provides more discussion of what “Tidy Data” entails and why it’s useful in data analysis.</em></p>
+<section id="use-case-making-ggplot-easier" class="level4">
+<h4 class="anchored" data-anchor-id="use-case-making-ggplot-easier">Use Case: Making <code>ggplot</code> easier</h4>
+<p>Why reshape when we have perfectly good data? Sometimes R’s own functions are more convenient with reshaped data. Consider the dataset below in which we’ve generated random numbers for columns A and B.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>df0 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">year=</span><span class="fu">c</span>(<span class="dv">2000</span>,<span class="dv">2001</span>,<span class="dv">2002</span>),</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">A=</span><span class="fu">runif</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">20</span>),</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">B=</span><span class="fu">runif</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">20</span>))</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(df0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  year         A        B
+1 2000  5.751550 17.66035
+2 2001 15.766103 18.80935
+3 2002  8.179538  0.91113</code></pre>
+</div>
+</div>
+<p>Now we want to create a line plot in which each column has its own line. Because our dataset is <strong>wide</strong>, we’ll need to add each line to the plot separately and individually.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>df0,<span class="fu">aes</span>(<span class="at">x=</span>year)) <span class="sc">+</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>A),<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>B),<span class="at">color=</span><span class="st">"blue"</span>) <span class="sc">+</span> </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>However, if we were using a <strong>long</strong> dataset, we could create the plot with less code. Note how our dataset below has a single column for categories A and B.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">year=</span><span class="fu">c</span>(df0<span class="sc">$</span>year,df0<span class="sc">$</span>year),</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">category=</span><span class="fu">c</span>(<span class="st">"A"</span>,<span class="st">"A"</span>,<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"B"</span>,<span class="st">"B"</span>),</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">value=</span><span class="fu">c</span>(df0<span class="sc">$</span>A,df0<span class="sc">$</span>B))</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(df1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  year category     value
+1 2000        A  5.751550
+2 2001        A 15.766103
+3 2002        A  8.179538
+4 2000        B 17.660348
+5 2001        B 18.809346
+6 2002        B  0.911130</code></pre>
+</div>
+</div>
+<p>And for our plot, we only need to add a single <code>geom_line</code> while using the category column for our <code>color</code> aesthetic.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>df1,<span class="fu">aes</span>(<span class="at">x=</span>year,<span class="at">y=</span>value,<span class="at">color=</span>category))<span class="sc">+</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This may not seem like much of a big deal for this particular plot, but what if we were trying to plot hundreds of lines?</p>
+<p>We can move back and forth between the long shape used by <code>df1</code> and the wide shape used by <code>df0</code> with tidyr’s <code>pivot_longer</code> and <code>pivot_wider</code> functions.</p>
+</section>
+<section id="pivot_longer" class="level3">
+<h3 class="anchored" data-anchor-id="pivot_longer"><code>pivot_longer</code></h3>
+<p>First, let’s create a small example dataset with four columns of randomly generated numbers.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>raw <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">City=</span><span class="fu">c</span>(<span class="st">"Raleigh"</span>,<span class="st">"Durham"</span>,<span class="st">"Chapel Hill"</span>),</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2000=</span><span class="fu">rnorm</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2001=</span><span class="fu">rnorm</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2002=</span><span class="fu">rnorm</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2003=</span><span class="fu">rnorm</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         City      x2000      x2001      x2002      x2003
+1     Raleigh -0.5604756 0.07050839  0.4609162 -0.4456620
+2      Durham -0.2301775 0.12928774 -1.2650612  1.2240818
+3 Chapel Hill  1.5587083 1.71506499 -0.6868529  0.3598138</code></pre>
+</div>
+</div>
+<p><em>x2000 through x2003 represent something measured in 2000 to 2003, since R data.frames cannot have labels that start with numbers.</em></p>
+<p>In the dataset above, we have information stored in separate columns for each year, but it might be more useful to store the year number itself in its own column. We can use the <code>pivot_longer</code> function to do this.</p>
+<p><code>pivot_longer</code> takes four main arguments:</p>
+<ol type="1">
+<li><p>data: this must be a <strong>data frame</strong>.</p></li>
+<li><p>cols: a <strong>list of column names</strong> that we want to pivot into a single column.</p></li>
+<li><p>names_to: the <strong>name</strong> of the new column that will contain the names of the columns we are pivoting.</p></li>
+<li><p>values_to: the <strong>name</strong> of another new column that will contain values of the columns we are pivoting.</p></li>
+</ol>
+<p>We can also use various other arguments with pivot_longer that allow us to do a number of handy things. For example, the names_prefix argument lets us remove the “x” in front of our year names. Run ?pivot_longer in your console for a full list of arguments that can be used.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>longpivot <span class="ot">&lt;-</span> raw <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"x"</span>), </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"Year"</span>, </span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Value"</span>, </span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_prefix =</span> <span class="st">"x"</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(longpivot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 3
+   City        Year    Value
+   &lt;chr&gt;       &lt;chr&gt;   &lt;dbl&gt;
+ 1 Raleigh     2000  -0.560 
+ 2 Raleigh     2001   0.0705
+ 3 Raleigh     2002   0.461 
+ 4 Raleigh     2003  -0.446 
+ 5 Durham      2000  -0.230 
+ 6 Durham      2001   0.129 
+ 7 Durham      2002  -1.27  
+ 8 Durham      2003   1.22  
+ 9 Chapel Hill 2000   1.56  
+10 Chapel Hill 2001   1.72  
+11 Chapel Hill 2002  -0.687 
+12 Chapel Hill 2003   0.360 </code></pre>
+</div>
+</div>
+<p>It’s often useful to think about how transformations like pivot_longer change the effective observational unit of the dataset. This dataset started with city-level observations in which each row was represented by a unique city name. The transformed data frame longpivot now observes one city in a given year in each row, so we now have multiple rows for the same city.</p>
+</section>
+<section id="pivot_wider" class="level3">
+<h3 class="anchored" data-anchor-id="pivot_wider"><code>pivot_wider</code></h3>
+<p>We can reverse our previous transformation with <code>pivot_wider</code>. This time, we’ll create a separate column for each city.</p>
+<p><code>pivot_wider</code> takes three essential arguments:</p>
+<ol type="1">
+<li><p>data</p></li>
+<li><p>names_from: the <strong>column</strong> whose values we’ll use to create new column names.</p></li>
+<li><p>values_from: another <strong>column</strong> whose values we’ll use to fill the new columns.</p></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>widepivot <span class="ot">&lt;-</span> longpivot <span class="sc">|&gt;</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> City, <span class="at">values_from =</span> Value)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(widepivot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 4
+  Year  Raleigh Durham `Chapel Hill`
+  &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;
+1 2000  -0.560  -0.230         1.56 
+2 2001   0.0705  0.129         1.72 
+3 2002   0.461  -1.27         -0.687
+4 2003  -0.446   1.22          0.360</code></pre>
+</div>
+</div>
+<p>Why would we want each city to have its own column? Well, it might be a useful step to determine which cities are most closely correlated as part of an Exploratory Data Analysis process. For example, we can now easily use this dataset with ggally to create a plot matrix.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>widepivot <span class="sc">|&gt;</span> </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">"Chapel Hill"</span>,<span class="st">"Durham"</span>,<span class="st">"Raleigh"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="modeling" class="level2">
+<h2 class="anchored" data-anchor-id="modeling">Modeling</h2>
+<section id="what-is-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-a-model">What is a model?</h3>
+<p>A model is another tool to summarize the information in a dataset. This often comes in the form of approximations that make it easier to interpret and generalize relationships to new data. Ideally a model represents the “signal” in the data while ignoring unimportant or ungeneralizable “noise.”</p>
+<p>For today we’ll mainly consider “supervised models”. A supervised model aims to predict some target variable(s) and requires that we have observed these variables alongside the factors we want to use to predict it. This target variable is sometimes called a “dependent” or “response” variable. Today’s lesson will focus on a specific form of supervised model, the linear model, also known as ordinary least squares regression (OLS) or the general linear model (not to be confused with generalized linear models).</p>
+<p>Unsupervised models don’t distinguish between response and predictor variables and instead look for patterns among variables more generally. Clustering is one of the most commonly used unsupervised learning methods. We will not be covering unsupervised models today.</p>
+</section>
+<section id="simple-linear-models-with-plots" class="level3">
+<h3 class="anchored" data-anchor-id="simple-linear-models-with-plots">Simple Linear Models with Plots</h3>
+<p>For these plots, we’ll use <code>moddf</code> provided via the code below. The <code>url</code> function combined with <code>read_csv</code> allows us to directly import content from the internet into our R session.</p>
+<p>We’ll look at the code to generate <code>moddf</code> at the end of this section.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>moddf <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">url</span>(<span class="st">"https://unc-libraries-data.github.io/beginR/week10_models/moddf.csv"</span>))</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(moddf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+      x     y
+  &lt;dbl&gt; &lt;dbl&gt;
+1 11.2   41.4
+2 13.7   49.5
+3 14.9   48.7
+4 14.1   47.1
+5  7.29  18.8
+6  4.25  14.2</code></pre>
+</div>
+</div>
+<p>Since these are both continuous numeric variables, let’s plot them with a scatterplot.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>moddf,<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y))<span class="sc">+</span><span class="fu">geom_point</span>()<span class="sc">+</span><span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One of the simplest ways to model data like this is with a line capturing the trend. We can model a line with an interpretable formula:</p>
+<p><span class="math display">\[y= intercept + slope * x\]</span></p>
+<p>Given a new <code>x</code> value, we could predict the corresponding <code>y</code> by plugging it into this equation. We can also get observations for the <code>x</code> values we have observed.</p>
+<p>We can plot some candidate line(s) with <code>geom_abline</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>moddf,<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y))<span class="sc">+</span><span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">slope=</span><span class="fl">3.6</span>,<span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept=</span><span class="dv">2</span>,<span class="at">slope=</span><span class="dv">3</span>,<span class="at">color=</span><span class="st">"orange"</span>)<span class="sc">+</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>How do we choose between lines? A common metric, especially in prediction, involves measuring our misses with residuals:</p>
+<p>residual = actual value - prediction</p>
+<p>These can be graphically represented as lines parallel to the y-axis:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>moddf<span class="sc">$</span>p1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">+</span> <span class="fl">3.6</span> <span class="sc">*</span> moddf<span class="sc">$</span>x</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>moddf<span class="sc">$</span>p2 <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> moddf<span class="sc">$</span>x</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>moddf,<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y))<span class="sc">+</span><span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept=</span><span class="dv">2</span>,<span class="at">slope=</span><span class="dv">3</span>,<span class="at">color=</span><span class="st">"orange"</span>)<span class="sc">+</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y,</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xend =</span> x, <span class="at">yend =</span> p2),<span class="at">color=</span><span class="st">"orange"</span>)<span class="sc">+</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>moddf,<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y))<span class="sc">+</span><span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">slope=</span><span class="fl">3.6</span>,<span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y,</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xend =</span> x, <span class="at">yend =</span> p1),<span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(plot1,plot2,<span class="at">ncol=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ordinary Least Squares (OLS), often referred to simply as “Linear Regression”, finds the line that minimizes the sum of the squared residuals above.</p>
+<p>We can fit an OLS with <code>lm</code> in R, and get a standard statistical summary with <code>summary</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> moddf)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x, data = moddf)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.8708 -3.5818  0.3781  2.2938  9.2515 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  -1.3372     1.4409  -0.928    0.358    
+x             3.5962     0.1545  23.280   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.439 on 48 degrees of freedom
+Multiple R-squared:  0.9186,    Adjusted R-squared:  0.9169 
+F-statistic: 541.9 on 1 and 48 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>The arguments given to <code>lm</code> are:</p>
+<ul>
+<li><p>Formula: <code>y~x</code></p></li>
+<li><p>R uses <code>~</code> in place of the equals sign in formulas</p></li>
+<li><p>R automatically includes an intercept term</p></li>
+<li><p>This formula is therefore equivalent to:</p>
+<p><span class="math display">\[y=intercept + slope * x\]</span></p>
+<ul>
+<li>Data:</li>
+<li>The dataframe containing the variables of interest.</li>
+</ul></li>
+</ul>
+<p>The values listed under <code>Estimate</code> provide estimates for the intercept,-1.3371543, and slope,3.5962276.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>moddf<span class="sc">$</span>lm <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>moddf, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> </span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept=</span>fit<span class="sc">$</span>coefficients[<span class="dv">1</span>],<span class="at">slope=</span>fit<span class="sc">$</span>coefficients[<span class="dv">2</span>],<span class="at">size=</span><span class="fl">1.1</span>,<span class="at">alpha=</span><span class="fl">0.8</span>,<span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept=</span><span class="dv">2</span>,<span class="at">slope=</span><span class="dv">3</span>,<span class="at">color=</span><span class="st">"orange"</span>)<span class="sc">+</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">slope=</span><span class="fl">3.6</span>,<span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y,</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xend =</span> x, <span class="at">yend =</span> lm)) <span class="sc">+</span></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can visualize the OLS model’s point estimates and confidence bands like this:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>moddf.predict <span class="ot">&lt;-</span> <span class="fu">cbind</span>(moddf, <span class="fu">predict</span>(fit, <span class="at">interval =</span> <span class="st">'confidence'</span>))</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(moddf.predict, <span class="fu">aes</span>(x, y)) <span class="sc">+</span> </span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(x, lm)) <span class="sc">+</span> </span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>lwr,<span class="at">ymax=</span>upr), <span class="at">alpha=</span><span class="fl">0.3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Finally, here’s the code used to generate our dataset:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">50</span>,<span class="dv">0</span>,<span class="dv">15</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fl">3.4</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">50</span>,<span class="dv">0</span>,<span class="dv">5</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>moddf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x,y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The “true” values, obscured by random noise, were:</p>
+<ul>
+<li>intercept = 0</li>
+<li>slope = 3.4</li>
+</ul>
+<p>The OLS did a pretty good job determining these numbers. We’ll return to this idea of generating data in a bit.</p>
+</section>
+<section id="multiple-regression---formula-notation-in-r" class="level3">
+<h3 class="anchored" data-anchor-id="multiple-regression---formula-notation-in-r">Multiple Regression - Formula notation in R</h3>
+<p>OLS can be extended to include multiple predictors. Let’s experiment with the built-in <code>mtcars</code> dataset.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mtcars)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   32 obs. of  11 variables:
+ $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+ $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+ $ disp: num  160 160 108 258 360 ...
+ $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+ $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+ $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+ $ qsec: num  16.5 17 18.6 19.4 17 ...
+ $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+ $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+ $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+ $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+</div>
+</div>
+<p>We add more variables with extentions to R’s formula notation:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 39%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Role</th>
+<th>Example</th>
+<th>Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>+</code></td>
+<td>Add variable</td>
+<td><code>mpg~vs+disp</code></td>
+<td><span class="math display">\[mpg = intercept + \beta_1 vs + \beta_2 disp\]</span></td>
+</tr>
+<tr class="even">
+<td><code>*</code></td>
+<td>Interactions</td>
+<td><code>mpg~vs*disp</code></td>
+<td><span class="math display">\[mpg = intercept + \beta_1 vs + \beta_2 disp + \beta_3 vs*disp\]</span></td>
+</tr>
+<tr class="odd">
+<td><code>.</code></td>
+<td>Include all variables in dataframe</td>
+<td><code>mpg~.</code></td>
+<td><span class="math display">\[mpg = intercept + \beta_1 cyl + \beta_2 disp + ... + \beta_{10} carb\]</span></td>
+</tr>
+<tr class="even">
+<td><code>-</code></td>
+<td>Exclude variable</td>
+<td><code>mpg~.-disp-hp</code></td>
+<td><span class="math display">\[mpg = intercept + \beta_1 cyl + \beta_2 drat + ... + \beta_{8} carb\]</span></td>
+</tr>
+</tbody>
+</table>
+<p>Examples:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data=</span>mtcars,mpg<span class="sc">~</span>vs<span class="sc">+</span>disp))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = mpg ~ vs + disp, data = mtcars)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.4605 -2.0260 -0.6467  1.7285  7.0790 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 27.949282   2.201166  12.697 2.27e-13 ***
+vs           1.495004   1.651290   0.905    0.373    
+disp        -0.036896   0.006715  -5.494 6.43e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.261 on 29 degrees of freedom
+Multiple R-squared:  0.7261,    Adjusted R-squared:  0.7072 
+F-statistic: 38.44 on 2 and 29 DF,  p-value: 7.005e-09</code></pre>
+</div>
+</div>
+<p>We can use some familiar tidyverse tool to visualize this fit:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> mtcars <span class="sc">|&gt;</span> <span class="fu">select</span>(mpg, vs, disp)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> vs <span class="sc">+</span> disp, <span class="at">data =</span> d)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>predicted <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit2)</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>residuals <span class="ot">&lt;-</span> <span class="fu">residuals</span>(fit2)</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(mpg,predicted,residuals),<span class="at">names_to =</span> <span class="st">"iv"</span>, <span class="at">values_to=</span><span class="st">"x"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> mpg)) <span class="sc">+</span> </span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> predicted), <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span> iv, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/multiple%20reg-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>What does <code>-1</code> do below?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data=</span>mtcars,mpg<span class="sc">~</span>vs<span class="sc">*</span>hp<span class="sc">+</span>disp<span class="dv">-1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = mpg ~ vs * hp + disp - 1, data = mtcars)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.4960  -3.2474  -0.3531   4.3101  19.0605 
+
+Coefficients:
+        Estimate Std. Error t value Pr(&gt;|t|)    
+vs    38.9990553  7.2131470   5.407 9.13e-06 ***
+hp     0.0757879  0.0261494   2.898  0.00721 ** 
+disp   0.0003558  0.0159033   0.022  0.98231    
+vs:hp -0.2343856  0.0769152  -3.047  0.00500 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.733 on 28 degrees of freedom
+Multiple R-squared:  0.9096,    Adjusted R-squared:  0.8967 
+F-statistic: 70.44 on 4 and 28 DF,  p-value: 3.339e-14</code></pre>
+</div>
+</div>
+</section>
+<section id="more-on-modeling" class="level3">
+<h3 class="anchored" data-anchor-id="more-on-modeling">More on modeling</h3>
+<p>You can learn more about common extensions to linear models in R For Data Science:</p>
+<ul>
+<li><p><a href="https://r4ds.had.co.nz/model-basics.html#categorical-variables">Categorical Variables, 23.4.1</a></p></li>
+<li><p>Interactions, <a href="https://r4ds.had.co.nz/model-basics.html#interactions-continuous-and-categorical">23.4.2</a>-<a href="https://r4ds.had.co.nz/model-basics.html#interactions-two-continuous">23.4.3</a></p></li>
+<li><p><a href="https://r4ds.had.co.nz/model-basics.html#transformations">Transformations, 23.4.4</a> Linear models alone are often the foundation for an entire semester long course; taught in a variety of discipline-specific settings as well as the Biostatistics and Statistics and Operations Research departments.</p></li>
+</ul>
+</section>
+<section id="simulations" class="level3">
+<h3 class="anchored" data-anchor-id="simulations">Simulations</h3>
+<p>There’s a very powerful idea hidden in the bit of code we used to generate the first dataset:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">50</span>,<span class="dv">0</span>,<span class="dv">15</span>)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fl">3.4</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">50</span>,<span class="dv">0</span>,<span class="dv">5</span>)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>moddf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x,y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This block of code <em>generates</em> random data according to our specifications. Unlike most fields of science, where you have to actively gather data, statisticians can use random number generators. This underlies the most commonly used computational tool in statistics: the simulation study.</p>
+<p>In a typical simulation study we <strong>Generate</strong> data according to a known data generation process. Then we <strong>Analyze</strong> data using the method we want to investigate. Finally we <strong>Summarize</strong> the simulation study using either tables or graphs.</p>
+<p>Let’s use this tool to study the sampling distribution of a regression slope using the same data generating process as before:</p>
+<ul>
+<li>intercept = 0</li>
+<li>slope = 3.4</li>
+</ul>
+</section>
+<section id="sample-size-and-the-sampling-distribution-of-the-regression-slope" class="level3">
+<h3 class="anchored" data-anchor-id="sample-size-and-the-sampling-distribution-of-the-regression-slope">Sample size and the sampling distribution of the regression slope</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>nsims <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>sample_size <span class="ot">&lt;-</span> <span class="dv">32</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>int <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"numeric"</span>, nsims)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>sl <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"numeric"</span>, nsims)</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims){</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Generate</span></span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">runif</span>(sample_size,<span class="dv">0</span>,<span class="dv">15</span>)</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fl">3.4</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(sample_size,<span class="dv">0</span>,<span class="dv">5</span>)</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>  moddf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x,y)</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Analyze</span></span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> moddf)</span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>  int[i] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">1</span>]</span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>  sl[i] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">2</span>]</span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a>sim_results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(int, sl)</span>
+<span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a><span class="co">#Summarize</span></span>
+<span id="cb65-20"><a href="#cb65-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sim_results) <span class="sc">+</span></span>
+<span id="cb65-21"><a href="#cb65-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept=</span>int, <span class="at">slope=</span>sl, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb65-22"><a href="#cb65-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb65-23"><a href="#cb65-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/sim1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>What happens if we change the sample_size within each simulation from 32 to 8? or to 1024?</p>
+</section>
+<section id="what-is-a-95-confidence-interval" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-a-95-confidence-interval">What is a 95% confidence interval?</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>nsims <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>sample_size <span class="ot">&lt;-</span> <span class="dv">32</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"numeric"</span>, nsims)</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>lower <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"numeric"</span>, nsims)</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>upper <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"numeric"</span>, nsims)</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims){</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">runif</span>(sample_size, <span class="dv">0</span>, <span class="dv">15</span>)</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fl">3.4</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(sample_size, <span class="dv">0</span>, <span class="dv">5</span>)</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>  moddf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x,y)</span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> moddf)</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>  index[i] <span class="ot">&lt;-</span> i</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>  lower[i] <span class="ot">&lt;-</span> <span class="fu">confint</span>(fit)[<span class="dv">2</span>,<span class="dv">1</span>]</span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>  upper[i] <span class="ot">&lt;-</span> <span class="fu">confint</span>(fit)[<span class="dv">2</span>,<span class="dv">2</span>]</span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a>sim_results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(index, lower, upper)</span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sim_results) <span class="sc">+</span></span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">y =</span> index, <span class="at">yend =</span> index, <span class="at">x =</span> lower, <span class="at">xend =</span> upper) <span class="sc">+</span></span>
+<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">y =</span> <span class="sc">-</span><span class="dv">5</span>, <span class="at">yend =</span> <span class="dv">110</span>, <span class="at">x =</span> <span class="fl">3.4</span>, <span class="at">xend =</span> <span class="fl">3.4</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">101</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/confint-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The confidence level (say 95%) of a confidence interval does not apply to a particular confidence interval. Rather, it applies to the procedure. If you collect one sample of data, fit a model, and the look at the confidence interval, the true value is either inside that interval or it is not (unfortunately, we usually don’t know whether the true value is inside the interval). However, if you repeat the study 1000 times and fit precisely the same model to each of those 1000 datasets, about 95% of the 1000 confidence intervals you estimate will contain the true value.</p>
+<p>Of course, this is all assuming you are fitting the correct model, but that is a discussion beyond the scope of this workshop!</p>
+</section>
+</section>
+<section id="reproducible-simulations" class="level2">
+<h2 class="anchored" data-anchor-id="reproducible-simulations">Reproducible simulations</h2>
+<p>Much of our focus this semester has been on reproducible workflows and reproducible reports. How can we make a simulation study reproducible when it involves generating random numbers? The random number generators in R are actually pseudo-random number generators. They take a <strong>seed</strong> value and then generate a sequence of number that are randomly drawn from a given distribution, but if you use the same seed, the sequence of number will be exactly the same. If you run the following code, you should get the same five lines that are present on this webpage.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>nsims <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>sample_size <span class="ot">&lt;-</span> <span class="dv">8</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>int <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"numeric"</span>, nsims)</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>sl <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"numeric"</span>, nsims)</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsims){</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">runif</span>(sample_size, <span class="dv">0</span>, <span class="dv">15</span>)</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fl">3.4</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(sample_size, <span class="dv">0</span>, <span class="dv">5</span>)</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>  moddf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x,y)</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> moddf)</span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>  int[i] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">1</span>]</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>  sl[i] <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit)[<span class="dv">2</span>]</span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>sim_results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(int, sl)</span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sim_results) <span class="sc">+</span></span>
+<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept=</span>int, <span class="at">slope=</span>sl, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="join_reshape_models_files/figure-html/seed-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-data" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-data">Exercise Data</h2>
+<p><a href="data/brazilian-ecommerce-subset.zip">Brazilian E-Commerce Subset</a></p>
+<p>Data derived from <a href="https://www.kaggle.com/olistbr/brazilian-ecommerce">Brazilian E-Commerce Public Dataset by Olist</a> provided on Kaggle.com under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 license</a>.</p>
+<p><a href="data/clean_cheese.csv">US Cheese Consumption</a></p>
+<p>Cleaned data courtesy of the <a href="https://github.com/rfordatascience/tidytuesday">Tidy Tuesday project</a></p>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises:</h2>
+<section id="merge-and-reshape" class="level3">
+<h3 class="anchored" data-anchor-id="merge-and-reshape">Merge and Reshape</h3>
+<p>All of today’s exercises involve the datasets included in <a href="data/brazilian-ecommerce-subset.zip">brazilian-commerce-subset.zip</a>.</p>
+<ol type="1">
+<li><p>Read olist_public_dataset_v2.csv into R. Explore the dataset. If necessary, refer to the metadata provided <a href="https://www.kaggle.com/olistbr/brazilian-ecommerce">here</a>.</p></li>
+<li><p>Read product_category_name_translation.csv into R. Merge this dataframe into olist_public_dataset_v2.csv using <code>product_category_name</code> as the key variable.</p>
+<p>Let’s explore which products are most frequently purchased together:</p></li>
+<li><p>Use <code>group_by</code> and <code>summarize</code> to find the total <code>order_items_qty</code> for each <code>product_category_name_english</code> in each <code>customer state</code>. <a href="../week3_Transformations/R_OpenLabs_3_Transformations.html">Review</a></p></li>
+<li><p>Use <code>pivot_wider</code> to create a new dataframe with a row for each <code>customer_state</code> and a column for each <code>product_category_name_english</code>. Name this dataframe <code>products</code>.</p></li>
+<li><p>Run the two lines of code below (make sure your dataframe from step 4 is called <code>products</code>!)</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>products <span class="ot">&lt;-</span> <span class="fu">ungroup</span>(products) <span class="co">#remove grouping </span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>products[<span class="fu">is.na</span>(products)] <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co">#replace missing data with zeroes</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></li>
+<li><p>Use <code>ggpairs</code> or other Exploratory Data Analysis techniques to look for relationships between purchases of <code>small_appliances</code>,<code>consoles_games</code>,<code>air_conditioning</code>, and <code>construction_tools_safety</code>. (Remember to run <code>library(GGally)</code> before using <code>ggpairs</code>).</p></li>
+<li><p>Repeat problems 3-6 with <code>order_products_value</code> (i.e.&nbsp;the amount spent vs the quantity purchased). Do you see different patterns? Explore other product categories.</p></li>
+<li><p>Use <code>pivot_longer</code> and then <code>pivot_wider</code> to convert your <code>products</code> dataframe to one where each row is a different <code>product_category_name_english</code> and each column represents a different <code>customer_state</code>.</p></li>
+<li><p>Choose 5 states. Which of these states have the most similar patterns of spending (as measured by correlation)?</p></li>
+</ol>
+</section>
+<section id="models" class="level3">
+<h3 class="anchored" data-anchor-id="models">Models</h3>
+<ol type="1">
+<li><p>Explore the datasets included with the built-in <code>datasets</code> package by running <code>data(package="datasets")</code>. You can get more information about any given dataset with <code>?&lt;dataset name&gt;</code>. Choose a dataset with at least a few numeric variables.</p></li>
+<li><p>Use <code>str</code>, <code>head</code>, <code>summary</code> and any of our EDA techniques to explore the dataset. Pick a continuous outcome variable of interest and choose some predictors.</p></li>
+<li><p>Fit an <code>lm</code> with your selected variables.</p></li>
+<li><p>Use your intial <code>lm</code> fit to create a <a href="../Extras/ModelSummary/ModelSummary_Extra.html">regression table</a> output. Embed in an Quarto document or output an html file. Use <code>?modelsummary</code> to learn about and then change one or more default settings.</p></li>
+</ol>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
