@@ -67,7 +67,6 @@ This introductory workshop aims to cover:
 * Briefly familiarize or re-familiarize you with some of the most important elements of R
     + RStudio interface
     + Tidyverse library
-    + Graphics using ggplot2
     + Data types
 * Reproducible workflow
     + importing data
