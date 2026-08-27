@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="University of North Carolina at Chapel Hill">
+
+<title>beginR: Introduction</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="introduction_files/libs/clipboard/clipboard.min.js"></script>
+<script src="introduction_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="introduction_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="introduction_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="introduction_files/libs/quarto-html/popper.min.js"></script>
+<script src="introduction_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="introduction_files/libs/quarto-html/anchor.min.js"></script>
+<link href="introduction_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="introduction_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="introduction_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="introduction_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="introduction_files/libs/bootstrap/bootstrap-3d0e9a627679db782712830cff2cbe70.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-r" id="toc-why-r" class="nav-link active" data-scroll-target="#why-r">Why R?</a></li>
+  <li><a href="#learning-objectives-for-the-semester" id="toc-learning-objectives-for-the-semester" class="nav-link" data-scroll-target="#learning-objectives-for-the-semester">Learning objectives for the semester</a></li>
+  <li><a href="#learning-objectives-for-today" id="toc-learning-objectives-for-today" class="nav-link" data-scroll-target="#learning-objectives-for-today">Learning Objectives for Today</a></li>
+  <li><a href="#setup-r-r-studio" id="toc-setup-r-r-studio" class="nav-link" data-scroll-target="#setup-r-r-studio">Setup: R, R Studio</a>
+  <ul class="collapse">
+  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
+  <li><a href="#r-studio-orientation" id="toc-r-studio-orientation" class="nav-link" data-scroll-target="#r-studio-orientation">R Studio orientation</a></li>
+  <li><a href="#loading-the-tidyverse" id="toc-loading-the-tidyverse" class="nav-link" data-scroll-target="#loading-the-tidyverse">Loading the tidyverse</a></li>
+  </ul></li>
+  <li><a href="#what-is-reproducibility" id="toc-what-is-reproducibility" class="nav-link" data-scroll-target="#what-is-reproducibility">What is reproducibility?</a>
+  <ul class="collapse">
+  <li><a href="#why-does-computational-reproducibility-matter" id="toc-why-does-computational-reproducibility-matter" class="nav-link" data-scroll-target="#why-does-computational-reproducibility-matter">Why does computational reproducibility matter?</a></li>
+  <li><a href="#your-script-is-real-your-environment-is-not" id="toc-your-script-is-real-your-environment-is-not" class="nav-link" data-scroll-target="#your-script-is-real-your-environment-is-not">Your script is real, your environment is not</a></li>
+  </ul></li>
+  <li><a href="#data-and-other-downloads" id="toc-data-and-other-downloads" class="nav-link" data-scroll-target="#data-and-other-downloads">Data and other downloads</a></li>
+  <li><a href="#rstudio-projects" id="toc-rstudio-projects" class="nav-link" data-scroll-target="#rstudio-projects">1: RStudio Projects</a>
+  <ul class="collapse">
+  <li><a href="#configuration" id="toc-configuration" class="nav-link" data-scroll-target="#configuration">Configuration</a></li>
+  </ul></li>
+  <li><a href="#import-the-data" id="toc-import-the-data" class="nav-link" data-scroll-target="#import-the-data">2: Import the data</a>
+  <ul class="collapse">
+  <li><a href="#reminder-comments" id="toc-reminder-comments" class="nav-link" data-scroll-target="#reminder-comments">Reminder: Comments</a></li>
+  <li><a href="#coding-conventions" id="toc-coding-conventions" class="nav-link" data-scroll-target="#coding-conventions">Coding conventions</a></li>
+  <li><a href="#what-is-airbnb_dc-library-read_csv" id="toc-what-is-airbnb_dc-library-read_csv" class="nav-link" data-scroll-target="#what-is-airbnb_dc-library-read_csv">What is airbnb_dc? <code>library()</code>? <code>read_csv()</code>?</a></li>
+  <li><a href="#useful-data.frame-functions" id="toc-useful-data.frame-functions" class="nav-link" data-scroll-target="#useful-data.frame-functions">Useful data.frame functions</a></li>
+  </ul></li>
+  <li><a href="#tables-for-categorical-data" id="toc-tables-for-categorical-data" class="nav-link" data-scroll-target="#tables-for-categorical-data">4: Tables for categorical data</a></li>
+  <li><a href="#exploring-continuous-data" id="toc-exploring-continuous-data" class="nav-link" data-scroll-target="#exploring-continuous-data">5: Exploring continuous data</a></li>
+  <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data">6: Missing data</a></li>
+  <li><a href="#saving-output" id="toc-saving-output" class="nav-link" data-scroll-target="#saving-output">7: Saving output</a></li>
+  <li><a href="#ggplot-time-allowing" id="toc-ggplot-time-allowing" class="nav-link" data-scroll-target="#ggplot-time-allowing">8: ggplot (time allowing)</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a>
+  <ul class="collapse">
+  <li><a href="#beginners" id="toc-beginners" class="nav-link" data-scroll-target="#beginners">Beginners</a></li>
+  <li><a href="#additional-resources-on-reproducibility" id="toc-additional-resources-on-reproducibility" class="nav-link" data-scroll-target="#additional-resources-on-reproducibility">Additional resources on reproducibility</a></li>
+  <li><a href="#other-resources" id="toc-other-resources" class="nav-link" data-scroll-target="#other-resources">Other Resources</a></li>
+  </ul></li>
+  <li><a href="#feedback" id="toc-feedback" class="nav-link" data-scroll-target="#feedback">Feedback</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">beginR: Introduction</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>University of North Carolina at Chapel Hill </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<style type="text/css">
+table td, table th, table tr { border: 1px black solid !important; color: black !important; } 
+table td, table tr {text-align:left !important; font-size:14px; vertical-align:top !important;}
+table th {text-align:center !important; font-size:15px; }
+</style>
+</div>
+<section id="why-r" class="level2">
+<h2 class="anchored" data-anchor-id="why-r">Why R?</h2>
+<p>R is widely used in statistics and has become quite popular in the biomedical and social sciences over the last decade. R can be used as either a programming language (like Python or Java) or as a standard statistical package (like Stata, SAS, or SPSS).</p>
+<p>R is open source and free to use for any purpose. This has clear advantages and a few disadvantages:</p>
+<p>Advantages</p>
+<ul>
+<li>Free!</li>
+<li>Portable (Windows, macOS, Linux)</li>
+<li><a href="https://shiny.rstudio.com/gallery/">Interactive visualization</a></li>
+<li><a href="https://quarto.org/docs/gallery/">Reproducible reports</a></li>
+<li>Active user base
+<ul>
+<li>Blogs, forums, StackOverflow, etc. provide many avenues of support</li>
+<li>Many new methods (e.g.&nbsp;<a href="https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html">lasso regression</a>, <a href="https://cran.r-project.org/web/packages/brms/vignettes/brms_phylogenetics.html">Bayesian multilevel modeling</a>, and <a href="https://tensorflow.rstudio.com/examples/">deep learning</a>) quickly appear as R libraries</li>
+</ul></li>
+</ul>
+<p>Disadvantages</p>
+<ul>
+<li>No commercial support
+<ul>
+<li>R is available free as is. If something doesn’t exist or doesn’t work the way you think it should you can wait for someone else to (hopefully) build it, or it’s up to you</li>
+<li>No commercial hotline for help</li>
+<li>Support and libraries from other users varies by popularity of method/area of study.</li>
+</ul></li>
+</ul>
+</section>
+<section id="learning-objectives-for-the-semester" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives-for-the-semester">Learning objectives for the semester</h2>
+<p>R is a big tent that supports a variety of programming styles and tasks, so we can’t possibly cover all of it. We will focus instruction on using R for analyzing data. If you are interested in software development in R, you can use the unstructured time for help with that. We’ll also provide links to some great online resources for software development in R.</p>
+<p>We are going to focus on the <a href="https://www.tidyverse.org/">Tidyverse</a> family of R packages for data analysis. The authors of the Tidyverse have also written a free ebook, <a href="https://r4ds.hadley.nz/">R for Data Science</a>. We will not follow this book exactly, but for each of our workshops we will announce the corresponding chapters from the book, so you can have an additional perspective and practice on what we are teaching.</p>
+<p>This workshop <strong>does not</strong> aim to give a comprehensive introduction to all aspects of R.</p>
+<!-- If you don't have any R experience, don't worry!  The Open Labs can provide support and a community to help you learn, **but** you may need to work outside the Open Labs to learn some of the basics.   -->
+<p>We also hope to empower you to become a self-sufficient R user, so we’ll be showing you examples of how to troubleshoot and debug R code. Those of us who have used R regularly for years still troubleshoot, refer to documentation, and google error codes all the time!</p>
+</section>
+<section id="learning-objectives-for-today" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives-for-today">Learning Objectives for Today</h2>
+<p>This introductory workshop aims to cover:</p>
+<ul>
+<li>Install R and R Studio if you haven’t already</li>
+<li>Briefly familiarize or re-familiarize you with some of the most important elements of R
+<ul>
+<li>RStudio interface</li>
+<li>Tidyverse library</li>
+<li>Graphics using ggplot2</li>
+<li>Data types</li>
+</ul></li>
+<li>Reproducible workflow
+<ul>
+<li>importing data</li>
+<li>scripts</li>
+<li>projects</li>
+<li>saving output</li>
+</ul></li>
+<li><a href="https://r4ds.hadley.nz/intro.html">R for Data Science Chapters 1,2,4,6</a></li>
+</ul>
+</section>
+<section id="setup-r-r-studio" class="level2">
+<h2 class="anchored" data-anchor-id="setup-r-r-studio">Setup: R, R Studio</h2>
+<section id="installation" class="level3">
+<h3 class="anchored" data-anchor-id="installation">Installation</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Mac Installation</th>
+<th>PC Installation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>Check your version number</strong> and make sure to download the correct version of R/RStudio. Download R from <a href="https://cran.r-project.org/bin/macosx/" class="uri">https://cran.r-project.org/bin/macosx/</a></p>
+<ul>
+<li>Choose the .pkg link</li>
+<li>Install with default values</li>
+</ul></td>
+<td><p>Download R from <a href="https://cran.r-project.org/bin/windows/base/" class="uri">https://cran.r-project.org/bin/windows/base/</a></p>
+<ul>
+<li>Install with default values</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Download R Studio at <a href="https://posit.co/download/rstudio-desktop/#download" class="uri">https://posit.co/download/rstudio-desktop/#download</a></p>
+<ul>
+<li>Install with default values</li>
+</ul></td>
+<td><p>Download R Studio at <a href="https://posit.co/download/rstudio-desktop/#download" class="uri">https://posit.co/download/rstudio-desktop/#download</a></p>
+<ul>
+<li>Install with default values</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Optional:</strong></p>
+<ul>
+<li><p>Install XQuartz: <a href="https://www.xquartz.org/" class="uri">https://www.xquartz.org/</a></p></li>
+<li><p>For macOS <strong>10.13 and higher</strong>, install:</p>
+<ul>
+<li><p>XCode: <a href="https://apps.apple.com/us/app/xcode/id497799835" class="uri">https://apps.apple.com/us/app/xcode/id497799835</a></p></li>
+<li><p>gfortran: <a href="https://github.com/fxcoudert/gfortran-for-macOS/releases" class="uri">https://github.com/fxcoudert/gfortran-for-macOS/releases</a></p></li>
+</ul></li>
+<li><p>For <strong>earlier versions</strong> of macOS:</p>
+<ul>
+<li>install **clang** and **gfortran** compatible with your version here: <a href="https://cran.r-project.org/bin/macosx/tools/" class="uri">https://cran.r-project.org/bin/macosx/tools/</a></li>
+</ul></li>
+</ul></td>
+<td><p><strong>Optional:</strong></p>
+<ul>
+<li>Install <a href="https://cran.r-project.org/bin/windows/Rtools/" class="uri">https://cran.r-project.org/bin/windows/Rtools/</a>
+<ul>
+<li>Make sure to choose the Rtools version that matches your R installation</li>
+<li>On the next page, click the link for the “Rtools&lt;xx&gt; installer” where &lt;xx&gt; is the appropriate version number.</li>
+</ul></li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="r-studio-orientation" class="level3">
+<h3 class="anchored" data-anchor-id="r-studio-orientation">R Studio orientation</h3>
+<p><img src="figures/rstudio.png" class="img-fluid"></p>
+<section id="panes" class="level4">
+<h4 class="anchored" data-anchor-id="panes">Panes</h4>
+<p>R Studio shows four panes by default. The two most important for writing, testing, and executing R code are the console and the script editor.</p>
+<section id="console-bottom-left" class="level5">
+<h5 class="anchored" data-anchor-id="console-bottom-left">Console (bottom left)</h5>
+<p><img src="figures/console.png" class="img-fluid"></p>
+<p>The console pane allows <strong>immediate execution</strong> of R code. This pane can be used to experiment with new functions and execute one-off commands, like printing sample data or exploratory plots.</p>
+<p>Type next to the <code>&gt;</code> symbol, then hit Enter to execute.</p>
+</section>
+<section id="script-editor-top-left" class="level5">
+<h5 class="anchored" data-anchor-id="script-editor-top-left">Script Editor (top left)</h5>
+<p><img src="figures/script.png" class="img-fluid"></p>
+<p>In contrast, code typed into the script editor pane <strong>does not automatically execute</strong>. The script editor provides a way to save the essential code for your analysis or project so it can be re-used or referred to for replication in the future. The editor also allows us to save, search, replace, etc. within an R ‘script.’ (This is much like the difference between using a Stata .do file and the main Stata window!)</p>
+<p>The script should contain every necessary step in a data analysis; you should aim to be able to open and run a script in a new R session without relying on anything you’ve only run in the console. In contrast, the console is a great place to test code or run one-off checks of the data.</p>
+<p>R Studio provides a few convenient ways to send code from the script editor to be executed in the console pane.</p>
+<ul>
+<li>The <strong>Run</strong> button at the top right of the script editor pane provides several options.</li>
+<li>One of the most useful is the <strong>CTRL+Enter</strong> (PC) or <strong>CMD+Enter</strong> (Mac) shortcut to execute whichever lines are currenly selected in the script editor
+<ul>
+<li>If no complete lines are selected, this will execute the line where the cursor is placed.</li>
+</ul></li>
+</ul>
+</section>
+<section id="other-panes" class="level5">
+<h5 class="anchored" data-anchor-id="other-panes">Other Panes</h5>
+<p><img src="figures/other.png" class="img-fluid"></p>
+<p>The other panes provided in R Studio are provided to make some coding tasks easier. Some users hide these windows as they are less essential to writing code. Some of the most useful panes are:</p>
+<ul>
+<li><p><strong>Environment</strong> (top): Lists all objects and datasets defined in your current R session.</p></li>
+<li><p><strong>Plots</strong> (bottom): Displays plots generated by R code.</p></li>
+<li><p><strong>Help</strong> (bottom): Displays html format help files for R packages and functions</p></li>
+<li><p><strong>Files</strong> (bottom): Lists files in the current working directory (more on this later!)</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="loading-the-tidyverse" class="level3">
+<h3 class="anchored" data-anchor-id="loading-the-tidyverse">Loading the tidyverse</h3>
+<p>First, we need to load the tidyverse package. (Note, the terms package and library are interchangeable). You can install the library using the install.packages command or through the Packages tab on the lower right pane. Once you have it installed, you can load this library with the following code:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidyverse", dependencies=TRUE)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.2.0     ✔ readr     2.1.6
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.2     ✔ tibble    3.3.1
+✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+✔ purrr     1.2.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<p>You only have to install a package once, but you’ll need to load it each time you start a new R session.</p>
+<p><strong>Note:</strong> <code>install.packages("tidyverse", dependencies=TRUE)</code> is a great candidate to run in the console window, since you only need to run it once and it won’t be needed again. <code>library(tidyverse)</code> has to be run before using the tidyverse package, so it is probably necessary in your script!</p>
+</section>
+</section>
+<section id="what-is-reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-reproducibility">What is reproducibility?</h2>
+<ol type="1">
+<li><p>Scientific reproducibility - if you repeat my experiment, you will get the same results as me. This is beyond the scope of this workshop (<a href="https://en.wikipedia.org/wiki/Replication_crisis">see here for an overview</a>)</p></li>
+<li><p>Computational reproducibility - if I give you my data and code, you will get the same results as me. We’ll focus on the basics of computational reproducibility today.</p></li>
+</ol>
+<section id="why-does-computational-reproducibility-matter" class="level3">
+<h3 class="anchored" data-anchor-id="why-does-computational-reproducibility-matter">Why does computational reproducibility matter?</h3>
+<ol type="1">
+<li><strong>Your most important collaborator is you six months from now.</strong></li>
+<li>We want Science (with a capital S) to be self-correcting. Since you’re human, you will make mistakes, so you want to make it as easy as possible for others to catch your errors (see <a href="https://theconversation.com/the-reinhart-rogoff-error-or-how-not-to-excel-at-economics-13646">the Reinhart and Rogoff Excel error</a> and <a href="https://www.cgdev.org/blog/mapping-worm-wars-what-public-should-take-away-scientific-debate-about-mass-deworming">the Guinea worm wars</a> for recent examples)</li>
+</ol>
+</section>
+<section id="your-script-is-real-your-environment-is-not" class="level3">
+<h3 class="anchored" data-anchor-id="your-script-is-real-your-environment-is-not">Your script is real, your environment is not</h3>
+<p>For your results to be reproducible, <strong>every</strong> step you take to manipulate the data should be explicitly documented in an R script.</p>
+<p>This also means that you want to make sure that your results don’t have hidden/implicit dependencies in <strong>your</strong> R environment. There are two steps you can to take to prevent this.</p>
+<ol type="1">
+<li>Reconfigure RStudio not to save your workspace between sessions. (Tools &gt; Global Options &gt; General) <img src="figures/rstudio-workspace.png" class="img-fluid"></li>
+</ol>
+<p>dio-workspace.png)</p>
+<ol start="2" type="1">
+<li>Restart RStudio from scratch and rerun the current script often.
+<ul>
+<li>Cmd/Ctrl + Shift + F10 to restart RStudio</li>
+<li>Cmd/Ctrl + Shift + S to rerun the current script</li>
+</ul></li>
+</ol>
+<p><strong>Note:</strong> If you have learned R in the past, you may have been taught to use the expression <code>rm(list = ls())</code> to clear your R environment. <a href="https://community.rstudio.com/t/first-line-of-every-r-script/799/12">This will not actually return R to a blank slate!</a> Although this code will delete objects in your R environment, it won’t reset global settings that have been changed. It is always safer and more effective to restart RStudio.</p>
+</section>
+</section>
+<section id="data-and-other-downloads" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-other-downloads">Data and other downloads</h2>
+<p><a href="data/listings.csv">Airbnb listings from Washington DC</a></p>
+</section>
+<section id="rstudio-projects" class="level2">
+<h2 class="anchored" data-anchor-id="rstudio-projects">1: RStudio Projects</h2>
+<p>You can use the R function <code>setwd()</code> to point to locations of data files, but this isn’t ideal for reproducible research. When you switch between computers, it is likely that the <strong>absolute</strong> directory path will change, so you will have to modify the path for each computer. Users of your code will not have the same absolute directory path that you have, so they will have to modify the path in the <code>setwd()</code> function before they can use your code.</p>
+<p>RStudio Projects provide a way to bundle together data, code, and other files together so that you can refer to files with <strong>relative</strong> directory paths, which creates a much more portable structure that won’t need to be modified between computers or users.</p>
+<section id="configuration" class="level3">
+<h3 class="anchored" data-anchor-id="configuration">Configuration</h3>
+<ol type="1">
+<li>File &gt; New Project &gt; New Directory &gt; New Project</li>
+<li>Create a new subdirectory called “data” inside this project to store the data.</li>
+<li>Copy the Airbnb data (listings.csv) into this data directory</li>
+<li>Create a new R Script for the data analysis in this project. (File &gt; New File &gt; R Script)</li>
+</ol>
+</section>
+</section>
+<section id="import-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="import-the-data">2: Import the data</h2>
+<p>We’ll begin by loading the tidyverse library. This library includes readr, which we will use to read in our data file (for more details on readr, see Chapter 11 of the text).</p>
+<p>RStudio has a useful keyboard shortcut for <strong>&lt;-</strong> (the assignment operator): <strong>Alt + -</strong>, i.e.&nbsp;press the Alt key and the minus/hyphen key at the same time.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Purpose: Exploratory data analysis of airbnb data</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Author: Nuvan Rathnayaka</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Date: September 2018</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup -----------------------------------------------------------</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Data Import ------------------------------------------------------</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>airbnb_dc <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/listings.csv"</span>) <span class="co">#Since I'm using an RStudio project, I only have to specify the path relative to the top directory</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 7788 Columns: 14
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (4): name, property_type, room_type, cancellation_policy
+dbl (10): id, accommodates, bathrooms, bedrooms, price, extra_people, minimu...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#If you have problems running the read_csv above, the following code should also work</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#(Download data directly from the internet)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#airbnb_dc &lt;- read_csv(url("https://unc-libraries-data.github.io/beginR/week2_Workflow/data/listings.csv"))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="reminder-comments" class="level3">
+<h3 class="anchored" data-anchor-id="reminder-comments">Reminder: Comments</h3>
+<p>In R, the # symbol indicates the beginning of a comment. Everything to the right of that is ignored by R, so you can write plain text to document what you’re doing, organize your code, and explain any tricky or unusual steps.</p>
+</section>
+<section id="coding-conventions" class="level3">
+<h3 class="anchored" data-anchor-id="coding-conventions">Coding conventions</h3>
+<p>Something that I’ve glossed over is that you have options for how to name objects. For example, we called our imported data <strong>airbnb_dc</strong>, but we could have called it <strong>airbnbListings</strong>, or <strong>airbnb.listings</strong></p>
+<p>Having a consistent way you name objects and functions helps you remember what things are called. It’s especially useful when you’re working with others to agree upon a coding convention. It doesn’t particularly matter which one you choose, as long as you choose a convention and <strong>stick to it</strong>.</p>
+<p>Example style guide: http://style.tidyverse.org/index.html</p>
+</section>
+<section id="what-is-airbnb_dc-library-read_csv" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-airbnb_dc-library-read_csv">What is airbnb_dc? <code>library()</code>? <code>read_csv()</code>?</h3>
+<p>Unlike other popular statistical software, R is an object oriented programming language, similar to other popular languages such as Java, Python, Ruby, or C++.</p>
+<p><code>airbnb_dc</code> is an <strong>object</strong>. Specifically, it’s a type of object called a <code>data frame</code>. It is designed to represent two-dimensional data, much like a spreadsheet. There are other kinds of R objects that are used to represent data, such as the <code>vector</code> that is used to represent one-dimensional columns of data, but the data frame is the one we’ll most often be using in the our analyses.</p>
+<p><a href="http://adv-r.had.co.nz/Data-structures.html">Read more about data structures here</a></p>
+<p><code>library()</code> and <code>read_csv</code>()` are <strong>functions</strong>. We’ll learn more about these as we go along, but for now, it may be useful to think of objects as nouns and functions as verbs.</p>
+</section>
+<section id="useful-data.frame-functions" class="level3">
+<h3 class="anchored" data-anchor-id="useful-data.frame-functions">Useful data.frame functions</h3>
+<p>The <code>dim()</code> function will print the dimensions (rows x columns) of your data frame.</p>
+<p><code>head()</code> will print the first few rows of your data frame. <code>glimpse()</code> transposes the data.frame for easier printing of similar output.</p>
+<p>(Note: <code>str()</code> is a general purpose function similar to <code>glimpse</code> that will display the structure of an object, often including extra information. This can be useful for debugging.)</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Some useful functions  ----------------------------------------</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(airbnb_dc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7788   14</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airbnb_dc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 14
+        id name    property_type room_type accommodates bathrooms bedrooms price
+     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+1  4873463 Cozy P… Apartment     Entire h…            3       1          0    95
+2 16736650 Large,… Apartment     Entire h…            2       1          0   200
+3 14999877 Newly … Apartment     Entire h…            2       1          1   100
+4  5955860 Spacio… Apartment     Entire h…            3       1          1   129
+5 15655208 Luxury… Townhouse     Entire h…            4       2.5        2   500
+6  4022565 Dupont… Apartment     Private …            2       2.5        1   110
+# ℹ 6 more variables: extra_people &lt;dbl&gt;, minimum_nights &lt;dbl&gt;,
+#   number_of_reviews &lt;dbl&gt;, review_scores_rating &lt;dbl&gt;,
+#   cancellation_policy &lt;chr&gt;, reviews_per_month &lt;dbl&gt;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(airbnb_dc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 7,788
+Columns: 14
+$ id                   &lt;dbl&gt; 4873463, 16736650, 14999877, 5955860, 15655208, 4…
+$ name                 &lt;chr&gt; "Cozy Pied-a-Terre, the Heart of DC", "Large, wel…
+$ property_type        &lt;chr&gt; "Apartment", "Apartment", "Apartment", "Apartment…
+$ room_type            &lt;chr&gt; "Entire home/apt", "Entire home/apt", "Entire hom…
+$ accommodates         &lt;dbl&gt; 3, 2, 2, 3, 4, 2, 3, 2, 4, 2, 4, 3, 2, 2, 2, 2, 2…
+$ bathrooms            &lt;dbl&gt; 1.0, 1.0, 1.0, 1.0, 2.5, 2.5, 1.0, 1.0, 1.0, 1.0,…
+$ bedrooms             &lt;dbl&gt; 0, 0, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 0, 0, 1, 0, 1…
+$ price                &lt;dbl&gt; 95, 200, 100, 129, 500, 110, 225, 79, 172, 110, 1…
+$ extra_people         &lt;dbl&gt; 10, 0, 0, 50, 0, 15, 20, 0, 0, 10, 0, 0, 0, 0, 20…
+$ minimum_nights       &lt;dbl&gt; 2, 1, 27, 2, 2, 6, 3, 3, 1, 1, 2, 1, 2, 3, 7, 2, …
+$ number_of_reviews    &lt;dbl&gt; 29, 2, 0, 79, 1, 7, 3, 4, 24, 4, 0, 0, 23, 3, 6, …
+$ review_scores_rating &lt;dbl&gt; 94, 90, NA, 85, 100, 97, 100, 89, 88, 100, NA, NA…
+$ cancellation_policy  &lt;chr&gt; "flexible", "flexible", "moderate", "flexible", "…
+$ reviews_per_month    &lt;dbl&gt; 1.01, 0.55, NA, 3.13, 1.00, 0.23, 0.82, 0.09, 0.4…</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="tables-for-categorical-data" class="level2">
+<h2 class="anchored" data-anchor-id="tables-for-categorical-data">4: Tables for categorical data</h2>
+<p>We can use the <code>table()</code> function to view counts/frequencies of categorical variables.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Categorical Variables  ----------------------------------------</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(airbnb_dc<span class="sc">$</span>property_type)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+         Apartment    Bed &amp; Breakfast               Boat     Boutique hotel 
+              4191                 73                  3                 11 
+          Bungalow              Cabin             Castle        Condominium 
+                 4                  1                  1                420 
+              Dorm        Guest suite         Guesthouse             Hostel 
+                25                 11                 17                  2 
+             House             In-law               Loft              Other 
+              2480                 12                 33                 31 
+Serviced apartment          Timeshare          Townhouse              Train 
+                 1                  1                468                  1 
+         Treehouse              Villa 
+                 1                  1 </code></pre>
+</div>
+</div>
+<p>As we saw in week 1, you can also next functions within each other. Here, let’s generate a contingency table using <code>table()</code>, then sort it by count using <code>sort()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">table</span>(airbnb_dc<span class="sc">$</span>property_type), <span class="at">decreasing=</span><span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+         Apartment              House          Townhouse        Condominium 
+              4191               2480                468                420 
+   Bed &amp; Breakfast               Loft              Other               Dorm 
+                73                 33                 31                 25 
+        Guesthouse             In-law     Boutique hotel        Guest suite 
+                17                 12                 11                 11 
+          Bungalow               Boat             Hostel              Cabin 
+                 4                  3                  2                  1 
+            Castle Serviced apartment          Timeshare              Train 
+                 1                  1                  1                  1 
+         Treehouse              Villa 
+                 1                  1 </code></pre>
+</div>
+</div>
+<p>That works, but it’s a little hard to read. We could try breaking this into two steps and storing our intermediate output.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>property_type_table <span class="ot">&lt;-</span> <span class="fu">table</span>(airbnb_dc<span class="sc">$</span>property_type)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(property_type_table, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+         Apartment              House          Townhouse        Condominium 
+              4191               2480                468                420 
+   Bed &amp; Breakfast               Loft              Other               Dorm 
+                73                 33                 31                 25 
+        Guesthouse             In-law     Boutique hotel        Guest suite 
+                17                 12                 11                 11 
+          Bungalow               Boat             Hostel              Cabin 
+                 4                  3                  2                  1 
+            Castle Serviced apartment          Timeshare              Train 
+                 1                  1                  1                  1 
+         Treehouse              Villa 
+                 1                  1 </code></pre>
+</div>
+</div>
+<p>This works ok, but it does mean we’re creating an additional object, <code>property_type_table</code>, and we could end up with lots of objects that are trivially different from each other if we do this too often. In the next lesson, we’ll introduce the pipe operator, which makes this kind of nested computation easier to read.</p>
+<p>Suppose we want to know whether a listings price is greater than 500. We can create a logical type vector as follows (output suppressed for space):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>airbnb_dc<span class="sc">$</span>price <span class="sc">&gt;</span> <span class="dv">500</span> <span class="co">#Note that since we're not assigning this vector to a variable, R displays it, but doesn't save it as an object in the environment.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You can see other logical operators <a href="https://www.statmethods.net/management/operators.html">here</a>.</p>
+<p>We can feed this logical vector into the <code>table()</code> function to get a count of how many listings have prices above $500.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(airbnb_dc<span class="sc">$</span>price <span class="sc">&gt;</span> <span class="dv">500</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+FALSE  TRUE 
+ 7029   759 </code></pre>
+</div>
+</div>
+<p>We can also use the table function to look at the joint counts of multiple categorical variables. For example, if we want to look at the how many properties have prices above $500 across different property types.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airbnb_dc, <span class="fu">table</span>(property_type, price <span class="sc">&gt;</span> <span class="dv">500</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    
+property_type        FALSE TRUE
+  Apartment           3884  307
+  Bed &amp; Breakfast       72    1
+  Boat                   3    0
+  Boutique hotel        11    0
+  Bungalow               4    0
+  Cabin                  1    0
+  Castle                 1    0
+  Condominium          356   64
+  Dorm                  25    0
+  Guest suite           11    0
+  Guesthouse            16    1
+  Hostel                 2    0
+  House               2150  330
+  In-law                12    0
+  Loft                  28    5
+  Other                 28    3
+  Serviced apartment     1    0
+  Timeshare              1    0
+  Townhouse            420   48
+  Train                  1    0
+  Treehouse              1    0
+  Villa                  1    0</code></pre>
+</div>
+</div>
+</section>
+<section id="exploring-continuous-data" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-continuous-data">5: Exploring continuous data</h2>
+<p>R has built-in functions to compute the mean, standard deviation, min, median, and max.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Continuous Variables  ----------------------------------------</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(airbnb_dc<span class="sc">$</span>price)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 247.1451</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(airbnb_dc<span class="sc">$</span>price)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 385.8856</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(airbnb_dc<span class="sc">$</span>price)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(airbnb_dc<span class="sc">$</span>price)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 125</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(airbnb_dc<span class="sc">$</span>price)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6000</code></pre>
+</div>
+</div>
+<p>R also has a built-in function to compute correlation coefficients. This let’s us explore the pairwise associations between continuous variables.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airbnb_dc, <span class="fu">cor</span>(price, number_of_reviews))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.1560021</code></pre>
+</div>
+</div>
+</section>
+<section id="missing-data" class="level2">
+<h2 class="anchored" data-anchor-id="missing-data">6: Missing data</h2>
+<p>There are some missing values in the review_scores_rating and reviews_per_month columns, even within the first six rows. We can check which values of review_scores_rating are NA with <code>is.na()</code></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Continuous Variables  ----------------------------------------</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(airbnb_dc<span class="sc">$</span>review_scores_rating)) <span class="co">#summing a logical (TRUE/FALSE) vector counts the number of TRUE values</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2207</code></pre>
+</div>
+</div>
+<p>We can check all of our columns using R’s <code>colSums</code> to sum all of the columns at the same time.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(airbnb_dc))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  id                 name        property_type 
+                   0                    5                    0 
+           room_type         accommodates            bathrooms 
+                   0                    0                   14 
+            bedrooms                price         extra_people 
+                  14                    0                    0 
+      minimum_nights    number_of_reviews review_scores_rating 
+                   0                    0                 2207 
+ cancellation_policy    reviews_per_month 
+                   0                 2128 </code></pre>
+</div>
+</div>
+<p>Handling missing data is an advanced topic that is a bit beyond the scope of this lesson. There is no good way to handle missing data, there are only bad and less bad ways.</p>
+<p>One of the bad ways to handle missing data is what’s known as a complete case analysis. In this kind of analysis, you only keep observations (rows) where you have observed (non-missing) values for ALL columns.</p>
+<p>R has built-in functions to facilitate this:</p>
+<ul>
+<li><p><code>complete.cases</code> returns a logical vector indicating whether or not an entire row of a dataset contains any missing values. You can also use this function on a subset of columns to determine if only those columns are complete</p></li>
+<li><p><code>na.omit</code> returns a new dataframe with only the complete cases (as identified above)</p></li>
+</ul>
+<p>For most R functions, the default is to return NA is any of the values are NA:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(airbnb_dc<span class="sc">$</span>review_scores_rating)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airbnb_dc, <span class="fu">cor</span>(review_scores_rating, reviews_per_month))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+</div>
+<p>Some functions, like the linear regression function <code>lm()</code>, perform a complete-case analysis automatically:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(review_scores_rating<span class="sc">~</span>price, <span class="at">data=</span>airbnb_dc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = review_scores_rating ~ price, data = airbnb_dc)
+
+Coefficients:
+(Intercept)        price  
+  94.230536     0.003191  </code></pre>
+</div>
+</div>
+<p>When a function complains about missing values and fails, there’s usually an argument that can be modified to change it to a complete-case analysis:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(airbnb_dc<span class="sc">$</span>review_scores_rating, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 94.72406</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(airbnb_dc, <span class="fu">cor</span>(review_scores_rating, reviews_per_month, <span class="at">use=</span><span class="st">"pairwise.complete.obs"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09933035</code></pre>
+</div>
+</div>
+</section>
+<section id="saving-output" class="level2">
+<h2 class="anchored" data-anchor-id="saving-output">7: Saving output</h2>
+<p>Suppose, we’ve done some computation, and we want to save our modified dataframe. We can use <code>write_csv()</code> to save our dataset as comma separated values file.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>airbnb_dc<span class="sc">$</span>price_gt_500 <span class="ot">&lt;-</span> (airbnb_dc<span class="sc">$</span>price <span class="sc">&gt;</span> <span class="dv">500</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(airbnb_dc, <span class="st">"data/modified_airbnb.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="ggplot-time-allowing" class="level2">
+<h2 class="anchored" data-anchor-id="ggplot-time-allowing">8: ggplot (time allowing)</h2>
+<p>Last week, we introduced ggplot2 for statistical graphics. This library implements the grammar of graphics, which provides a structured, modular way to think about plots. The three most commonly altered components are:</p>
+<ul>
+<li>aesthetics - the visual properties of objects on the plot, e.g x location, y location, color, size</li>
+<li>geom - the geometric object used to represent your data, e.g.&nbsp;point, line, histogram</li>
+<li>facets - let you create subplots for each level of a categorical variable</li>
+</ul>
+<p>Let’s look at a few examples. We can look at a histogram of review scores. Here, the only aesthetic we need to set is the x location, and then we can request a histogram.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(airbnb_dc, <span class="fu">aes</span>(<span class="at">x=</span>review_scores_rating)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2207 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction_files/figure-html/hist-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To get a smoothed histogram (aka kernel density estimate), all we have to do is change to geom_density:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(airbnb_dc, <span class="fu">aes</span>(<span class="at">x=</span>review_scores_rating)) <span class="sc">+</span> <span class="fu">geom_density</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2207 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction_files/figure-html/density-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If we want to look at the distribution of reviews across different room types, we could add a group aesthetic for the room_type variable:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(airbnb_dc, <span class="fu">aes</span>(<span class="at">x=</span>review_scores_rating, <span class="at">color=</span>room_type)) <span class="sc">+</span> <span class="fu">geom_density</span>() <span class="sc">+</span> <span class="fu">guides</span>(<span class="at">color=</span><span class="fu">guide_legend</span>(<span class="at">title=</span><span class="st">"Room Type"</span>)) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2207 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction_files/figure-html/density2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Since, there a lot of overlap, we could use facets to create a subplot for each room_type:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(airbnb_dc, <span class="fu">aes</span>(<span class="at">x=</span>review_scores_rating, <span class="at">color=</span>)) <span class="sc">+</span> <span class="fu">geom_density</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> room_type) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Review Score Rating"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2207 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction_files/figure-html/density3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So far, we’ve looked a single continuous variable (review_scores_rating) as it related to a categorical variables (room_type). If we want to look at how two continuous variables are related, we could create a scatterplot by specifiying x and y aesthetics and using geom_point()</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>airbnb_dc,<span class="fu">aes</span>(<span class="at">x=</span>number_of_reviews,<span class="at">y=</span>review_scores_rating))<span class="sc">+</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Review Scores Rating"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Number of Reviews"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2207 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction_files/figure-html/scatter-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Again, we can use facets to look at how this varies across room_type:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>airbnb_dc,<span class="fu">aes</span>(<span class="at">x=</span>number_of_reviews,<span class="at">y=</span>review_scores_rating))<span class="sc">+</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Review Scores Rating"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Number of Reviews"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> room_type)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2207 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction_files/figure-html/scatter2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>What are the different types of cancellation policies offered at Airbnb?</li>
+<li>What is the most common and least common cancellation policy?</li>
+<li>What percent of Airbnb property types are houses? Hint: To find what percent of X is Y, use this formula: Y/X * 100</li>
+<li>How many listings get a review rating below 50?</li>
+<li>Try generating a scatterplot of price against bedrooms. Now add an overlay of a loess line. Now try creating subplots for each of the property types.</li>
+<li>Try installing the visdat library, and explore different ways to visualize missing data.</li>
+</ol>
+</section>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<section id="beginners" class="level3">
+<h3 class="anchored" data-anchor-id="beginners">Beginners</h3>
+<p>Review today’s material by reading <a href="https://r4ds.hadley.nz/intro.html">R for Data Science Chapters 1,2,4,6</a>. Try the exercises in these chapters for additional practice.</p>
+<p>Next week, we’ll be covering the material in Chapter 3 if you’d like to look ahead!</p>
+</section>
+<section id="additional-resources-on-reproducibility" class="level3">
+<h3 class="anchored" data-anchor-id="additional-resources-on-reproducibility">Additional resources on reproducibility</h3>
+<p><a href="https://tidyverse.org/blog/2017/12/workflow-vs-script/">Why setwd() is bad practice</a></p>
+<p><a href="https://kbroman.org/steps2rr/">Concise guide to basic computational reproducibility</a></p>
+<p><a href="http://datacolada.org/69">Eight things you can do to make your open science more understandable</a></p>
+<p><a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510">A detailed guide to reproducible workflows in collaborative settings</a></p>
+</section>
+<section id="other-resources" class="level3">
+<h3 class="anchored" data-anchor-id="other-resources">Other Resources</h3>
+<p><strong>Quick References</strong></p>
+<p><a href="https://www.rstudio.com/resources/cheatsheets/">Tidyverse Cheatsheets</a></p>
+<p><strong>Useful R Packages:</strong></p>
+<p><a href="https://cran.r-project.org/web/views/">CRAN Task Views</a></p>
+<p><a href="https://support.rstudio.com/hc/en-us/articles/201057987-Quick-list-of-useful-R-packages">Quick list of useful packages</a></p>
+<p><strong>Advanced R Books:</strong></p>
+<p><a href="http://had.co.nz/ggplot2/">ggplot2</a></p>
+<p><a href="http://adv-r.had.co.nz/">Advanced R</a></p>
+<p><a href="http://r-pkgs.had.co.nz/">R packages</a></p>
+<p><a href="https://csgillespie.github.io/efficientR/">Efficient R</a></p>
+<p><strong>Statistical Modeling Textbooks:</strong></p>
+<p><a href="https://www.statlearning.com/">An Introduction to Statistical Learning</a></p>
+<p><a href="https://www.springer.com/us/book/9783319194240">Regression Modeling Strategies</a></p>
+<p><a href="https://xcelab.net/rm/statistical-rethinking/">Statistical Rethinking</a></p>
+<p><strong>Misc:</strong></p>
+<p><a href="https://github.com/ujjwalkarn/DataScienceR" class="uri">https://github.com/ujjwalkarn/DataScienceR</a></p>
+</section>
+</section>
+<section id="feedback" class="level2">
+<h2 class="anchored" data-anchor-id="feedback">Feedback</h2>
+<p>You’ll receive an automated email with feedback information after the workshop!</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
