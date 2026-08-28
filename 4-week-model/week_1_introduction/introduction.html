@@ -89,6 +89,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#setup-r-r-studio" id="toc-setup-r-r-studio" class="nav-link" data-scroll-target="#setup-r-r-studio">Setup: R, R Studio</a>
   <ul class="collapse">
   <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
+  <li><a href="#r-studio-vs.-positron" id="toc-r-studio-vs.-positron" class="nav-link" data-scroll-target="#r-studio-vs.-positron">R Studio vs.&nbsp;Positron</a></li>
   <li><a href="#r-studio-orientation" id="toc-r-studio-orientation" class="nav-link" data-scroll-target="#r-studio-orientation">R Studio orientation</a></li>
   <li><a href="#loading-the-tidyverse" id="toc-loading-the-tidyverse" class="nav-link" data-scroll-target="#loading-the-tidyverse">Loading the tidyverse</a></li>
   </ul></li>
@@ -278,6 +279,10 @@ table th {text-align:center !important; font-size:15px; }
 </tbody>
 </table>
 </section>
+<section id="r-studio-vs.-positron" class="level3">
+<h3 class="anchored" data-anchor-id="r-studio-vs.-positron">R Studio vs.&nbsp;Positron</h3>
+<p>Posit, the company that makes R Studio, has <a href="https://positron.posit.co/migrate-rstudio-compare.html">created another integrated development environment (IDE) called Positron</a>. Positron is built on VS Code, so if you have software development experience with VS Code, Positron may provide a more familiar user experience. If you have never used VS Code, have no fear! For these workshops, we are focusing on R Studio.</p>
+</section>
 <section id="r-studio-orientation" class="level3">
 <h3 class="anchored" data-anchor-id="r-studio-orientation">R Studio orientation</h3>
 <p><img src="figures/rstudio.png" class="img-fluid"></p>
@@ -425,7 +430,9 @@ dbl (10): id, accommodates, bathrooms, bedrooms, price, extra_people, minimu...
 <h3 class="anchored" data-anchor-id="headers-and-code-folding">Headers and code folding</h3>
 <p>As you start developing more complicated analyses, a single R script can get rather long. Breaking up the code into sections using comments makes it easier to read and navigate. If you create a line of code formatted like this:</p>
 <p><code># section name ----</code></p>
-<p>The RStudio interface recognizes that as a code chunk and lets you hide/unhide that section.</p>
+<p>The RStudio interface recognizes that as a code chunk and lets you hide/unhide that section. You can nest these code chunks by adding additional <code>#</code> signs like this:</p>
+<p><code># section name ----</code></p>
+<p><code>## subsection name ----</code></p>
 </section>
 <section id="coding-conventions" class="level3">
 <h3 class="anchored" data-anchor-id="coding-conventions">Coding conventions</h3>
@@ -661,7 +668,6 @@ Coefficients:
 <li>What is the most common and least common cancellation policy?</li>
 <li>What percent of Airbnb property types are houses? Hint: To find what percent of X is Y, use this formula: Y/X * 100</li>
 <li>How many listings get a review rating below 50?</li>
-<li>Try generating a scatterplot of price against bedrooms. Now add an overlay of a loess line. Now try creating subplots for each of the property types.</li>
 <li>Try installing the visdat library, and explore different ways to visualize missing data.</li>
 </ol>
 </section>

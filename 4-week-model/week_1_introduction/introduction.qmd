@@ -107,6 +107,10 @@ This introductory workshop aims to cover:
 |     -   install \*\*clang\*\* and \*\*gfortran\*\* compatible with your version here: <https://cran.r-project.org/bin/macosx/tools/>               |                                                                                                                           |
 +----------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------+
 
+### R Studio vs. Positron
+
+Posit, the company that makes R Studio, has [created another integrated development environment (IDE) called Positron](https://positron.posit.co/migrate-rstudio-compare.html). Positron is built on VS Code, so if you have software development experience with VS Code, Positron may provide a more familiar user experience. If you have never used VS Code, have no fear! For these workshops, we are focusing on R Studio.
+
 ### R Studio orientation
 
 ![](figures/rstudio.png)
@@ -247,7 +251,11 @@ If you create a line of code formatted like this:
 
 `# section name ----`
 
-The RStudio interface recognizes that as a code chunk and lets you hide/unhide that section.
+The RStudio interface recognizes that as a code chunk and lets you hide/unhide that section. You can nest these code chunks by adding additional `#` signs like this:
+
+`# section name ----`
+
+`## subsection name ----`
 
 ### Coding conventions
 
@@ -393,8 +401,7 @@ write_csv(airbnb_dc, "data/modified_airbnb.csv")
 2. What is the most common and least common cancellation policy?
 3. What percent of Airbnb property types are houses? Hint: To find what percent of X is Y, use this formula: Y/X * 100
 4. How many listings get a review rating below 50?
-5. Try generating a scatterplot of price against bedrooms. Now add an overlay of a loess line. Now try creating subplots for each of the property types.
-6. Try installing the visdat library, and explore different ways to visualize missing data.
+5. Try installing the visdat library, and explore different ways to visualize missing data.
 
 ## Resources
 
