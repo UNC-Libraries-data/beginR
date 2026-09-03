@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -67,10 +67,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="introduction_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="introduction_files/libs/quarto-html/anchor.min.js"></script>
 <link href="introduction_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="introduction_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="introduction_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="introduction_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="introduction_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="introduction_files/libs/bootstrap/bootstrap-3d0e9a627679db782712830cff2cbe70.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="introduction_files/libs/bootstrap/bootstrap-e261b86ae15e22bf333780d8a72f25c9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -98,31 +98,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#why-does-computational-reproducibility-matter" id="toc-why-does-computational-reproducibility-matter" class="nav-link" data-scroll-target="#why-does-computational-reproducibility-matter">Why does computational reproducibility matter?</a></li>
   <li><a href="#your-script-is-real-your-environment-is-not" id="toc-your-script-is-real-your-environment-is-not" class="nav-link" data-scroll-target="#your-script-is-real-your-environment-is-not">Your script is real, your environment is not</a></li>
   </ul></li>
+  <li><a href="#rstudio-projects" id="toc-rstudio-projects" class="nav-link" data-scroll-target="#rstudio-projects">RStudio Projects</a></li>
+  <li><a href="#setup-and-data-import" id="toc-setup-and-data-import" class="nav-link" data-scroll-target="#setup-and-data-import">Setup and Data Import</a>
+  <ul class="collapse">
   <li><a href="#data-and-other-downloads" id="toc-data-and-other-downloads" class="nav-link" data-scroll-target="#data-and-other-downloads">Data and other downloads</a></li>
-  <li><a href="#rstudio-projects" id="toc-rstudio-projects" class="nav-link" data-scroll-target="#rstudio-projects">1: RStudio Projects</a>
-  <ul class="collapse">
   <li><a href="#configuration" id="toc-configuration" class="nav-link" data-scroll-target="#configuration">Configuration</a></li>
-  </ul></li>
-  <li><a href="#import-the-data" id="toc-import-the-data" class="nav-link" data-scroll-target="#import-the-data">2: Import the data</a>
-  <ul class="collapse">
-  <li><a href="#comments" id="toc-comments" class="nav-link" data-scroll-target="#comments">Comments</a></li>
-  <li><a href="#headers-and-code-folding" id="toc-headers-and-code-folding" class="nav-link" data-scroll-target="#headers-and-code-folding">Headers and code folding</a></li>
+  <li><a href="#import-the-data" id="toc-import-the-data" class="nav-link" data-scroll-target="#import-the-data">Import the data</a></li>
   <li><a href="#coding-conventions" id="toc-coding-conventions" class="nav-link" data-scroll-target="#coding-conventions">Coding conventions</a></li>
+  </ul></li>
+  <li><a href="#basic-data-exploration" id="toc-basic-data-exploration" class="nav-link" data-scroll-target="#basic-data-exploration">Basic Data Exploration</a>
+  <ul class="collapse">
   <li><a href="#what-is-airbnb_dc-library-read_csv" id="toc-what-is-airbnb_dc-library-read_csv" class="nav-link" data-scroll-target="#what-is-airbnb_dc-library-read_csv">What is airbnb_dc? <code>library()</code>? <code>read_csv()</code>?</a></li>
   <li><a href="#useful-data-frame-functions" id="toc-useful-data-frame-functions" class="nav-link" data-scroll-target="#useful-data-frame-functions">Useful data frame functions</a></li>
-  </ul></li>
-  <li><a href="#analyze-the-data" id="toc-analyze-the-data" class="nav-link" data-scroll-target="#analyze-the-data">3: Analyze the data</a>
-  <ul class="collapse">
-  <li><a href="#exploring-categorical-data" id="toc-exploring-categorical-data" class="nav-link" data-scroll-target="#exploring-categorical-data">Exploring categorical data</a></li>
-  <li><a href="#exploring-continuous-data" id="toc-exploring-continuous-data" class="nav-link" data-scroll-target="#exploring-continuous-data">Exploring continuous data</a></li>
+  <li><a href="#asking-questions-of-your-data" id="toc-asking-questions-of-your-data" class="nav-link" data-scroll-target="#asking-questions-of-your-data">Asking questions of your data</a></li>
   <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data">Missing data</a></li>
   </ul></li>
-  <li><a href="#saving-output" id="toc-saving-output" class="nav-link" data-scroll-target="#saving-output">7: Saving output</a></li>
+  <li><a href="#saving-datasets" id="toc-saving-datasets" class="nav-link" data-scroll-target="#saving-datasets">Saving datasets</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a>
   <ul class="collapse">
   <li><a href="#beginners" id="toc-beginners" class="nav-link" data-scroll-target="#beginners">Beginners</a></li>
-  <li><a href="#additional-resources-on-reproducibility" id="toc-additional-resources-on-reproducibility" class="nav-link" data-scroll-target="#additional-resources-on-reproducibility">Additional resources on reproducibility</a></li>
+  <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link" data-scroll-target="#reproducibility">Reproducibility</a></li>
   <li><a href="#other-resources" id="toc-other-resources" class="nav-link" data-scroll-target="#other-resources">Other Resources</a></li>
   </ul></li>
   <li><a href="#feedback" id="toc-feedback" class="nav-link" data-scroll-target="#feedback">Feedback</a></li>
@@ -330,11 +326,11 @@ table th {text-align:center !important; font-size:15px; }
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.0     ✔ readr     2.1.6
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.2     ✔ tibble    3.3.1
-✔ lubridate 1.9.5     ✔ tidyr     1.3.2
-✔ purrr     1.2.1     
+✔ dplyr     1.2.0     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   4.0.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.4     
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
@@ -376,14 +372,17 @@ table th {text-align:center !important; font-size:15px; }
 <p><strong>Note:</strong> If you have learned R in the past, you may have been taught to use the expression <code>rm(list = ls())</code> to clear your R environment. <a href="https://community.rstudio.com/t/first-line-of-every-r-script/799/12">This will not actually return R to a blank slate!</a> Although this code will delete objects in your R environment, it won’t reset global settings that have been changed. It is always safer and more effective to restart RStudio.</p>
 </section>
 </section>
-<section id="data-and-other-downloads" class="level2">
-<h2 class="anchored" data-anchor-id="data-and-other-downloads">Data and other downloads</h2>
-<p><a href="data/listings.csv">Airbnb listings from Washington DC</a></p>
-</section>
 <section id="rstudio-projects" class="level2">
-<h2 class="anchored" data-anchor-id="rstudio-projects">1: RStudio Projects</h2>
+<h2 class="anchored" data-anchor-id="rstudio-projects">RStudio Projects</h2>
 <p>You can use the R function <code>setwd()</code> to point to locations of data files, but this isn’t ideal for reproducible research. When you switch between computers, it is likely that the <strong>absolute</strong> directory path will change, so you will have to modify the path for each computer. Users of your code will not have the same absolute directory path that you have, so they will have to modify the path in the <code>setwd()</code> function before they can use your code.</p>
 <p>RStudio Projects provide a way to bundle together data, code, and other files together so that you can refer to files with <strong>relative</strong> directory paths, which creates a much more portable structure that won’t need to be modified between computers or users.</p>
+</section>
+<section id="setup-and-data-import" class="level2">
+<h2 class="anchored" data-anchor-id="setup-and-data-import">Setup and Data Import</h2>
+<section id="data-and-other-downloads" class="level3">
+<h3 class="anchored" data-anchor-id="data-and-other-downloads">Data and other downloads</h3>
+<p><a href="data/listings.csv">Airbnb listings from Washington DC</a></p>
+</section>
 <section id="configuration" class="level3">
 <h3 class="anchored" data-anchor-id="configuration">Configuration</h3>
 <ol type="1">
@@ -393,9 +392,8 @@ table th {text-align:center !important; font-size:15px; }
 <li>Create a new R Script for the data analysis in this project. (File &gt; New File &gt; R Script)</li>
 </ol>
 </section>
-</section>
-<section id="import-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="import-the-data">2: Import the data</h2>
+<section id="import-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="import-the-data">Import the data</h3>
 <p>We’ll begin by loading the tidyverse library. This library includes readr, which we will use to read in our data file (for more details on readr, see Chapter 11 of the text).</p>
 <p>RStudio has a useful keyboard shortcut for <strong>&lt;-</strong> (the assignment operator): <strong>Alt + -</strong>, i.e.&nbsp;press the Alt key and the minus/hyphen key at the same time.</p>
 <div class="cell">
@@ -422,17 +420,18 @@ dbl (10): id, accommodates, bathrooms, bedrooms, price, extra_people, minimu...
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#(Download data directly from the internet)</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#airbnb_dc &lt;- read_csv(url("https://unc-libraries-data.github.io/beginR/week2_Workflow/data/listings.csv"))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="comments" class="level3">
-<h3 class="anchored" data-anchor-id="comments">Comments</h3>
+<section id="comments" class="level4">
+<h4 class="anchored" data-anchor-id="comments">Comments</h4>
 <p>In R, the # symbol indicates the beginning of a comment. Everything to the right of that is ignored by R, so you can write plain text to document what you’re doing, organize your code, and explain any tricky or unusual steps.</p>
 </section>
-<section id="headers-and-code-folding" class="level3">
-<h3 class="anchored" data-anchor-id="headers-and-code-folding">Headers and code folding</h3>
+<section id="headers-and-code-folding" class="level4">
+<h4 class="anchored" data-anchor-id="headers-and-code-folding">Headers and code folding</h4>
 <p>As you start developing more complicated analyses, a single R script can get rather long. Breaking up the code into sections using comments makes it easier to read and navigate. If you create a line of code formatted like this:</p>
 <p><code># section name ----</code></p>
 <p>The RStudio interface recognizes that as a code chunk and lets you hide/unhide that section. You can nest these code chunks by adding additional <code>#</code> signs like this:</p>
 <p><code># section name ----</code></p>
 <p><code>## subsection name ----</code></p>
+</section>
 </section>
 <section id="coding-conventions" class="level3">
 <h3 class="anchored" data-anchor-id="coding-conventions">Coding conventions</h3>
@@ -440,6 +439,9 @@ dbl (10): id, accommodates, bathrooms, bedrooms, price, extra_people, minimu...
 <p>Having a consistent way you name objects and functions helps you remember what things are called. It’s especially useful when you’re working with others to agree upon a coding convention. It doesn’t particularly matter which one you choose, as long as you choose a convention and <strong>stick to it</strong>.</p>
 <p>Example style guide: http://style.tidyverse.org/index.html</p>
 </section>
+</section>
+<section id="basic-data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="basic-data-exploration">Basic Data Exploration</h2>
 <section id="what-is-airbnb_dc-library-read_csv" class="level3">
 <h3 class="anchored" data-anchor-id="what-is-airbnb_dc-library-read_csv">What is airbnb_dc? <code>library()</code>? <code>read_csv()</code>?</h3>
 <p>Unlike other popular statistical software, R is an object oriented programming language, similar to other popular languages such as Java, Python, Ruby, or C++.</p>
@@ -494,12 +496,11 @@ $ reviews_per_month    &lt;dbl&gt; 1.01, 0.55, NA, 3.13, 1.00, 0.23, 0.82, 0.09,
 </div>
 </div>
 </section>
-</section>
-<section id="analyze-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="analyze-the-data">3: Analyze the data</h2>
+<section id="asking-questions-of-your-data" class="level3">
+<h3 class="anchored" data-anchor-id="asking-questions-of-your-data">Asking questions of your data</h3>
 <p>In the next few weeks we will provide more detailed instruction on the tidyverse tools for analyzing data. Here are a few examples of the kinds of things you can do.</p>
-<section id="exploring-categorical-data" class="level3">
-<h3 class="anchored" data-anchor-id="exploring-categorical-data">Exploring categorical data</h3>
+<section id="exploring-categorical-data" class="level4">
+<h4 class="anchored" data-anchor-id="exploring-categorical-data">Exploring categorical data</h4>
 <p>We can use the <code>table()</code> function to view counts/frequencies of categorical variables.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Categorical Variables  ----------------------------------------</span></span>
@@ -561,8 +562,8 @@ Serviced apartment          Timeshare          Townhouse              Train
 </div>
 <p>This works ok, but it does mean we’re creating an additional object, <code>property_type_table</code>, and we could end up with lots of objects that are trivially different from each other if we do this too often. In the next lesson, we’ll introduce the pipe operator, which makes this kind of nested computation easier to read.</p>
 </section>
-<section id="exploring-continuous-data" class="level3">
-<h3 class="anchored" data-anchor-id="exploring-continuous-data">Exploring continuous data</h3>
+<section id="exploring-continuous-data" class="level4">
+<h4 class="anchored" data-anchor-id="exploring-continuous-data">Exploring continuous data</h4>
 <p>R has built-in functions to compute the mean, standard deviation, min, median, and max.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Continuous Variables  ----------------------------------------</span></span>
@@ -588,6 +589,7 @@ Serviced apartment          Timeshare          Townhouse              Train
 <pre><code>[1] 6000</code></pre>
 </div>
 </div>
+</section>
 </section>
 <section id="missing-data" class="level3">
 <h3 class="anchored" data-anchor-id="missing-data">Missing data</h3>
@@ -653,8 +655,8 @@ Coefficients:
 </div>
 </section>
 </section>
-<section id="saving-output" class="level2">
-<h2 class="anchored" data-anchor-id="saving-output">7: Saving output</h2>
+<section id="saving-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="saving-datasets">Saving datasets</h2>
 <p>Suppose, we’ve done some computation, and we want to save our modified dataframe. We can use <code>write_csv()</code> to save our dataset as comma separated values file.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>airbnb_dc<span class="sc">$</span>price_gt_500 <span class="ot">&lt;-</span> (airbnb_dc<span class="sc">$</span>price <span class="sc">&gt;</span> <span class="dv">500</span>)</span>
@@ -670,6 +672,7 @@ Coefficients:
 <li>How many listings get a review rating below 50?</li>
 <li>Try installing the visdat library, and explore different ways to visualize missing data.</li>
 </ol>
+<p><a href="https://unc-libraries-data.github.io/beginR/Exercise_Solutions/solutions_week2_workflows.html"><em>Possible</em> exercise solutions here.</a></p>
 </section>
 <section id="resources" class="level2">
 <h2 class="anchored" data-anchor-id="resources">Resources</h2>
@@ -678,8 +681,8 @@ Coefficients:
 <p>Review today’s material by reading <a href="https://r4ds.hadley.nz/intro.html">R for Data Science Chapters 1,2,4,6</a>. Try the exercises in these chapters for additional practice.</p>
 <p>Next week, we’ll be covering the material in Chapter 3 if you’d like to look ahead!</p>
 </section>
-<section id="additional-resources-on-reproducibility" class="level3">
-<h3 class="anchored" data-anchor-id="additional-resources-on-reproducibility">Additional resources on reproducibility</h3>
+<section id="reproducibility" class="level3">
+<h3 class="anchored" data-anchor-id="reproducibility">Reproducibility</h3>
 <p><a href="https://tidyverse.org/blog/2017/12/workflow-vs-script/">Why setwd() is bad practice</a></p>
 <p><a href="https://kbroman.org/steps2rr/">Concise guide to basic computational reproducibility</a></p>
 <p><a href="http://datacolada.org/69">Eight things you can do to make your open science more understandable</a></p>
@@ -701,8 +704,6 @@ Coefficients:
 <p><a href="https://www.statlearning.com/">An Introduction to Statistical Learning</a></p>
 <p><a href="https://www.springer.com/us/book/9783319194240">Regression Modeling Strategies</a></p>
 <p><a href="https://xcelab.net/rm/statistical-rethinking/">Statistical Rethinking</a></p>
-<p><strong>Misc:</strong></p>
-<p><a href="https://github.com/ujjwalkarn/DataScienceR" class="uri">https://github.com/ujjwalkarn/DataScienceR</a></p>
 </section>
 </section>
 <section id="feedback" class="level2">
