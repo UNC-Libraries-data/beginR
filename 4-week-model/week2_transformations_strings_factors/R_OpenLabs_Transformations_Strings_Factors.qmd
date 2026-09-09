@@ -1,5 +1,5 @@
 ---
-title: "beginR: Data Transformations"
+title: "beginR: Data Transformations, Strings, and Factors"
 author: 
   name: University of North Carolina at Chapel Hill
 execute: 
