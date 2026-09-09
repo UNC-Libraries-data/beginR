@@ -25,34 +25,19 @@ If you'd like a refresher on R, we suggest the [R For Data Science](https://r4ds
 
 As a refresher, in R we install packages from CRAN (The Comprehensive R Archive Network) with the following code:
 
-`install.packages(c('tidyverse','scales'))`
+`install.packages(c('tidyverse','scales','sf','tidycensus','tigris','arcgislayers','ggmap','ggspatial','basemaps','tmap'))`
+
+*These may take a few minutes to install.*
 
 You'll only need to install packages once, then you'll load them into your session with:
 
 ```{r}
 #| message: false
 #| warning: false
+
+#Non-spatial processing
 library(tidyverse)
-library(scales)
-```
 
-We'll use the `tidyverse` family of packages to do non-spatial data manipulation today. We'll use `scales` to adjust the formatting for some of our maps.
-
-#### A note on pipes:
-
-Today we'll use the base R pipe (`|>`) as our default. You may be more familiar with the `magrittr` pipe (`%>%`). The two work very similarly and should usually be interchangeable. If you'd like to use the base R pipe with R Studio's pipe shortcut (CTRL/CMD + SHIFT + m), you can change the default setting in **Tools \> Global Options \> Code \> Use native pipe operator, \|\> (requires R 4.1+)**.
-
-### Spatial packages
-
-For spatial processing we'll use the following packages today:
-
-```         
-install.packages(c('sf','tidycensus','tigris','arcgislayers','ggmap','ggspatial','basemaps'))
-```
-
-```{r}
-#| message: false
-#| warning: false
 #Spatial processing
 library(sf)
 
@@ -61,11 +46,20 @@ library(tidycensus)
 library(tigris)
 library(arcgislayers)
 
-#Thematic mapping
+#Thematic mapping and formatting
 library(ggmap)
 library(ggspatial)
 library(basemaps)
+library(scales)
+library(tmap)
 ```
+
+
+#### A note on pipes:
+
+Today we'll use the base R pipe (`|>`) as our default. You may be more familiar with the `magrittr` pipe (`%>%`). The two work very similarly and should usually be interchangeable. If you'd like to use the base R pipe with R Studio's pipe shortcut (CTRL/CMD + SHIFT + m), you can change the default setting in **Tools \> Global Options \> Code \> Use native pipe operator, \|\> (requires R 4.1+)**.
+
+### Spatial packages
 
 The `sf` packages will be our main spatial processing tool for today.
 
@@ -471,10 +465,11 @@ In practice, these types of calculations may also feed into tables, graphs and o
 
 [`tmap`](https://r-tmap.github.io/tmap/) is another popular package for making thematic maps.
 
+`tmap` objects include pop ups to display the data associated with the plotted shapes or points.  We can disable these with `popup=FALSE` as below.
+
 ```{r}
 #| fig-width: 12
 #| fig-height: 5
-library(tmap)
 tm_basemap("CartoDB.Positron")+
   tm_shape(nc_csas)+
   tm_polygons(fill="NAME", fill_alpha = 0.5,
@@ -482,14 +477,14 @@ tm_basemap("CartoDB.Positron")+
                 position = tm_pos_out("right", "center", pos.h = "center")
               ))+
   tm_shape(housing)+
-  tm_dots()+
+  tm_dots(popup=FALSE)+
   tm_compass()+
   tm_scalebar()+
   tm_layout(frame = FALSE, 
             inner.margins = c(0.1,0.1,0,0)) #add space inside the plot
 ```
 
-By adding `tmap_mode("view")` before our code, we can make an interactive map.
+By adding `tmap_mode("view")` before our code, we can make an interactive map.  Let's also use some of our `tidyverse` tools to subset our `housing` dataframe so we can leave the pop ups on.
 
 ```{r}
 #| fig-width: 12
@@ -502,7 +497,7 @@ tm_basemap("CartoDB.Positron")+
                 position = tm_pos_out("right", "center", pos.h = "center")
               ))+
   tm_legend_hide()+
-  tm_shape(housing)+
+  tm_shape(select(housing,PROJECT_NAME,TOTAL_UNITS,TOTAL_OCCUPIED,PCT_OCCUPIED))+
   tm_dots()+
   tm_compass()+
   tm_scalebar()+
