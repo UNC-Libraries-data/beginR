@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="University of North Carolina at Chapel Hill">
+
+<title>beginR: Data Transformations</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="R_OpenLabs_Transformations_Strings_Factors_files/libs/clipboard/clipboard.min.js"></script>
+<script src="R_OpenLabs_Transformations_Strings_Factors_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="R_OpenLabs_Transformations_Strings_Factors_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="R_OpenLabs_Transformations_Strings_Factors_files/libs/quarto-html/popper.min.js"></script>
+<script src="R_OpenLabs_Transformations_Strings_Factors_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="R_OpenLabs_Transformations_Strings_Factors_files/libs/quarto-html/anchor.min.js"></script>
+<link href="R_OpenLabs_Transformations_Strings_Factors_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="R_OpenLabs_Transformations_Strings_Factors_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="R_OpenLabs_Transformations_Strings_Factors_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="R_OpenLabs_Transformations_Strings_Factors_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="R_OpenLabs_Transformations_Strings_Factors_files/libs/bootstrap/bootstrap-df715b4811ca13bc07639e5bce24b6cd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#data-and-other-downloads" id="toc-data-and-other-downloads" class="nav-link active" data-scroll-target="#data-and-other-downloads">Data and other downloads</a></li>
+  <li><a href="#today" id="toc-today" class="nav-link" data-scroll-target="#today">Today</a>
+  <ul class="collapse">
+  <li><a href="#start-a-new-project-in-r" id="toc-start-a-new-project-in-r" class="nav-link" data-scroll-target="#start-a-new-project-in-r">Start a New Project in R</a></li>
+  <li><a href="#loading-the-tidyverse" id="toc-loading-the-tidyverse" class="nav-link" data-scroll-target="#loading-the-tidyverse">Loading the tidyverse</a></li>
+  </ul></li>
+  <li><a href="#importing-data" id="toc-importing-data" class="nav-link" data-scroll-target="#importing-data">Importing Data</a></li>
+  <li><a href="#filtering" id="toc-filtering" class="nav-link" data-scroll-target="#filtering">Filtering</a></li>
+  <li><a href="#relational-and-assignment-operators" id="toc-relational-and-assignment-operators" class="nav-link" data-scroll-target="#relational-and-assignment-operators">Relational and Assignment Operators</a></li>
+  <li><a href="#reordering-data-arrange" id="toc-reordering-data-arrange" class="nav-link" data-scroll-target="#reordering-data-arrange">Reordering Data (arrange)</a></li>
+  <li><a href="#selecting-data-select" id="toc-selecting-data-select" class="nav-link" data-scroll-target="#selecting-data-select">Selecting Data (select)</a></li>
+  <li><a href="#renaming-columns" id="toc-renaming-columns" class="nav-link" data-scroll-target="#renaming-columns">Renaming Columns</a></li>
+  <li><a href="#adding-new-variables" id="toc-adding-new-variables" class="nav-link" data-scroll-target="#adding-new-variables">Adding New Variables</a></li>
+  <li><a href="#summarising-data" id="toc-summarising-data" class="nav-link" data-scroll-target="#summarising-data">Summarising Data</a></li>
+  <li><a href="#piping" id="toc-piping" class="nav-link" data-scroll-target="#piping">Piping</a>
+  <ul class="collapse">
+  <li><a href="#strings-and-factors" id="toc-strings-and-factors" class="nav-link" data-scroll-target="#strings-and-factors">Strings and Factors</a></li>
+  </ul></li>
+  <li><a href="#getting-started-with-strings" id="toc-getting-started-with-strings" class="nav-link" data-scroll-target="#getting-started-with-strings">Getting Started With Strings</a></li>
+  <li><a href="#combining-and-subsetting-strings" id="toc-combining-and-subsetting-strings" class="nav-link" data-scroll-target="#combining-and-subsetting-strings">Combining and Subsetting Strings</a></li>
+  <li><a href="#regular-expressions" id="toc-regular-expressions" class="nav-link" data-scroll-target="#regular-expressions">Regular Expressions</a></li>
+  <li><a href="#creating-factors" id="toc-creating-factors" class="nav-link" data-scroll-target="#creating-factors">Creating Factors</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">beginR: Data Transformations</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>University of North Carolina at Chapel Hill </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="data-and-other-downloads" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-other-downloads">Data and other downloads</h2>
+<p><a href="data/5k_wine_reviews.csv">Five Thousand Wine Reviews</a></p>
+</section>
+<section id="today" class="level2">
+<h2 class="anchored" data-anchor-id="today">Today</h2>
+<p>This workshop aims to cover:</p>
+<ul>
+<li>Starting a New Project
+<ul>
+<li>Creating directories (folders) and sub directories</li>
+<li>Loading the tidyverse</li>
+<li>Importing Data</li>
+</ul></li>
+<li>Data Transformations
+<ul>
+<li>Filtering Data</li>
+<li>Relational and Assignment Operators</li>
+<li>Reordering Data (arrange)</li>
+<li>Selecting Data</li>
+<li>Renaming Columns</li>
+<li>Adding new Variables (mutate)</li>
+<li>Summerising Data</li>
+</ul></li>
+<li>Strings and Factors
+<ul>
+<li>Combining and Subsetting Strings</li>
+<li>Regular Expressions</li>
+<li>Creating Factors</li>
+<li>Altering Factors</li>
+</ul></li>
+</ul>
+<section id="start-a-new-project-in-r" class="level3">
+<h3 class="anchored" data-anchor-id="start-a-new-project-in-r">Start a New Project in R</h3>
+<p>It is best practice to set up a new directory each time we start a new project in R. To do so, complete the following steps:</p>
+<ol type="1">
+<li>Go to <strong>File &gt; New Project &gt; New Directory &gt; New Project</strong>.</li>
+<li>Type in a name for your directory and click <strong>Browse</strong>. Be sure to pick a place for your directory that you will be able to <strong>find later</strong>.</li>
+<li>Go to <strong>Finder</strong> on Mac or <strong>File Explorer</strong> on PC and find the directory you just created.</li>
+<li>Inside your project directory, create a new folder called <strong>data</strong>.</li>
+<li>Download or copy the <strong>data file</strong> (5k_wine_reviews.csv) into the data folder.</li>
+<li>Go to <strong>File &gt; Save As</strong> to give your R script a name and save it in your project directory.</li>
+</ol>
+</section>
+<section id="loading-the-tidyverse" class="level3">
+<h3 class="anchored" data-anchor-id="loading-the-tidyverse">Loading the tidyverse</h3>
+<p>The first few lines of our R script are made up of comments to document the script’s purpose, creator and date. Next, we use the <code>library()</code> function to load any packages that our script will need to run. In this workshop, we are using the <strong>tidyverse</strong> package for all of our projects.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Purpose: Transforming Wine Review Data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Author: Nuvan Rathnayaka</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Date: January 2019</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup -----------------------------------------------------------</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="importing-data" class="level2">
+<h2 class="anchored" data-anchor-id="importing-data">Importing Data</h2>
+<p>We use the <code>read_csv()</code> function to import our data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data Import ------------------------------------------------------</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>reviews <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/5k_wine_reviews.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>When we use <code>read_csv()</code>, our data is stored as a type of object in R called a <strong>data frame</strong>. One of the nice things about data frames is that we can see a visual representation of them using R Studio. Take a look at your <strong>Environment tab</strong> in the upper right and click on the <strong>reviews</strong> object you just created.</p>
+<p><img src="figures/environment.png" class="img-fluid" width="800"></p>
+<p>The data will be represented as a table in a new tab.</p>
+<p><img src="figures/visual.png" class="img-fluid"></p>
+</section>
+<section id="filtering" class="level2">
+<h2 class="anchored" data-anchor-id="filtering">Filtering</h2>
+<p>We have a fairly big data set. What if we want to focus on certain records? For example, let’s say I’m only interested in Chilean wine. I can use the <code>filter()</code> function to only look at wines with “Chile” as their country of origin.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(reviews, country <span class="sc">==</span> <span class="st">"Chile"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 194 × 10
+   country description   designation points review_category price province title
+   &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;
+ 1 Chile   White flower… Estate          86 Mediocre           15 Colchag… Esta…
+ 2 Chile   A berry arom… &lt;NA&gt;            86 Mediocre            9 Maule V… Sund…
+ 3 Chile   This is much… Gran Reser…     85 Mediocre           22 Colchag… Casa…
+ 4 Chile   Lightly herb… Reserve         85 Mediocre           13 Maipo V… Tres…
+ 5 Chile   Caramelized … Special Re…     86 Mediocre           12 Rapel V… Ares…
+ 6 Chile   A bright nos… Single Vin…     87 Mediocre           18 Leyda V… Leyd…
+ 7 Chile   This blend o… Condesa Re…     91 Good               29 Aconcag… Cond…
+ 8 Chile   Dry, briary … 20 Barrels      91 Good               32 Maipo V… Cono…
+ 9 Chile   Dry, spicy a… The 7th Ge…     91 Good               20 Loncomi… G7 2…
+10 Chile   Haven't seen… Unusual Ca…     88 Mediocre           50 Maipo V… Terr…
+# ℹ 184 more rows
+# ℹ 2 more variables: variety &lt;chr&gt;, winery &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>When we use the <code>filter()</code> function on our reviews object, it displays the results in our <strong>Console</strong> tab. However, these results have not been saved, only displayed. If we want to save our results so we can perform additional transformations on them later, we need to <strong>assign</strong> them to a new data frame. Here, we’ll name the data frame “chilean”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>chilean <span class="ot">&lt;-</span> <span class="fu">filter</span>(reviews, country <span class="sc">==</span> <span class="st">"Chile"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s say I also don’t have a lot of money to spend on wine, so I need to limit my data set to wines that cost $20 or less. We should edit our filter to include a condition on price.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>chilean <span class="ot">&lt;-</span> <span class="fu">filter</span>(reviews, country <span class="sc">==</span> <span class="st">"Chile"</span>, price <span class="sc">&lt;=</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Note that this time we are assigining the results to the <strong>same</strong> object we used before. This allows us to replace our previous data for that object with new data. Now, if we click on the “chilean” data frame in our Environment tab, we can see our data set has been limited only to wines from Chile that are $20 or less.</p>
+</section>
+<section id="relational-and-assignment-operators" class="level2">
+<h2 class="anchored" data-anchor-id="relational-and-assignment-operators">Relational and Assignment Operators</h2>
+<p>Our filter uses some symbols you may not be familiar with, such as <code>==</code> and <code>&lt;=</code>. These are called <strong>relational operators</strong>. We use a relational operator to <strong>check</strong> the relationship between the two <strong>operands</strong> on either side of it.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Operator</th>
+<th>Relationship Check</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>&gt;</code></td>
+<td>Is the left operand <strong>greater than</strong> the right operand?</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>&lt;</code></td>
+<td>Is the left operand <strong>less than</strong> the right operand?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>&gt;=</code></td>
+<td>Is the left operand <strong>greater than or equal to</strong> the right operand?</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>&lt;=</code></td>
+<td>Is the left operand <strong>less than or equal to</strong> the right operand?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>==</code></td>
+<td>Is the left operand <strong>equal</strong> to the right operand?</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>!=</code></td>
+<td>Is the left operand <strong>not equal</strong> to the right operand?</td>
+</tr>
+</tbody>
+</table>
+<p>Above, you’ll notice that we use <code>==</code> to <strong>check</strong> if something is equal. This is different from <strong>defining</strong> something as equal. To <strong>set or assign</strong> a value, we use either <code>=</code> or <code>&lt;-</code> instead of <code>==</code>. For example:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Use</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>filter(reviews, country == "Chile")</code></td>
+<td><strong>Check</strong> each review to see if the country is equal to “Chile”</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>age = 52</code></td>
+<td><strong>Assign</strong> the value 52 to a variable called “age”</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>data &lt;- survey_results</code></td>
+<td><strong>Assign</strong> the contents of the object called “survey_results” to an object called “data”.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reordering-data-arrange" class="level2">
+<h2 class="anchored" data-anchor-id="reordering-data-arrange">Reordering Data (arrange)</h2>
+<p>Let’s arrange the rows of our data frame in a way that’s more informative. This time, we’ll just take a look at the results in our console rather than assigning them to an object.</p>
+<p>First, I want to know which wines in my Chilean data set get the highest number of review points. The <code>arrange()</code> function allows us to reorder our data by a particular variable. Below, we’ll reorder by points.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(chilean, points)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 154 × 10
+   country description   designation points review_category price province title
+   &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;
+ 1 Chile   Aromas of pu… Gran Reser…     80 Not recommended    19 Leyda V… Viña…
+ 2 Chile   Fluffy, swee… Reserve         80 Not recommended    15 Maule V… Cuev…
+ 3 Chile   Jumpy on the… Grand Rese…     81 Not recommended    20 Rapel V… Pura…
+ 4 Chile   Crisp but bl… &lt;NA&gt;            81 Not recommended    14 Maipo V… Cous…
+ 5 Chile   Flat aromas … Reserva Ca…     81 Not recommended    12 Maule V… Ovej…
+ 6 Chile   Funky and od… &lt;NA&gt;            81 Not recommended    10 Central… Arau…
+ 7 Chile   Rubbery, mul… &lt;NA&gt;            81 Not recommended    10 Cachapo… Corn…
+ 8 Chile   This is edgy… Albamar         81 Not recommended    13 Casabla… Will…
+ 9 Chile   Smells veget… Selección       82 Not recommended    15 Maipo V… Viña…
+10 Chile   Smells perky… Hacienda A…     82 Not recommended    13 Central… Fran…
+# ℹ 144 more rows
+# ℹ 2 more variables: variety &lt;chr&gt;, winery &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Well, that sort of worked. My wines are reordered by points, but in ascending order. To reorder them in descending order, we need to use another function inside the arrange function. As you learned last week, this is called a nested function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(chilean, <span class="fu">desc</span>(points))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 154 × 10
+   country description   designation points review_category price province title
+   &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;
+ 1 Chile   Dry, spicy a… The 7th Ge…     91 Good               20 Loncomi… G7 2…
+ 2 Chile   Composed ber… Gran Reser…     90 Good               15 Colchag… Carm…
+ 3 Chile   Over the pas… 1865 Singl…     90 Good               19 Leyda V… San …
+ 4 Chile   Toasty and v… Gran Reser…     89 Mediocre           18 Maipo V… Tara…
+ 5 Chile   This dry-far… Mariposa E…     89 Mediocre           20 Loncomi… Gill…
+ 6 Chile   Composed and… Envero Gra…     88 Mediocre           15 Colchag… Apal…
+ 7 Chile   Bisquertt us… Casa La Jo…     88 Mediocre           11 Colchag… Viña…
+ 8 Chile   Aromas of mi… Reserva de…     88 Mediocre           10 Maipo V… De M…
+ 9 Chile   At first thi… Estate Bot…     88 Mediocre           12 Rapel V… Lapo…
+10 Chile   With its her… Estate Gro…     88 Mediocre           15 Maipo V… Carm…
+# ℹ 144 more rows
+# ℹ 2 more variables: variety &lt;chr&gt;, winery &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Now we can see which wines have the highest number of points. But what if we want to reorder by <strong>multiple</strong> variables? For example, many wines with the same number of points have different prices. What if we wanted to reorder those wines by price as well, so we can see which wines have the highest reviews with the lowest prices? The <code>arrange()</code> function allows us to add multiple variables simply by using commas.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(chilean, <span class="fu">desc</span>(points), price)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 154 × 10
+   country description   designation points review_category price province title
+   &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;
+ 1 Chile   Dry, spicy a… The 7th Ge…     91 Good               20 Loncomi… G7 2…
+ 2 Chile   Composed ber… Gran Reser…     90 Good               15 Colchag… Carm…
+ 3 Chile   Over the pas… 1865 Singl…     90 Good               19 Leyda V… San …
+ 4 Chile   Toasty and v… Gran Reser…     89 Mediocre           18 Maipo V… Tara…
+ 5 Chile   This dry-far… Mariposa E…     89 Mediocre           20 Loncomi… Gill…
+ 6 Chile   Aromas of mi… Reserva de…     88 Mediocre           10 Maipo V… De M…
+ 7 Chile   Dark berry a… &lt;NA&gt;            88 Mediocre           10 Central… Másc…
+ 8 Chile   Bisquertt us… Casa La Jo…     88 Mediocre           11 Colchag… Viña…
+ 9 Chile   At first thi… Estate Bot…     88 Mediocre           12 Rapel V… Lapo…
+10 Chile   Right off th… Reserve         88 Mediocre           12 Maipo V… Casa…
+# ℹ 144 more rows
+# ℹ 2 more variables: variety &lt;chr&gt;, winery &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="selecting-data-select" class="level2">
+<h2 class="anchored" data-anchor-id="selecting-data-select">Selecting Data (select)</h2>
+<p>Most real world data sets we want to use in our research are going to be messy, and we’ll need to go through a process of cleaning the data before we can start to explore and analyze it. The first steps in many data cleaning processes involve removing data that we don’t need.</p>
+<p>Going back to our original reviews data frame, let’s imagine we are only interested in the country, province and variety of our wines. We could create a new object called “wine_types” using the <code>select()</code> function. We’ll also <strong>preview</strong> our new object by simply typing its name and running the script.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>wine_types <span class="ot">&lt;-</span> <span class="fu">select</span>(reviews, country, province, variety)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>wine_types</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5,000 × 3
+   country  province          variety           
+   &lt;chr&gt;    &lt;chr&gt;             &lt;chr&gt;             
+ 1 Italy    Sicily &amp; Sardinia White Blend       
+ 2 Portugal Douro             Portuguese Red    
+ 3 US       Oregon            Pinot Gris        
+ 4 US       Michigan          Riesling          
+ 5 US       Oregon            Pinot Noir        
+ 6 Spain    Northern Spain    Tempranillo-Merlot
+ 7 Italy    Sicily &amp; Sardinia Frappato          
+ 8 France   Alsace            Gewürztraminer    
+ 9 Germany  Rheinhessen       Gewürztraminer    
+10 France   Alsace            Pinot Gris        
+# ℹ 4,990 more rows</code></pre>
+</div>
+</div>
+<p>But what if we have a lot of columns in our dataset and only need to remove one or two? Look at our chilean data frame again.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>chilean</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 154 × 10
+   country description   designation points review_category price province title
+   &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;
+ 1 Chile   White flower… Estate          86 Mediocre           15 Colchag… Esta…
+ 2 Chile   A berry arom… &lt;NA&gt;            86 Mediocre            9 Maule V… Sund…
+ 3 Chile   Lightly herb… Reserve         85 Mediocre           13 Maipo V… Tres…
+ 4 Chile   Caramelized … Special Re…     86 Mediocre           12 Rapel V… Ares…
+ 5 Chile   A bright nos… Single Vin…     87 Mediocre           18 Leyda V… Leyd…
+ 6 Chile   Dry, spicy a… The 7th Ge…     91 Good               20 Loncomi… G7 2…
+ 7 Chile   Composed and… Envero Gra…     88 Mediocre           15 Colchag… Apal…
+ 8 Chile   Bisquertt us… Casa La Jo…     88 Mediocre           11 Colchag… Viña…
+ 9 Chile   Clean and ho… Natura          87 Mediocre           11 Casabla… Emil…
+10 Chile   Rooty and le… Grey [Glac…     87 Mediocre           20 Maipo V… Vent…
+# ℹ 144 more rows
+# ℹ 2 more variables: variety &lt;chr&gt;, winery &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>You’ll notice it has a columns which is no longer useful for us. The “country” column is the same for every row. Let’s remove it using <code>select()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>chilean <span class="ot">&lt;-</span> <span class="fu">select</span>(chilean, <span class="sc">-</span>country)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>chilean</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 154 × 9
+   description   designation points review_category price province title variety
+   &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;  
+ 1 White flower… Estate          86 Mediocre           15 Colchag… Esta… Viogni…
+ 2 A berry arom… &lt;NA&gt;            86 Mediocre            9 Maule V… Sund… Merlot 
+ 3 Lightly herb… Reserve         85 Mediocre           13 Maipo V… Tres… Pinot …
+ 4 Caramelized … Special Re…     86 Mediocre           12 Rapel V… Ares… Carmen…
+ 5 A bright nos… Single Vin…     87 Mediocre           18 Leyda V… Leyd… Chardo…
+ 6 Dry, spicy a… The 7th Ge…     91 Good               20 Loncomi… G7 2… Cabern…
+ 7 Composed and… Envero Gra…     88 Mediocre           15 Colchag… Apal… Carmen…
+ 8 Bisquertt us… Casa La Jo…     88 Mediocre           11 Colchag… Viña… Merlot 
+ 9 Clean and ho… Natura          87 Mediocre           11 Casabla… Emil… Chardo…
+10 Rooty and le… Grey [Glac…     87 Mediocre           20 Maipo V… Vent… Cabern…
+# ℹ 144 more rows
+# ℹ 1 more variable: winery &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>We use the - sign to indicate that we want a column to be removed.</p>
+<p>Sometimes, we’ll need to keep or remove a series of columns that are directly adjacent to each other in the data frame. In those circumstances, we can use the following syntax:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep columns "title" through "winery"</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(reviews, title<span class="sc">:</span>winery)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5,000 × 3
+   title                                                          variety winery
+   &lt;chr&gt;                                                          &lt;chr&gt;   &lt;chr&gt; 
+ 1 Nicosia 2013 Vulkà Bianco  (Etna)                              White … Nicos…
+ 2 Quinta dos Avidagos 2011 Avidagos Red (Douro)                  Portug… Quint…
+ 3 Rainstorm 2013 Pinot Gris (Willamette Valley)                  Pinot … Rains…
+ 4 St. Julian 2013 Reserve Late Harvest Riesling (Lake Michigan … Riesli… St. J…
+ 5 Sweet Cheeks 2012 Vintner's Reserve Wild Child Block Pinot No… Pinot … Sweet…
+ 6 Tandem 2011 Ars In Vitro Tempranillo-Merlot (Navarra)          Tempra… Tande…
+ 7 Terre di Giurfo 2013 Belsito Frappato (Vittoria)               Frappa… Terre…
+ 8 Trimbach 2012 Gewurztraminer (Alsace)                          Gewürz… Trimb…
+ 9 Heinz Eifel 2013 Shine Gewürztraminer (Rheinhessen)            Gewürz… Heinz…
+10 Jean-Baptiste Adam 2012 Les Natures Pinot Gris (Alsace)        Pinot … Jean-…
+# ℹ 4,990 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove columns "title" through "winery"</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(reviews, <span class="sc">-</span><span class="fu">c</span>(title<span class="sc">:</span>winery))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5,000 × 7
+   country  description        designation points review_category price province
+   &lt;chr&gt;    &lt;chr&gt;              &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;   
+ 1 Italy    Aromas include tr… Vulkà Bian…     87 Mediocre           NA Sicily …
+ 2 Portugal This is ripe and … Avidagos        87 Mediocre           15 Douro   
+ 3 US       Tart and snappy, … &lt;NA&gt;            87 Mediocre           14 Oregon  
+ 4 US       Pineapple rind, l… Reserve La…     87 Mediocre           13 Michigan
+ 5 US       Much like the reg… Vintner's …     87 Mediocre           65 Oregon  
+ 6 Spain    Blackberry and ra… Ars In Vit…     87 Mediocre           15 Norther…
+ 7 Italy    Here's a bright, … Belsito         87 Mediocre           16 Sicily …
+ 8 France   This dry and rest… &lt;NA&gt;            87 Mediocre           24 Alsace  
+ 9 Germany  Savory dried thym… Shine           87 Mediocre           12 Rheinhe…
+10 France   This has great de… Les Natures     87 Mediocre           27 Alsace  
+# ℹ 4,990 more rows</code></pre>
+</div>
+</div>
+<p>In both cases the <code>:</code> symbol means “through” and allows us to select a series of columns at once.</p>
+</section>
+<section id="renaming-columns" class="level2">
+<h2 class="anchored" data-anchor-id="renaming-columns">Renaming Columns</h2>
+<p>Renaming our columns is easy to do when we use the <code>rename()</code> function. We need to provide the new name we want to use first, and then <strong>assign</strong> the old name to it.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>chilean <span class="ot">&lt;-</span> <span class="fu">rename</span>(chilean, <span class="at">review_points =</span> points)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>chilean</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 154 × 9
+   description    designation review_points review_category price province title
+   &lt;chr&gt;          &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;
+ 1 White flower,… Estate                 86 Mediocre           15 Colchag… Esta…
+ 2 A berry aroma… &lt;NA&gt;                   86 Mediocre            9 Maule V… Sund…
+ 3 Lightly herba… Reserve                85 Mediocre           13 Maipo V… Tres…
+ 4 Caramelized o… Special Re…            86 Mediocre           12 Rapel V… Ares…
+ 5 A bright nose… Single Vin…            87 Mediocre           18 Leyda V… Leyd…
+ 6 Dry, spicy ar… The 7th Ge…            91 Good               20 Loncomi… G7 2…
+ 7 Composed and … Envero Gra…            88 Mediocre           15 Colchag… Apal…
+ 8 Bisquertt usu… Casa La Jo…            88 Mediocre           11 Colchag… Viña…
+ 9 Clean and hon… Natura                 87 Mediocre           11 Casabla… Emil…
+10 Rooty and lea… Grey [Glac…            87 Mediocre           20 Maipo V… Vent…
+# ℹ 144 more rows
+# ℹ 2 more variables: variety &lt;chr&gt;, winery &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Above, we’ve changed the name of our “points” column to “review_points”.</p>
+</section>
+<section id="adding-new-variables" class="level2">
+<h2 class="anchored" data-anchor-id="adding-new-variables">Adding New Variables</h2>
+<p>My chilean data set has prices listed in USD, but suppose I also needed to know how many Euros each wine costs. Currently, the exchange rate is 0.85 Euros for every 1 USD. So, I just need to multiply the price column by 0.85, but how can I store the results of my currency conversion in a new column? The <code>mutate()</code> function makes that possible.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>chilean <span class="ot">&lt;-</span> <span class="fu">mutate</span>(chilean, <span class="at">EUR =</span> price <span class="sc">*</span> <span class="fl">0.85</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now I’m going to make several more changes to my data set.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename the "price" column to "USD"</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>chilean <span class="ot">&lt;-</span> <span class="fu">rename</span>(chilean, <span class="at">USD =</span> price)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder the columns so that "USD" and "EUR" are adjacent</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>chilean <span class="ot">&lt;-</span> <span class="fu">select</span>(chilean, description<span class="sc">:</span>review_points, USD, EUR, province<span class="sc">:</span>winery)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Preview the results</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>chilean</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 154 × 9
+   description      designation review_points   USD   EUR province title variety
+   &lt;chr&gt;            &lt;chr&gt;               &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;  
+ 1 White flower, l… Estate                 86    15 12.8  Colchag… Esta… Viogni…
+ 2 A berry aroma c… &lt;NA&gt;                   86     9  7.65 Maule V… Sund… Merlot 
+ 3 Lightly herbal … Reserve                85    13 11.0  Maipo V… Tres… Pinot …
+ 4 Caramelized oak… Special Re…            86    12 10.2  Rapel V… Ares… Carmen…
+ 5 A bright nose w… Single Vin…            87    18 15.3  Leyda V… Leyd… Chardo…
+ 6 Dry, spicy arom… The 7th Ge…            91    20 17    Loncomi… G7 2… Cabern…
+ 7 Composed and st… Envero Gra…            88    15 12.8  Colchag… Apal… Carmen…
+ 8 Bisquertt usual… Casa La Jo…            88    11  9.35 Colchag… Viña… Merlot 
+ 9 Clean and hones… Natura                 87    11  9.35 Casabla… Emil… Chardo…
+10 Rooty and leafy… Grey [Glac…            87    20 17    Maipo V… Vent… Cabern…
+# ℹ 144 more rows
+# ℹ 1 more variable: winery &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Did I mention you can use <code>select()</code> to reorder columns as well? You can!</p>
+</section>
+<section id="summarising-data" class="level2">
+<h2 class="anchored" data-anchor-id="summarising-data">Summarising Data</h2>
+<p>Now that we’ve done some cleaning of our data set, we can start to explore it a bit by taking a look at basic summary statistics with the <code>summarise()</code> function. One thing we need to remember when using <code>summarise()</code> is that missing data can cause a problem, so in many cases we will need to tell R to ignore rows with missing data using the <code>na.rm</code> parameter.</p>
+<p>Let’s take a look at the mean review points for all of our Chilean wines. We’ll assign our result to a column named “mean_review_points”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(chilean, <span class="at">mean_review_points =</span> <span class="fu">mean</span>(review_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  mean_review_points
+               &lt;dbl&gt;
+1               85.9</code></pre>
+</div>
+</div>
+<p>A more informative approach might be to look at the mean number of points by province. To do that, we first need to create a new object using the group_by() function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>by_prov <span class="ot">&lt;-</span> <span class="fu">group_by</span>(chilean, province)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(by_prov, <span class="at">mean_review_points =</span> <span class="fu">mean</span>(review_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 2
+   province          mean_review_points
+   &lt;chr&gt;                          &lt;dbl&gt;
+ 1 Aconcagua Costa                 88  
+ 2 Aconcagua Valley                86.5
+ 3 Cachapoal Valley                84.6
+ 4 Casablanca Valley               85.5
+ 5 Central Valley                  84.7
+ 6 Chile                           85  
+ 7 Colchagua Costa                 84  
+ 8 Colchagua Valley                86.6
+ 9 Curicó Valley                   85.8
+10 Elqui Valley                    88  
+11 Leyda Valley                    85.7
+12 Limarí Valley                   86  
+13 Loncomilla Valley               87.5
+14 Lontué Valley                   87  
+15 Maipo Valley                    86.3
+16 Marchigue                       87  
+17 Maule Valley                    85.1
+18 Peumo                           87  
+19 Rapel Valley                    85.7
+20 Rio Claro                       86  </code></pre>
+</div>
+</div>
+<p>Now we want to arrange the results from highest to lowest review points, but that would require us creating <strong>another</strong> object to use <code>arrange()</code> on. Instead of creating many different objects that we don’t necessarily need to keep around, let’s use pipes.</p>
+</section>
+<section id="piping" class="level2">
+<h2 class="anchored" data-anchor-id="piping">Piping</h2>
+<p>Pipes use the <code>|&gt;</code> symbol to connect multiple functions without creating multiple objects. To use <code>group_by()</code>, <code>summarise()</code> and <code>arrange()</code> on our data all at once, we use the pipe like so:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>chilean <span class="sc">|&gt;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(province) <span class="sc">|&gt;</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_review_points =</span> <span class="fu">mean</span>(review_points, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_review_points))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 2
+   province          mean_review_points
+   &lt;chr&gt;                          &lt;dbl&gt;
+ 1 Aconcagua Costa                 88  
+ 2 Elqui Valley                    88  
+ 3 Loncomilla Valley               87.5
+ 4 Lontué Valley                   87  
+ 5 Marchigue                       87  
+ 6 Peumo                           87  
+ 7 Colchagua Valley                86.6
+ 8 Aconcagua Valley                86.5
+ 9 Maipo Valley                    86.3
+10 Limarí Valley                   86  
+11 Rio Claro                       86  
+12 Curicó Valley                   85.8
+13 Rapel Valley                    85.7
+14 Leyda Valley                    85.7
+15 Casablanca Valley               85.5
+16 Maule Valley                    85.1
+17 Chile                           85  
+18 Central Valley                  84.7
+19 Cachapoal Valley                84.6
+20 Colchagua Costa                 84  </code></pre>
+</div>
+</div>
+<p>To enable the keyboard shortcut, enable the checkbox under:</p>
+<p>Tools &gt; Global Options &gt; Code &gt; Use native pipe operator, |&gt; (requires R 4.1+)</p>
+<p><img src="figures/pipe.png" class="img-fluid" width="800"></p>
+<p><strong>Shortcut for |&gt;:<br>
+</strong>CMD + SHIFT + m (Mac)<strong><br>
+</strong>CTRL + SHIFT + m (PC)</p>
+<p>Not only do the pipes prevent us from having to create lots of objects, they also allow us to arrange the code in a way that is easier to read. Notice that we also only needed to name our object once, at the beginning of the sequence, for it to be used in every function onward.</p>
+<p>Let’s try another sequence of functions using the pipe to answer the following question: What is the highest price for each variety of wine in each province?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>chilean <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(province, variety) <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">max_price =</span> <span class="fu">max</span>(USD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(province, variety, <span class="fu">desc</span>(max_price))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by province and variety.
+ℹ Output is grouped by province.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(province, variety))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 78 × 3
+# Groups:   province [20]
+   province          variety                   max_price
+   &lt;chr&gt;             &lt;chr&gt;                         &lt;dbl&gt;
+ 1 Aconcagua Costa   Chardonnay                       20
+ 2 Aconcagua Valley  Cabernet Sauvignon               19
+ 3 Aconcagua Valley  Sauvignon Blanc                  19
+ 4 Cachapoal Valley  Cabernet Sauvignon               18
+ 5 Cachapoal Valley  Cabernet Sauvignon-Merlot        10
+ 6 Cachapoal Valley  Carmenère                        12
+ 7 Cachapoal Valley  Syrah                            15
+ 8 Casablanca Valley Chardonnay                       15
+ 9 Casablanca Valley Gewürztraminer                   15
+10 Casablanca Valley Merlot                           17
+# ℹ 68 more rows</code></pre>
+</div>
+</div>
+<p>Note that some resources may use a different, older, pipe operator: <code>%&gt;%</code>. This is known as <a href="https://tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/">the magrittr pipe</a>, and in most instances will behave simliarly to <code>|&gt;</code>.</p>
+<section id="strings-and-factors" class="level3">
+<h3 class="anchored" data-anchor-id="strings-and-factors">Strings and Factors</h3>
+</section>
+</section>
+<section id="getting-started-with-strings" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started-with-strings">Getting Started With Strings</h2>
+<p>Let’s look at the Environment tab again. Notice the little blue arrow next to the reviews object. Clicking on it shows us what columns are available in the tibble. To the right of each column name is its <strong>class</strong>. We can get the same information using the <code>class()</code> function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(reviews<span class="sc">$</span>province)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+</div>
+<p>A <strong>character</strong> object in R contains strings, as in a <em>string</em> of characters. There are a number of functions and techniques for manipulating strings in R.</p>
+</section>
+<section id="combining-and-subsetting-strings" class="level2">
+<h2 class="anchored" data-anchor-id="combining-and-subsetting-strings">Combining and Subsetting Strings</h2>
+<p>Our reviews dataset has a column for province and a column for country. What if we want to combine the two? We can use the <code>str_c()</code> function. Let’s also use <code>mutate()</code> to create a new column called full_loc.</p>
+<p>First, you’ll notice that the street names and street numbers in this dataset are split into two different columns. If we want to combine them, .</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>reviews_new <span class="ot">&lt;-</span> reviews <span class="sc">|&gt;</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">full_loc =</span> <span class="fu">str_c</span>(province, country))</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reviews_new<span class="sc">$</span>full_loc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Sicily &amp; SardiniaItaly" "DouroPortugal"          "OregonUS"              
+[4] "MichiganUS"             "OregonUS"               "Northern SpainSpain"   </code></pre>
+</div>
+</div>
+<p>Take a look at the results above. We have a problem! We need a space and a comma to separate the province and country. Luckily, we can add a parameter to <code>str_c()</code> that allows us to do that.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>reviews_new <span class="ot">&lt;-</span> reviews <span class="sc">|&gt;</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">full_loc =</span> <span class="fu">str_c</span>(province, country, <span class="at">sep =</span> <span class="st">", "</span>))</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reviews_new<span class="sc">$</span>full_loc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Sicily &amp; Sardinia, Italy" "Douro, Portugal"         
+[3] "Oregon, US"               "Michigan, US"            
+[5] "Oregon, US"               "Northern Spain, Spain"   </code></pre>
+</div>
+</div>
+<p>We can also subset portions of strings. Suppose we have a string that reads “Hello World” and we want to subset the word “Hello”. We can use the <code>str_sub()</code> function, but we need to let it know the leftmost character and the rightmost character for the portion we want to subset.</p>
+<p>In our “Hello World” string, H is our leftmost character. It also has the first position in the string. O is our rightmost character and it has the fifth position in the string. So, our <code>str_sub()</code> function looks like this:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_sub</span>(<span class="st">"Hello World"</span>, <span class="dv">1</span>, <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Hello"</code></pre>
+</div>
+</div>
+<p>The winery column in our dataset includes the name of the winery along with a 6-digit id code surrounded by brackets. We need subset that code and put it in a separate column. Notice, however, that the code is at the <strong>end</strong> of the string rather than the beginning.</p>
+<p>Luckily, we can use a negative sign to indicate that we are counting backwards from the end of the string. However, we still need to put the parameters of the function in order from <strong>leftmost character to rightmost character</strong>. Remember to skip the brackets.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>reviews_new <span class="ot">&lt;-</span> reviews <span class="sc">|&gt;</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">winery_id =</span> <span class="fu">str_sub</span>(winery, <span class="sc">-</span><span class="dv">7</span>, <span class="sc">-</span><span class="dv">2</span>))</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reviews_new<span class="sc">$</span>winery_id)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "255254" "720843" "278022" "919492" "620905" "756994"</code></pre>
+</div>
+</div>
+<p>Now that we’ve created a seperate column for the 6-digit code, we can remove it from the original winery column by subsetting out the winery name. Unfortunately, the winery name is variable in length. Since we don’t know where the rightmost character will be for every winery name, how can we use <code>str_sub()</code>?</p>
+<p>We know that the part of the string we want to remove is nine characters long: the six-digit code plus the brackets and a space. So, we just need to know the total length of the string minus nine characters. Thankfully, there is a function that counts the total number of characters in a string, <code>str_length()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>reviews_new <span class="ot">&lt;-</span> reviews <span class="sc">|&gt;</span> </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">winery =</span> <span class="fu">str_sub</span>(winery, <span class="dv">1</span>, <span class="fu">str_length</span>(winery) <span class="sc">-</span> <span class="dv">9</span>))</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reviews_new<span class="sc">$</span>winery)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Nicosia"             "Quinta dos Avidagos" "Rainstorm"          
+[4] "St. Julian"          "Sweet Cheeks"        "Tandem"             </code></pre>
+</div>
+</div>
+</section>
+<section id="regular-expressions" class="level2">
+<h2 class="anchored" data-anchor-id="regular-expressions">Regular Expressions</h2>
+<p>Often when we are working with text data, we will find that we have characters which follow a certain pattern. For example, a U.S. phone number commonly follows this pattern:</p>
+<ul>
+<li>three numbers</li>
+<li>dash</li>
+<li>three numbers</li>
+<li>dash</li>
+<li>four numbers</li>
+</ul>
+<p>Likewise, an email address follows this one:</p>
+<ul>
+<li>some number of characters</li>
+<li>@</li>
+<li>some number of characters</li>
+<li>.com</li>
+</ul>
+<p>It is often useful for us to be able to detect these patterns when working with strings. Many programming languages use a form of notation for describing these patterns called <strong>regular expressions</strong>. Some of the commonly used regular expressions in R are below.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Regular Expression</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>^</td>
+<td>start of string</td>
+</tr>
+<tr class="even">
+<td>$</td>
+<td>end of string</td>
+</tr>
+<tr class="odd">
+<td>.</td>
+<td>match any character</td>
+</tr>
+<tr class="even">
+<td>[a-z]</td>
+<td>match any lowercase letter</td>
+</tr>
+<tr class="odd">
+<td>[A-Z]</td>
+<td>match any uppercase letter</td>
+</tr>
+<tr class="even">
+<td>[0-9]</td>
+<td>match any number</td>
+</tr>
+<tr class="odd">
+<td>[abc]</td>
+<td>match a, b OR c</td>
+</tr>
+<tr class="even">
+<td>[^abc]</td>
+<td>match anything EXCEPT a, b OR c</td>
+</tr>
+<tr class="odd">
+<td>+</td>
+<td>perform the match one or more times</td>
+</tr>
+<tr class="even">
+<td>{x}</td>
+<td>perform the match x number of times</td>
+</tr>
+</tbody>
+</table>
+<p>Additional patterns can be found on the <a href="https://rstudio.github.io/cheatsheets/strings.pdf#page=2">Regular Expressions Cheat Sheet</a>.</p>
+<p>Let’s try using them with some of our data. The title of each wine includes the vintage (the year the grapes were harvested) as well as the region. What if we want to know how many of the wines come from the Casablanca Valley and have a vintage in the 2010s? We’ll use the <code>str_detect()</code> function with a regular expression. The expression first looks for the number “201” followed by another number between 0 and 9. That includes all years in the 2010 decade. Next, it matches any other character (.) any number of times (+) until it gets to the word “Casablanca”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(reviews_new<span class="sc">$</span>title, <span class="st">"201[0-9].+Casablanca"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [ reached 'max' / getOption("max.print") -- omitted 4980 entries ]</code></pre>
+</div>
+</div>
+<p>As you can see, <code>str_detect()</code> only supplies us with TRUE or FALSE depending on whether each string matches our regular expression. There are many functions in R that return these kinds of results. We can always combine them with the <code>table()</code> function to count the number of TRUE and FALSE outputs we get.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">str_detect</span>(reviews_new<span class="sc">$</span>title, <span class="st">"201[0-9].+Casablanca"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+FALSE  TRUE 
+ 4989    11 </code></pre>
+</div>
+</div>
+<p>11 wines meet our criteria.</p>
+<p>To actually see the strings that match our regular expressions, we need to use the <code>str_subset()</code> function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(reviews_new<span class="sc">$</span>title, <span class="st">"201[0-9].+Casablanca"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Emiliana 2011 Novas Gran Reserva Made with Organically Grown Grapes Pinot Noir (Casablanca Valley)"
+ [2] "Laroche 2010 Viña Punto Alto Pinot Noir (Casablanca Valley)"                                       
+ [3] "Lomas del Valle 2011 Coastal Cool Climate Merlot (Casablanca Valley)"                              
+ [4] "Loma Larga 2013 Unfiltered Pinot Noir (Casablanca Valley)"                                         
+ [5] "Albamar 2015 Estate Bottled Chardonnay (Casablanca Valley)"                                        
+ [6] "Indomita 2015 Gran Reserva Chardonnay (Casablanca Valley)"                                         
+ [7] "Viu Manent 2013 Secreto Pinot Noir (Casablanca Valley)"                                            
+ [8] "Viña Casablanca 2014 Nimbus Single Vineyard Syrah (Casablanca Valley)"                             
+ [9] "Lomas del Valle 2014 Coastal Cool Climate Estate Bottled Merlot (Casablanca Valley)"               
+[10] "William Cole 2011 Albamar Pinot Noir (Casablanca Valley)"                                          
+[11] "Quintay 2015 Q Grand Reserve Sauvignon Blanc (Casablanca Valley)"                                  </code></pre>
+</div>
+</div>
+<p>In the future, it might be more helpful to have the vintage of each wine in its own separate column. To do that, we’d need to follow several steps:</p>
+<ol type="1">
+<li>Create a new column with the <code>mutate()</code> function.</li>
+<li>Develop a regular expression to find the vintage.</li>
+<li>Subset the portions of the title that matches the regular expression using <code>str_extract()</code>.</li>
+</ol>
+<p>Luckily, those three steps can be produced with minimal code.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>reviews_new <span class="ot">&lt;-</span> reviews_new <span class="sc">|&gt;</span> </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">vintage =</span> <span class="fu">str_extract</span>(title, <span class="st">"[0-9]{4}"</span>))</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">select</span>(reviews_new, title, vintage))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  title                                                                  vintage
+  &lt;chr&gt;                                                                  &lt;chr&gt;  
+1 Nicosia 2013 Vulkà Bianco  (Etna)                                      2013   
+2 Quinta dos Avidagos 2011 Avidagos Red (Douro)                          2011   
+3 Rainstorm 2013 Pinot Gris (Willamette Valley)                          2013   
+4 St. Julian 2013 Reserve Late Harvest Riesling (Lake Michigan Shore)    2013   
+5 Sweet Cheeks 2012 Vintner's Reserve Wild Child Block Pinot Noir (Will… 2012   
+6 Tandem 2011 Ars In Vitro Tempranillo-Merlot (Navarra)                  2011   </code></pre>
+</div>
+</div>
+<p>So far, we’ve only scratched the surface of regular expressions using some extremely simple examples. Regular expressions can become very complex. To see some regular expressions used in the real world, visit the <a href="http://regexlib.com/DisplayPatterns.aspx">Regular Expression Library</a>.</p>
+</section>
+<section id="creating-factors" class="level2">
+<h2 class="anchored" data-anchor-id="creating-factors">Creating Factors</h2>
+<p>Let’s take a look at how many wines fall into each of the review categories. Again, <code>table()</code> is helpful here.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(reviews_new<span class="sc">$</span>review_category)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+           Good        Mediocre Not recommended       Very good 
+           1569            2885             456              90 </code></pre>
+</div>
+</div>
+<p>Now we want to plot these results on a simple bar chart like so:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(reviews_new, <span class="fu">aes</span>(review_category)) <span class="sc">+</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="R_OpenLabs_Transformations_Strings_Factors_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Our categories appear in alphabetical order in both the table and the bar chart. But What if we want to order our results from best to worst? To create ordered categories in R, we have to use <strong>factors</strong>. A factor is a separate class of object from characters, so we need to use a function to create one.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>reviews_new<span class="sc">$</span>review_category <span class="ot">&lt;-</span> <span class="fu">factor</span>(reviews_new<span class="sc">$</span>review_category, </span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Very good"</span>, <span class="st">"Good"</span>, <span class="st">"Mediocre"</span>, <span class="st">"Not recommended"</span>))</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(reviews_new<span class="sc">$</span>review_category)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "factor"</code></pre>
+</div>
+</div>
+<p>Notice the order we put our levels in above. That order will now be reflected in the bar chart and frequency table.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(reviews_new, <span class="fu">aes</span>(review_category)) <span class="sc">+</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="R_OpenLabs_Transformations_Strings_Factors_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(reviews_new<span class="sc">$</span>review_category)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+      Very good            Good        Mediocre Not recommended 
+             90            1569            2885             456 </code></pre>
+</div>
+</div>
+<p>We may also want to combine our levels in some cases. Let’s use <code>fct_collapse()</code> to create levels that simply indicate a “Good” or “Bad” result.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>reviews_new<span class="sc">$</span>review_category <span class="ot">&lt;-</span> <span class="fu">fct_collapse</span>(reviews_new<span class="sc">$</span>review_category, </span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"Good"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Very good"</span>, <span class="st">"Good"</span>),</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"Bad"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Mediocre"</span>, <span class="st">"Not recommended"</span>))</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(reviews_new<span class="sc">$</span>review_category)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Good  Bad 
+1659 3341 </code></pre>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<p>Using our “reviews_new” data set, use the functions we learned this week to answer the following questions:</p>
+<ol type="1">
+<li>What is the price and review score for the most expensive French wine?</li>
+<li>How many countries have wine that cost more than $500?</li>
+<li>To which country and province should you travel to find the cheapest Tempranillo?</li>
+<li>You found a website that lets you order any wine for a flat shipping fee of $15! Find the total price for each wine that includes shipping.</li>
+<li>The following code produces errors. Correct them all:</li>
+</ol>
+<p>reviews |&gt;<br>
+select == (Title, province, country, price) |&gt;<br>
+filter (country = Germany) &gt;<br>
+group_by (province) |&gt;<br>
+Summarise (mean_price == mean(price))</p>
+<ol start="6" type="1">
+<li>Create a new column for short descriptions called “desc_short”. The strings in this column should follow this template: “[VINTAGE] [VARIETY] from [COUNTRY].”<br>
+</li>
+<li>How many wineries have the word “Vineyard” in their name? <em>HINT: <code>table()</code> will come in handy again here.</em></li>
+<li>Find all wines that have the word “apricot” in their description. <em>HINT: You will need to use both <code>filter()</code> and <code>str_detect()</code> to accomplish this.</em></li>
+<li>Remove the region (in parentheses) from each title and put it in its own column.</li>
+<li>R comes pre-loaded with a dataset called “diamonds”. Store a copy of the dataset in your Global Environment with the following code:</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="ot">&lt;-</span> diamonds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="11" type="1">
+<li>What class of object are the “cut”, “color” and “clarity” columns?</li>
+<li>What happens when you use the <code>min()</code> function on the the cut column? What happens when you use the <code>min()</code> function on the factor in your “insp_sm” dataset?</li>
+<li>How can you create an ordered factor? Use the <code>?</code> function to read the documentation on factors.</li>
+<li><a href="https://en.wikipedia.org/wiki/Diamond_clarity#Clarity_grading">Read about the GIA diamond clarity grading scale here</a>. Alter the factor levels in the diamonds dataset to reflect the category names in the GIA scale (Flawless, Internally Flawless, etc.)</li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
