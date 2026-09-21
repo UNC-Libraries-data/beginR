@@ -240,11 +240,13 @@ We can check or *define* the crs (not project into a new crs - this will not cha
 st_crs(housing)
 ```
 
-There are a number of ways to get basemaps in R, but for today we'll use the `basemaps` package. Maps from Carto are freely available without an API key. Most other services available through `basemaps` require a free sign up. `st_bbox` converts our set of points into a rectangle to form our plot area. We'll use `theme_nothing` from `ggmap` to remove all axes and other plot elements.
+There are a number of ways to get basemaps in R, but for today we'll use the `basemaps` package. Most map services now require an API key to use. These keys are often free, but require sign up to get access and may involve some level of rate limiting. Maps from Open Street Map and ESRI are currently freely available without an API key. You can check the maps available with `get_maptypes("esri")` or `get_maptypes("osm")`.
+
+`st_bbox` converts our set of points into a rectangle to form our plot area. We'll use `theme_nothing` from `ggmap` to remove all axes and other plot elements.
 
 ```{r}
 #basemaps package map services use Web Mercator (ESPG: 3857)
-basemap_ggplot(ext = st_bbox(housing), map_service = "carto")+
+basemap_ggplot(ext = st_bbox(housing), map_service = "osm", map_type = "streets")+
   geom_sf(data = housing)+
   coord_sf(crs = 3857)+ #ensures all layers are projected to match the basemap
   theme_nothing()
@@ -258,8 +260,8 @@ nc_boundary <- states(progress_bar = FALSE) |>
   filter(STUSPS=="NC") 
 
 basemaps::basemap_ggplot(ext = st_bbox(st_buffer(nc_boundary, 
-                                                 dist = 100000)), #distance in meters for geographic coordinates
-                         map_service = "carto")+
+                                                 dist = 100000)),
+                          map_service = "osm", map_type = "streets")+ #distance in meters for geographic coordinates
   geom_sf(data = housing)+
   geom_sf(data = nc_boundary, fill=NA)+
   coord_sf(crs = 3857)+ #define the crs to match the boxplot
@@ -309,15 +311,15 @@ plot(st_geometry(roads))
 
 Let's add it to our ggplot map! The order of our geoms is also the order in which they're drawn, so we want to make sure our points are last and contextual layers like the nc boundary and roads come earlier in the code block.
 
-Here we can add some more polish to the plot: - add colors for Urban vs Rural and label appropriately, update labels. - switch to the "light_no_labels" basemap from carto (see `get_maptypes(map_service = "carto")` for a full list of options). - add a scale and north arrow for context - various color and line tweaks for aesthetics
+Here we can add some more polish to the plot: - add colors for Urban vs Rural and label appropriately, update labels. - switch to the "world_dark_gray_base" basemap from ESRI (reminder: see `get_maptypes(map_service = "esri")` for a full list of options). - add a scale and north arrow for context - various color and line tweaks for aesthetics
 
 ```{r}
 #| message: false
 #| warning: false
 basemaps::basemap_ggplot(ext = st_bbox(st_buffer(nc_boundary, 
                                                  dist = 20000)), #distance in meters for geographic coordinates
-                         map_service = "carto",
-                         map_type = "light_no_labels")+
+                         map_service = "esri",
+                         map_type = "world_dark_gray_base")+
   geom_sf(data = nc_boundary, fill=NA, color = "grey70")+
   geom_sf(data = roads, color = "red", linewidth = 0.3)+
   geom_sf(data = housing,
@@ -463,16 +465,16 @@ In practice, these types of calculations may also feed into tables, graphs and o
 
 ### `tmap`
 
-[`tmap`](https://r-tmap.github.io/tmap/) is another popular package for making thematic maps.
+[`tmap`](https://r-tmap.github.io/tmap/) is another popular package for making thematic maps.  `tmap` uses tile map services like those we pulled from the `basemaps` service.  We'll again focus on Open Street Maps and ESRI maps. You can check the list of available maps with `tmap_providers()`.
 
 `tmap` objects include pop ups to display the data associated with the plotted shapes or points.  We can disable these with `popup=FALSE` as below.
 
 ```{r}
 #| fig-width: 12
 #| fig-height: 5
-tm_basemap("Stadia.StamenTonerLite")+
+tm_basemap("Esri.WorldTopoMap", alpha = 1)+
   tm_shape(nc_csas)+
-  tm_polygons(fill="NAME", fill_alpha = 0.5,
+  tm_polygons(fill="NAME", fill_alpha = 0.35,
               fill.legend = tm_legend(
                 position = tm_pos_out("right", "center", pos.h = "center")
               ))+
@@ -492,9 +494,9 @@ Let's also use some of our `tidyverse` tools to subset our `housing` dataframe s
 #| fig-width: 12
 #| fig-height: 5
 tmap_mode("view")
-tm_basemap("Stadia.StamenTonerLite")+
+tm_basemap("Esri.WorldTopoMap")+
   tm_shape(nc_csas)+
-  tm_polygons(fill="NAME", fill_alpha = 0.5,
+  tm_polygons(fill="NAME", fill_alpha = 0.25, col = "grey70",
               fill.legend = tm_legend(
                 position = tm_pos_out("right", "center", pos.h = "center")
               ))+
