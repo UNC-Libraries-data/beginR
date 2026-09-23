@@ -245,8 +245,9 @@ There are a number of ways to get basemaps in R, but for today we'll use the `ba
 `st_bbox` converts our set of points into a rectangle to form our plot area. We'll use `theme_nothing` from `ggmap` to remove all axes and other plot elements.
 
 ```{r}
+#| warning: false
 #basemaps package map services use Web Mercator (ESPG: 3857)
-basemap_ggplot(ext = st_bbox(housing), map_service = "osm", map_type = "streets")+
+basemap_ggplot(ext = st_bbox(housing), map_service = "osm", map_type = "streets", verbose=FALSE)+
   geom_sf(data = housing)+
   coord_sf(crs = 3857)+ #ensures all layers are projected to match the basemap
   theme_nothing()
@@ -256,6 +257,7 @@ We can add a state boundary and some space using `tigris` and `st_buffer`.
 
 ```{r}
 #| message: false
+#| warning: false
 nc_boundary <- states(progress_bar = FALSE) |> 
   filter(STUSPS=="NC") 
 
