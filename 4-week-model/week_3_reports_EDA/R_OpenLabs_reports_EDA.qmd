@@ -133,13 +133,13 @@ Read more about the visual editor here:\
 
 Click the **Render** button, and R Studio will generate an HTML report based on your document.
 
-Let's try creating an Quarto document to explore the US cheese consumption data.
+Let's try creating an Quarto document to explore US cheese consumption data.
 
 ````{verbatim}
 ### Data Import
 
 ```{r}
-consumption <- read_csv("data/clean_cheese.csv")
+consumption <- read_csv("https://unc-libraries-data.github.io/beginR/Join_Reshape_Reports/data/clean_cheese.csv")
 ```
 
 ### Useful functions for exploring dataframes
@@ -620,4 +620,25 @@ Looking at the heatmap, we can see that being chosen as a "staff pick" has a wea
       + `geom_histogram` with `x` (continuous) aesthetic and `facet_grid` using the categorical variable
       + `geom_freqpoly` with `x` (continuous) and `color` (categorical) aesthetic
       + `geom_density` `x` (continuous) and `color` (categorical) aesthetic
+
+## Exercises
+
+1. [Download the cheese RStudio Project](https://unc-libraries-data.github.io/beginR/Join_Reshape_Reports/download/cheese.zip) file and extract the R Project contained within. Then, render the cheeseConsumption.qmd report. It should generate an HTML report for you.
+
+2. In the cheeseConsumption.qmd file, find the code chunk named **setup**. change `#| echo: FALSE` to `#| echo: TRUE`. Try knitting the document again. What changed? Did this affect the whole document?
+
+3. In the cheeseConsumption.qmd file, find the code chunk named **import**. change `#| message: FALSE` to `#| message: TRUE`. Try knitting the document again. What changed? Did this affect the whole document?
+
+4. Create another Quarto document analyzing cheese production data contained in the state_milk_productions.csv file. You can use the data dictionary found [here](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-01-29) to make sense of the different variables. **Hint**: you'll need to use the `group_by |> summarize` idiom to sum up all the state level data within each year. You'll probably want to feed the output from that `group_by |> summarize` step into knitr::kable() to get a prettier table for your report.
+
+5. Once you have created an Quarto report analyzing cheese production, send the entire R Project to a friend (or us!) and ask them to knit that .qmd document. If they have RStudio and the tidyverse installed, they should be able to seamlessly generate the exact report you generated, without having to make any changes.
+
+6. Make a scatterplot of pledged vs percent_funded ONLY for projects that were staff picks. Further limit the projects to those that were under 1000% funded and received less than $500,000 in pledges. Add a best fit linear regression line with `geom_smooth` (check the help with `?geom_smooth`.)
+
+7. Which parent categories have the highest median amount pledged?  Which categories have the highest variance or largest IQR in pledges?
+
+8. Load the built-in dataset `mpg` with `data(mpg)`.  Use `?mpg` to learn more about the variables included.  Come up with a hypothesis or expectation you have about the data and check it with one of the methods used above. 
+
+9. Load the built-in dataset `msleep` with `data(msleep)`.  Use `?msleep` to learn more about the variables included.  Come up with a hypothesis or expectation you have about the data and check it with one of the methods used above. Note: `msleep` is provided with the `ggplot2` package, so make sure you have the `tidyverse` loaded!
+
 

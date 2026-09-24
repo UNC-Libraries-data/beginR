@@ -119,6 +119,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#categorical-vs-categorical" id="toc-categorical-vs-categorical" class="nav-link" data-scroll-target="#categorical-vs-categorical">Categorical vs Categorical</a></li>
   <li><a href="#categorical-vs-continuous" id="toc-categorical-vs-continuous" class="nav-link" data-scroll-target="#categorical-vs-continuous">Categorical vs Continuous</a></li>
   <li><a href="#review" id="toc-review" class="nav-link" data-scroll-target="#review">Review</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 </nav>
 </div>
@@ -259,11 +260,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="generating-the-html-document" class="level2">
 <h2 class="anchored" data-anchor-id="generating-the-html-document">Generating the HTML document</h2>
 <p>Click the <strong>Render</strong> button, and R Studio will generate an HTML report based on your document.</p>
-<p>Let’s try creating an Quarto document to explore the US cheese consumption data.</p>
+<p>Let’s try creating an Quarto document to explore US cheese consumption data.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>### Data Import</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>consumption &lt;- read_csv("data/clean_cheese.csv")</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>consumption &lt;- read_csv("https://unc-libraries-data.github.io/beginR/Join_Reshape_Reports/data/clean_cheese.csv")</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>```</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>### Useful functions for exploring dataframes</span>
@@ -911,6 +912,20 @@ staff_pick        0.31632515  0.30972716  1.00000000</code></pre>
 <li>(Categorical - Categorical) <code>table</code> or <code>geom_count</code> with <code>x</code> and <code>y</code> aesthetics</li>
 <li>(Categorical - Continuous) + <code>geom_boxplot</code> with <code>y</code> (continuous) and <code>x</code> (categorical) aesthetics + <code>geom_histogram</code> with <code>x</code> (continuous) aesthetic and <code>facet_grid</code> using the categorical variable + <code>geom_freqpoly</code> with <code>x</code> (continuous) and <code>color</code> (categorical) aesthetic + <code>geom_density</code> <code>x</code> (continuous) and <code>color</code> (categorical) aesthetic</li>
 </ul>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li><p><a href="https://unc-libraries-data.github.io/beginR/Join_Reshape_Reports/download/cheese.zip">Download the cheese RStudio Project</a> file and extract the R Project contained within. Then, render the cheeseConsumption.qmd report. It should generate an HTML report for you.</p></li>
+<li><p>In the cheeseConsumption.qmd file, find the code chunk named <strong>setup</strong>. change <code>#| echo: FALSE</code> to <code>#| echo: TRUE</code>. Try knitting the document again. What changed? Did this affect the whole document?</p></li>
+<li><p>In the cheeseConsumption.qmd file, find the code chunk named <strong>import</strong>. change <code>#| message: FALSE</code> to <code>#| message: TRUE</code>. Try knitting the document again. What changed? Did this affect the whole document?</p></li>
+<li><p>Create another Quarto document analyzing cheese production data contained in the state_milk_productions.csv file. You can use the data dictionary found <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-01-29">here</a> to make sense of the different variables. <strong>Hint</strong>: you’ll need to use the <code>group_by |&gt; summarize</code> idiom to sum up all the state level data within each year. You’ll probably want to feed the output from that <code>group_by |&gt; summarize</code> step into knitr::kable() to get a prettier table for your report.</p></li>
+<li><p>Once you have created an Quarto report analyzing cheese production, send the entire R Project to a friend (or us!) and ask them to knit that .qmd document. If they have RStudio and the tidyverse installed, they should be able to seamlessly generate the exact report you generated, without having to make any changes.</p></li>
+<li><p>Make a scatterplot of pledged vs percent_funded ONLY for projects that were staff picks. Further limit the projects to those that were under 1000% funded and received less than $500,000 in pledges. Add a best fit linear regression line with <code>geom_smooth</code> (check the help with <code>?geom_smooth</code>.)</p></li>
+<li><p>Which parent categories have the highest median amount pledged? Which categories have the highest variance or largest IQR in pledges?</p></li>
+<li><p>Load the built-in dataset <code>mpg</code> with <code>data(mpg)</code>. Use <code>?mpg</code> to learn more about the variables included. Come up with a hypothesis or expectation you have about the data and check it with one of the methods used above.</p></li>
+<li><p>Load the built-in dataset <code>msleep</code> with <code>data(msleep)</code>. Use <code>?msleep</code> to learn more about the variables included. Come up with a hypothesis or expectation you have about the data and check it with one of the methods used above. Note: <code>msleep</code> is provided with the <code>ggplot2</code> package, so make sure you have the <code>tidyverse</code> loaded!</p></li>
+</ol>
 </section>
 
 </main>
