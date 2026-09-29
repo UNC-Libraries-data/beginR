@@ -529,6 +529,8 @@ There are two major raster packages to know about! `terra` is the successor to t
 
 We'll work through some basic tasks with raster data using the `terra` package.  This raster contains precipitation data for the eastern portion of the United states.
 
+[Download prism_ppt_us_30s_2016_eastern_US.tif here](https://unc-libraries-data.github.io/beginR/spatial/data/prism_ppt_us_30s_2016_eastern_US.tif).
+
 ```{r}
 ppt <- rast("data/prism_ppt_us_30s_2016_eastern_US.tif")
 plot(ppt)
