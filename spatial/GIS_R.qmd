@@ -17,7 +17,7 @@ format:
 
 This workshop assumes a basic familiarity with the R programming language and some exposure to GIS concepts like projections.
 
-If you'd like a refresher on R, we suggest the [R For Data Science](https://r4ds.hadley.nz/) free e-book and the lessons from our [beginR workshops](https://tarheels.live/beginr/lessons/), including [setup instructions for R and R Studio](../week1_Introduction/R_OpenLabs_Introduction.html#setup-r-r-studio).
+If you'd like a refresher on R, we suggest the [R For Data Science](https://r4ds.hadley.nz/) free e-book and the lessons from our [beginR workshops](https://tarheels.live/beginr/lessons/), including [setup instructions for R and R Studio](https://unc-libraries-data.github.io/beginR/4-week-model/week_1_introduction/introduction.html#installation).
 
 ## Important packages
 
