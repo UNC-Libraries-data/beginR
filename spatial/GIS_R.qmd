@@ -25,7 +25,7 @@ If you'd like a refresher on R, we suggest the [R For Data Science](https://r4ds
 
 As a refresher, in R we install packages from CRAN (The Comprehensive R Archive Network) with the following code:
 
-`install.packages(c('tidyverse','scales','sf','tidycensus','tigris','arcgislayers','ggmap','ggspatial','basemaps','tmap'))`
+`install.packages(c('tidyverse','scales','sf','tidycensus','tigris','arcgislayers','ggmap','ggspatial','basemaps','tmap', 'terra'))`
 
 *These may take a few minutes to install.*
 
@@ -52,6 +52,9 @@ library(ggspatial)
 library(basemaps)
 library(scales)
 library(tmap)
+
+#Rasters
+library(terra)
 ```
 
 
@@ -520,6 +523,71 @@ tm_basemap("Esri.WorldTopoMap")+
 ### Raster data
 
 There are two major raster packages to know about! `terra` is the successor to the `raster` package and works well for most simple rasters. `stars` is a better fit for cubes of data - think rasters with many many layers covering lots of different time points. `stars` itself is short for "Spatiotemporal Arrays"!
+
+
+#### Basic Raster Usage
+
+We'll work through some basic tasks with raster data using the `terra` package.  This raster contains precipitation data for the eastern portion of the United states.
+
+```{r}
+ppt <- rast("data/prism_ppt_us_30s_2016_eastern_US.tif")
+plot(ppt)
+```
+
+Let's work on zooming in on the NC region we've been working with for this workshop.  We'll use some of our `sf` tools to do this.
+
+```{r}
+# Combine NC boundaries with our CSA boundaries
+nc_area <- st_union(nc_boundary, nc_csas)
+
+#Determine the bounding box for this area and convert to an sf object
+nc_bbox <- st_as_sfc(st_bbox(nc_area))
+
+plot(st_geometry(nc_bbox))
+plot(st_geometry(nc_area), add=T)
+```
+Now we'll use the `crop` function to crop our raster dataset to this area.  We're working with a rectangle because rasters are grids.
+
+```{r}
+ppt_nc <- crop(ppt, nc_bbox)
+plot(ppt_nc)
+plot(st_geometry(nc_area), add=T)
+```
+Next, let's extract some of the precipitation data and summarize it at the level of our CSA polygons.
+
+We'll use the `extract` function from `terra` here.  We'll specify with `terra::extract` because `extract` is a pretty common function name and we want to make sure we're getting the version from `terra`.
+
+```{r}
+polygon_stats <- terra::extract(x = ppt_nc, y = nc_csas,
+        fun = c("mean", "min", "max"), na.rm=T) |> 
+  mutate(CSAFP = nc_csas$CSAFP)
+
+head(polygon_stats)
+```
+
+Finally, we can join this data back to our polygons to plot it:
+
+```{r}
+nc_csas_stats <- left_join(nc_csas, polygon_stats)
+
+ggplot()+
+  geom_sf(data = nc_boundary, fill = "grey80")+
+  geom_sf(data = nc_csas_stats, aes(fill = mean_prism_ppt_us_30s_2016 ))+
+  scale_fill_gradient(low = "#56B1F7", high= "#132B43")+
+  theme_minimal()
+```
+There's a nice convenience package for plotting rasters from `terra` with `ggplot` called `tidyterra`.  We'll plot both with the same scale so we can see how the averaging smooths out the values.  Try changing the `geom_sf`'s `fill` to `min_prism_ppt_us_30s_2016` or `max_prism_ppt_us_30s_2016` and see what happens!
+
+```{r}
+#install.packages("tidyterra")
+
+ggplot()+
+  tidyterra::geom_spatraster(data = ppt_nc, alpha = 0.9)+
+  geom_sf(data = nc_csas_stats, aes(fill = mean_prism_ppt_us_30s_2016), color=NA)+
+  scale_fill_gradient(low = "#56B1F7", high= "#132B43", na.value = NA)+
+  theme_minimal()
+```
+
 
 ### Shapefiles and geopackages
 
