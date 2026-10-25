@@ -16,8 +16,9 @@ format:
 ## Data and other downloads
 
 ```{r}
-#install.packages("gridExtra")
-library(gridExtra) #combining and organizing multiple ggplots
+#install.packages("patchwork")
+library(patchwork) #combining and organizing multiple ggplots
+library(broom) #We'll be using this for the modeling portion of the lesson.
 ```
 
 ## Today
@@ -366,7 +367,9 @@ head(moddf)
 Since these are both continuous numeric variables, let's plot them with a scatterplot.
 
 ```{r fig.width=4, fig.height=4}
-ggplot(data=moddf,aes(x=x,y=y))+geom_point()+theme_bw()
+ggplot(data=moddf, aes(x=x, y=y)) + 
+  geom_point() + 
+  theme_bw()
 ```
 
 One of the simplest ways to model data like this is with a line capturing the trend.  We can model a line with an interpretable formula: 
@@ -377,9 +380,10 @@ One of the simplest ways to model data like this is with a line capturing the tr
 
 We can plot some candidate line(s) with `geom_abline`:
 ```{r fig.width=4, fig.height=4}
-ggplot(data=moddf,aes(x=x,y=y))+geom_point()+
-  geom_abline(intercept=-1,slope=3.6,color="blue")+
-  geom_abline(intercept=2,slope=3,color="orange")+
+ggplot(data=moddf,  aes(x=x, y=y)) + 
+  geom_point() +
+  geom_abline(intercept=-1, slope=3.6, color="blue") +
+  geom_abline(intercept=2, slope=3, color="orange") +
   theme_bw()
 ```
 
@@ -389,19 +393,28 @@ How do we choose between lines?  A common metric, especially in prediction, invo
 
 These can be graphically represented as lines parallel to the y-axis:
 ```{r fig.width=8, fig.height=4,message=FALSE, warning=FALSE}
-moddf$p1 <- -1 + 3.6 * moddf$x
-moddf$p2 <- 2 + 3 * moddf$x
-plot1 <- ggplot(data=moddf,aes(x=x,y=y))+geom_point()+
-  geom_abline(intercept=2,slope=3,color="orange")+
+
+moddf <- moddf |> 
+  mutate(p1 = -1 + 3.6*x,
+         p2 = 2 + 3*x
+  )
+
+plot1 <- ggplot(data=moddf, aes(x=x, y=y)) +
+  geom_point() +
+  geom_abline(intercept=2, slope=3, color="orange") +
   geom_segment(aes(x = x, y = y,
-                   xend = x, yend = p2),color="orange")+
+                   xend = x, yend = p2), color="orange") +
   theme_bw()
-plot2 <- ggplot(data=moddf,aes(x=x,y=y))+geom_point()+
-  geom_abline(intercept=-1,slope=3.6,color="blue")+
+
+plot2 <- ggplot(data=moddf, aes(x=x, y=y)) +
+  geom_point() +
+  geom_abline(intercept=-1, slope=3.6, color="blue") +
   geom_segment(aes(x = x, y = y,
-                   xend = x, yend = p1),color="blue")+
+                   xend = x, yend = p1), color="blue") +
   theme_bw()
-grid.arrange(plot1,plot2,ncol=2)
+
+#Making use of patchwork library to combine plots
+plot1 + plot2
 ```
 
 
@@ -428,26 +441,30 @@ The arguments given to `lm` are:
 The values listed under `Estimate` provide estimates for the intercept,`r fit$coefficient[1]`, and slope,`r fit$coefficient[2]`. 
 
 ```{r fig.width=4, fig.height=4}
-moddf$lm <- predict(fit)
+moddf <- augment(fit) #using broom::augment to add fitted values to data frame
+coefs <- tidy(fit) #Using broom::tidy to get the intercept and slope into a tidy data frame
+intercept_est <- coefs |> filter(term == "(Intercept)") |> select(estimate) |> pull()
+slope_est <- coefs |> filter(term == "x") |> select(estimate) |> pull()
+
 ggplot(data=moddf, aes(x=x, y=y)) + 
   geom_point(color="black") + 
-  geom_abline(intercept=fit$coefficients[1],slope=fit$coefficients[2],size=1.1,alpha=0.8,color="black") +
-  geom_abline(intercept=2,slope=3,color="orange")+
-  geom_abline(intercept=-1,slope=3.6,color="blue")+
+  geom_abline(intercept = intercept_est, slope = slope_est, size = 1.1, alpha = 0.8, color = "black") +
+  geom_abline(intercept = 2, slope = 3, color = "orange") +
+  geom_abline(intercept = -1, slope = 3.6, color = "blue") +
   geom_segment(aes(x = x, y = y,
-                   xend = x, yend = lm)) +
+                   xend = x, yend = .fitted)) +
   theme_bw()
 ```
 
 We can visualize the OLS model's point estimates and confidence bands like this:
 
 ```{r}
-moddf.predict <- cbind(moddf, predict(fit, interval = 'confidence'))
+moddf.predict <- augment(fit, interval = "confidence")
 
 ggplot(moddf.predict, aes(x, y)) + 
   geom_point() +
-  geom_line(aes(x, lm)) + 
-  geom_ribbon(aes(ymin=lwr,ymax=upr), alpha=0.3)
+  geom_line(aes(x, .fitted)) + 
+  geom_ribbon(aes(ymin = .lower, ymax = .upper), alpha=0.3)
 
 ```
 
@@ -490,7 +507,7 @@ We add more variables with extentions to R's formula notation:
 Examples:
 
 ```{r}
-summary(lm(data=mtcars,mpg~vs+disp))
+summary(lm(data = mtcars, mpg ~ vs + disp))
 ```
 
 We can use some familiar tidyverse tool to visualize this fit:
@@ -499,12 +516,15 @@ We can use some familiar tidyverse tool to visualize this fit:
 
 d <- mtcars |> select(mpg, vs, disp)
 fit2 <- lm(mpg ~ vs + disp, data = d)
-d$predicted <- predict(fit2)
-d$residuals <- residuals(fit2)
+d <- augment(fit2) |> 
+  rename(predicted = .fitted,
+         residuals = .resid) |> 
+  #Removing extra columns of model diagnostics created by augment
+  select(-c(.rownames, .cooksd, .hat, .sigma, .std.resid))
 
 
 d |> 
-  pivot_longer(-c(mpg,predicted,residuals),names_to = "iv", values_to="x") |> 
+  pivot_longer(-c(mpg, predicted, residuals),names_to = "iv", values_to="x") |> 
   ggplot(aes(x = x, y = mpg)) + 
   geom_point(aes(y = predicted), shape = 1) +
   facet_grid(~ iv, scales = "free") +
@@ -515,7 +535,7 @@ d |>
 What does `-1` do below?
 
 ```{r}
-summary(lm(data=mtcars,mpg~vs*hp+disp-1))
+summary(lm(data = mtcars, mpg ~ vs*hp + disp - 1))
 ```
 
 
@@ -537,8 +557,8 @@ There's a very powerful idea hidden in the bit of code we used to generate the f
 
 ```{r sim}
 x <- runif(50,0,15)
-y <- 3.4 * x + rnorm(50,0,5)
-moddf <- data.frame(x,y)
+y <- 3.4 * x + rnorm(50, 0, 5)
+moddf <- data.frame(x, y)
 ```
 
 This block of code *generates* random data according to our specifications. Unlike most fields of science, where you have to actively gather data, statisticians can use random number generators. This underlies the most commonly used computational tool in statistics: the simulation study. 
@@ -553,19 +573,25 @@ Let's use this tool to study the sampling distribution of a regression slope usi
 ### Sample size and the sampling distribution of the regression slope
 
 ```{r sim1}
+#Initialize variables
 nsims <- 100
 sample_size <- 32
 int <- vector("numeric", nsims)
 sl <- vector("numeric", nsims)
+
 for (i in 1:nsims){
   #Generate
-  x <- runif(sample_size,0,15)
-  y <- 3.4 * x + rnorm(sample_size,0,5)
+  x <- runif(sample_size, 0, 15)
+  y <- 3.4 * x + rnorm(sample_size, 0, 5)
   moddf <- data.frame(x,y)
   
   #Analyze
   fit <- lm(y ~ x, data = moddf)
-  int[i] <- coef(fit)[1]
+  # coef is a base R function that grabs the coefficients from a model
+  # Generally recommend using broom::tidy to get coefficients
+  # because it's easier to explicitly grab model components by name
+  # But can use coef if you know how the model components are indexed by number
+  int[i] <- coef(fit)[1] 
   sl[i] <- coef(fit)[2]
 }
 
@@ -595,8 +621,12 @@ for (i in 1:nsims){
   moddf <- data.frame(x,y)
   fit <- lm(y ~ x, data = moddf)
   index[i] <- i
-  lower[i] <- confint(fit)[2,1]
-  upper[i] <- confint(fit)[2,2]
+  # confint is a base R function that grabs the confidence intervals for each coefficient from a model
+  # Generally recommend using broom::tidy with conf.int = TRUE argument to get confidence intervals
+  # because it's easier to explicitly grab model components by name
+  # But can use confint if you know how the model components are indexed by number
+  lower[i] <- confint(fit)[2, 1]
+  upper[i] <- confint(fit)[2, 2]
 }
 
 sim_results <- data.frame(index, lower, upper)
@@ -623,6 +653,7 @@ nsims <- 5
 sample_size <- 8
 int <- vector("numeric", nsims)
 sl <- vector("numeric", nsims)
+
 for (i in 1:nsims){
   x <- runif(sample_size, 0, 15)
   y <- 3.4 * x + rnorm(sample_size, 0, 5)
