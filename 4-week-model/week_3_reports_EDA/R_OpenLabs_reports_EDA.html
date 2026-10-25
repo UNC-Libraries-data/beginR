@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -13,10 +13,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -69,10 +72,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="R_OpenLabs_reports_EDA_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="R_OpenLabs_reports_EDA_files/libs/quarto-html/anchor.min.js"></script>
 <link href="R_OpenLabs_reports_EDA_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="R_OpenLabs_reports_EDA_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="R_OpenLabs_reports_EDA_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="R_OpenLabs_reports_EDA_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="R_OpenLabs_reports_EDA_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="R_OpenLabs_reports_EDA_files/libs/bootstrap/bootstrap-df715b4811ca13bc07639e5bce24b6cd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="R_OpenLabs_reports_EDA_files/libs/bootstrap/bootstrap-e8f348675d33e97fd5c73aabf5d4e36b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -87,15 +90,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#data-and-other-downloads" id="toc-data-and-other-downloads" class="nav-link active" data-scroll-target="#data-and-other-downloads">Data and other downloads</a></li>
   <li><a href="#today" id="toc-today" class="nav-link" data-scroll-target="#today">Today</a></li>
-  <li><a href="#reproducible-reports-using-quarto" id="toc-reproducible-reports-using-quarto" class="nav-link" data-scroll-target="#reproducible-reports-using-quarto">Reproducible Reports using Quarto</a>
-  <ul class="collapse">
-  <li><a href="#note-r-markdown" id="toc-note-r-markdown" class="nav-link" data-scroll-target="#note-r-markdown">Note: R Markdown</a></li>
-  <li><a href="#quarto-structure" id="toc-quarto-structure" class="nav-link" data-scroll-target="#quarto-structure">Quarto Structure</a></li>
-  </ul></li>
-  <li><a href="#generating-the-html-document" id="toc-generating-the-html-document" class="nav-link" data-scroll-target="#generating-the-html-document">Generating the HTML document</a>
-  <ul class="collapse">
-  <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography">Bibliography</a></li>
-  </ul></li>
   <li><a href="#reminders-and-notes" id="toc-reminders-and-notes" class="nav-link" data-scroll-target="#reminders-and-notes">Reminders and Notes:</a>
   <ul class="collapse">
   <li><a href="#start-a-new-project-in-r" id="toc-start-a-new-project-in-r" class="nav-link" data-scroll-target="#start-a-new-project-in-r">Start a New Project in R</a></li>
@@ -118,6 +112,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#categorical-vs-categorical" id="toc-categorical-vs-categorical" class="nav-link" data-scroll-target="#categorical-vs-categorical">Categorical vs Categorical</a></li>
   <li><a href="#categorical-vs-continuous" id="toc-categorical-vs-continuous" class="nav-link" data-scroll-target="#categorical-vs-continuous">Categorical vs Continuous</a></li>
+  <li><a href="#reproducible-reports-using-quarto" id="toc-reproducible-reports-using-quarto" class="nav-link" data-scroll-target="#reproducible-reports-using-quarto">Reproducible Reports using Quarto</a>
+  <ul class="collapse">
+  <li><a href="#note-r-markdown" id="toc-note-r-markdown" class="nav-link" data-scroll-target="#note-r-markdown">Note: R Markdown</a></li>
+  <li><a href="#quarto-structure" id="toc-quarto-structure" class="nav-link" data-scroll-target="#quarto-structure">Quarto Structure</a></li>
+  </ul></li>
+  <li><a href="#generating-the-html-document" id="toc-generating-the-html-document" class="nav-link" data-scroll-target="#generating-the-html-document">Generating the HTML document</a>
+  <ul class="collapse">
+  <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography">Bibliography</a></li>
+  </ul></li>
   <li><a href="#review" id="toc-review" class="nav-link" data-scroll-target="#review">Review</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
@@ -160,8 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="today">Today</h2>
 <p>This workshop aims to cover:</p>
 <ul>
-<li>Reproducible Reports using Quarto</li>
-<li>Exploratory Data Analysis (EDA)
+<li><p>Exploratory Data Analysis (EDA)</p>
 <ul>
 <li>Basic summaries</li>
 <li>ggplot</li>
@@ -179,184 +181,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Correlations between numeric/logical variables</li>
 </ul></li>
 </ul></li>
-<li><a href="https://r4ds.hadley.nz/quarto">R for Data Science Chapter 27</a></li>
-<li><a href="https://r4ds.hadley.nz/EDA.html">R for Data Science Chapter 10</a></li>
+<li><p>Reproducible Reports using Quarto</p></li>
+<li><p><a href="https://r4ds.hadley.nz/EDA.html">R for Data Science Chapter 10</a><br>
+</p></li>
+<li><p><a href="https://r4ds.hadley.nz/quarto">R for Data Science Chapter 27</a></p></li>
 </ul>
-</section>
-<section id="reproducible-reports-using-quarto" class="level2">
-<h2 class="anchored" data-anchor-id="reproducible-reports-using-quarto">Reproducible Reports using Quarto</h2>
-<p>Quarto provides a straightforward way to create reports that combine code and the output from that code with text commentary. This allows for the creation of automated, reproducible reports. Quarto can knit together your analysis results with text and output it directly into HTML, PDF, or Word documents. In fact, we have been using Quarto to generate the webpage for all of our R Open Labs workshops!</p>
-<section id="note-r-markdown" class="level3">
-<h3 class="anchored" data-anchor-id="note-r-markdown">Note: R Markdown</h3>
-<p>Quarto is very similar to an older tool, R Markdown, that these workshops were originally created in. Quarto and R Markdown syntax and behind the scenes functionality are similar, but Quarto is designed to be more compatible with other languages like Python and Julia. In most cases, you can convert old R Markdown .Rmd documents into Quarto documents with no changes.</p>
-</section>
-<section id="quarto-structure" class="level3">
-<h3 class="anchored" data-anchor-id="quarto-structure">Quarto Structure</h3>
-<p>Quarto has three components.</p>
-<ol type="1">
-<li>An (optional) header in a language called YAML. This allows you to specify the type of output file and configure other options.</li>
-<li>R code chunks wrapped by <code>```</code></li>
-<li>Text mixed with simple formatting markup.</li>
-</ol>
-<p>To create a new Quarto document (.qmd), select File -&gt; New File -&gt; Quarto Document.</p>
-<p>You will have the option to select the output: we’ll use the default HTML for this workshop. Give the document a title and enter your name as author: this will create the header for you at the top of your new .html page! RStudio will create a new Quarto document filled with examples of code chunks and text.</p>
-<section id="header" class="level4">
-<h4 class="anchored" data-anchor-id="header">Header</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>title: "beginR: Joining, Reshaping &amp; Reproducible Reports"</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>author: </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  name: University of North Carolina at Chapel Hill</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>execute:</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  echo: true</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>format: </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  html:</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    theme: spacelab</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    toc: true</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    toc-location: left</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    page-layout: article</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>---</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>At the top of the page is the optional Yet Another Markup Language (YAML) header. This header is a powerful way to edit the formatting of your report (e.g.&nbsp;figure dimensions, presence of a table of contents, identifying the location of a bibliography file).</p>
-</section>
-<section id="code-chunks" class="level4">
-<h4 class="anchored" data-anchor-id="code-chunks">Code Chunks</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>#| label: setup</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>#| warning: false</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>library(tidyverse)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>```</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>R code chunks are surrounded by <code>```</code>. Inside the curly braces, it specifies that this code chunk will use R.</p>
-<p><code>#|</code> precedes options for this code chunk. In this case:</p>
-<ul>
-<li><code>#| label: setup</code> names this chunk “setup”. (Names are optional)</li>
-<li><code>#| warning: false</code> tells Quarto to hide any warnings generated by our code in the final HTML document.</li>
-</ul>
-<p>Finally the code <code>library(tidyverse)</code> is executed as usual. When creating a document, you can use the buttons at the top right of the code chunk to run all code before and run the code in this block respectively.</p>
-<p>Use CTRL+ALT+i (PC) or CMD+OPTION+i (Mac) to insert R code blocks.</p>
-</section>
-<section id="formatted-text" class="level4">
-<h4 class="anchored" data-anchor-id="formatted-text">Formatted Text</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>## Quarto</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>## Running Code</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><img src="figures/text.png" class="img-fluid"></p>
-<p>This is plain text with simple formatting added. The <code>##</code> tells Quarto that “Quarto” and “Running Code are section headers. The <code>**</code> around”Render” tells Quarto to make that word <strong>bold</strong>.</p>
-<p>The Posit team has helpfully condensed these code chunk and text formatting options into a <a href="https://rstudio.github.io/cheatsheets/quarto.pdf">cheatsheet</a>.</p>
-<p>You can get pretty far with options in the Quarto cheatsheet, but Quarto is a very powerful, flexible language that we do not have time to fully cover. More detailed references are available here: <a href="https://quarto.org/docs/authoring/markdown-basics.html" class="uri">https://quarto.org/docs/authoring/markdown-basics.html</a></p>
-</section>
-<section id="visual-editor" class="level4">
-<h4 class="anchored" data-anchor-id="visual-editor">Visual Editor</h4>
-<p>R Studio provides a visual editor for Quarto documents. This can be accessed by toggling between the “Source” and “Visual” options in the top left corner of your Qmd script editor pane.</p>
-<p>Once activated, this interface is similar to a word processing software like Microsoft Word - shortcuts for bolding, italics, etc. are usually the same and there are icons and drop down menus available for lists, bullets, links, and more.</p>
-<p>You can still use CTRL+ALT+i (PC) or CMD+OPTION+i (Mac) to insert R code blocks, or use the Insert&gt;Code Chunk&gt;R menu in the visual editor.</p>
-<p>Read more about the visual editor here:<br>
-<a href="https://quarto.org/docs/visual-editor/" class="uri">https://quarto.org/docs/visual-editor/</a></p>
-</section>
-</section>
-</section>
-<section id="generating-the-html-document" class="level2">
-<h2 class="anchored" data-anchor-id="generating-the-html-document">Generating the HTML document</h2>
-<p>Click the <strong>Render</strong> button, and R Studio will generate an HTML report based on your document.</p>
-<p>Let’s try creating an Quarto document to explore US cheese consumption data.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>### Data Import</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>consumption &lt;- read_csv("https://unc-libraries-data.github.io/beginR/Join_Reshape_Reports/data/clean_cheese.csv")</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>### Useful functions for exploring dataframes</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>Include one of the following in your document. We've used `eval = FALSE` here to prevent this code chunk from running!</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>#| label: misc</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>#| eval: FALSE</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>head(consumption)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>tail(consumption)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>summary(consumption)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>### Tables and `knitr::kable`</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>By default, Quarto will display tables the way they appear in the R console. We can use `knitr::kable function` to get cleaner tables.</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>#| label: kable</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>knitr::kable(head(consumption), caption = "The first six rows of the cheese consumption data")</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>### Adding a new variable</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>We've covered two ways to add a new variable to a dataframe.</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>**Note:** R allows non-standard variable names that include spaces, parentheses, and other special characters. The way to refer to variable names that contain wonky symbols is to use the backtick symbol `` ` ``, found at the top left of your keyboard with the tilde `~`.</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>The base R way covered in lesson 1 using the `$` operator and `with()` function</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>#| label: ratio1</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>#| error: TRUE</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>#Base R way, covered in lesson 1</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>consumption$amer_ital_ratio &lt;- with(consumption, `Total American Cheese` / `Total Italian Cheese`)</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>Oops. Better check the variable names.</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>#| label: ratio2</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>consumption$amer_ital_ratio1 &lt;- with(consumption, `Total American Chese` / `Total Italian Cheese`)</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>The tidyverse way covered in lesson 3 using the `mutate()` function</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>#| label: ratio3</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>#Tidyverse way, covered in lesson 3</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>consumption &lt;- mutate(consumption, amer_ital_ratio2 = `Total American Chese` / `Total Italian Cheese`)</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>### Selecting Columns</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>#| label: select</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>consumption &lt;- select(consumption, Year, Cheddar, Mozzarella, `Cream and Neufchatel`)</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>### Renaming Columns</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>#| label: rename</span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>consumption &lt;- rename(consumption, Cream_and_Neufchatel = `Cream and Neufchatel`)</span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>### Plotting</span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>```{r}</span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>#| label: plot1</span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>#| fig.width: 8</span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>#| fig.height: 5</span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>ggplot(consumption, aes(x = Year)) + </span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>    geom_point(aes(y = Cheddar, col = "Cheddar")) + </span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>    geom_point(aes(y = Mozzarella, col = "Mozzarella")) + </span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>    geom_point(aes(y = Cream_and_Neufchatel, col = "Cream and Neufchatel")) +</span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>    ylab("Consumption in Pounds Per Person")</span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>```</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="bibliography" class="level3">
-<h3 class="anchored" data-anchor-id="bibliography">Bibliography</h3>
-<p>Quarto also provides a nifty way to incorporate a bibliography and references. We’ll haven an example of this in the exercises, but here’s a brief summary of the steps required to use a BibTex bibliography.</p>
-<ol type="1">
-<li>Create a plain-text .bib file in the same directory as your .qmd document.</li>
-<li>Fill that .bib file with BibTex citations. Many academic databases or the <a href="http://www.citationmachine.net/bibtex/cite-a-book">Citation Machine</a> can generate the BibTex citations for you.</li>
-<li>Make sure each citation has a unique citation-key, the first entry</li>
-<li>Add a bibliography field to the YAML header that tells Quarto the name of your bibliography file, for example <code>bibliography: references.bib</code></li>
-<li>Add citations throughout the document using square brackets.</li>
-</ol>
-</section>
 </section>
 <section id="reminders-and-notes" class="level2">
 <h2 class="anchored" data-anchor-id="reminders-and-notes">Reminders and Notes:</h2>
@@ -389,11 +218,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="what-do-we-have---dim-str-and-summary">What do we have? - <code>dim</code>, <code>str</code>, and <code>summary</code></h2>
 <p>Before we start asking questions of our dataset, we need to determine the basic contents of the dataset.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>kstarter <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Kickstarter_nc.csv"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(kstarter)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>kstarter <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Kickstarter_nc.csv"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(kstarter)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1609   18</code></pre>
 </div>
@@ -404,7 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In R, we can use square brackets, <code>[]</code>, to quickly select a subset of rows and/or columns by position using numeric indices. Unlike some programming languages, R starts counting positions at 1 instead of zero.</p>
 <p>For example, if we want to look at row 7, column 2 of our kstarter data frame, we can do it like so:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>kstarter[<span class="dv">7</span>,<span class="dv">2</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kstarter[<span class="dv">7</span>,<span class="dv">2</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
   name                                                 
@@ -414,29 +243,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>There are a number of different ways we can use indexing to subset our data:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>kstarter[,<span class="dv">1</span>] <span class="co"># column 1</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>kstarter[,<span class="dv">7</span><span class="sc">:</span><span class="dv">10</span>] <span class="co"># columns 7 through 10</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>kstarter[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">11</span>)] <span class="co"># columns 1, 8 and 11</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>kstarter[<span class="dv">2</span>,] <span class="co"># row 2</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>kstarter[<span class="dv">3</span><span class="sc">:</span><span class="dv">9</span>,] <span class="co"># rows 3 through 9</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>kstarter[<span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">10</span>),] <span class="co"># rows 7 and 10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>kstarter[,<span class="dv">1</span>] <span class="co"># column 1</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>kstarter[,<span class="dv">7</span><span class="sc">:</span><span class="dv">10</span>] <span class="co"># columns 7 through 10</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>kstarter[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">11</span>)] <span class="co"># columns 1, 8 and 11</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>kstarter[<span class="dv">2</span>,] <span class="co"># row 2</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>kstarter[<span class="dv">3</span><span class="sc">:</span><span class="dv">9</span>,] <span class="co"># rows 3 through 9</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>kstarter[<span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">10</span>),] <span class="co"># rows 7 and 10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For a vector, we only need one number to describe position:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>myvec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>,<span class="st">"d"</span>,<span class="st">"e"</span>,<span class="st">"f"</span>,<span class="st">"g"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>myvec</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>myvec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>,<span class="st">"d"</span>,<span class="st">"e"</span>,<span class="st">"f"</span>,<span class="st">"g"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>myvec</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "a" "b" "c" "d" "e" "f" "g"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>myvec[<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>myvec[<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "a"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>myvec[<span class="dv">4</span><span class="sc">:</span><span class="dv">7</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>myvec[<span class="dv">4</span><span class="sc">:</span><span class="dv">7</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "d" "e" "f" "g"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>myvec[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">7</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>myvec[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">7</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "a" "c" "g"</code></pre>
 </div>
@@ -446,7 +275,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="str-and-summary-with-indexing"><code>str</code> and <code>summary</code> (with Indexing)</h3>
 <p>We can use <code>str</code> and <code>summary</code> to learn more about each of these 36 variables. We’ll use indexing to get results for only the first three columns with <code>str</code></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(kstarter[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(kstarter[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>tibble [1,609 × 3] (S3: tbl_df/tbl/data.frame)
  $ id          : num [1:1609] 1.63e+09 1.17e+09 1.24e+09 1.58e+09 7.17e+08 ...
@@ -456,9 +285,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The equivalent way to do this using dplyr and the <code>|&gt;</code> we learned earlier would be:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id<span class="sc">:</span>creator_name) <span class="sc">|&gt;</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id<span class="sc">:</span>creator_name) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>tibble [1,609 × 3] (S3: tbl_df/tbl/data.frame)
  $ id          : num [1:1609] 1.63e+09 1.17e+09 1.24e+09 1.58e+09 7.17e+08 ...
@@ -468,30 +297,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We’ll use <code>summary</code> with the 6th, 10th, and 13th columns.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(kstarter[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">10</span>,<span class="dv">13</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(kstarter[,<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">10</span>,<span class="dv">13</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   category_name       goal         backers_count    
- Length   :1609   Min.   :      1   Min.   :    0.0  
- N.unique : 119   1st Qu.:   1200   1st Qu.:    5.0  
- N.blank  :   0   Median :   5000   Median :   25.0  
- Min.nchar:   3   Mean   :  18568   Mean   :  119.9  
- Max.nchar:  17   3rd Qu.:  12000   3rd Qu.:   83.0  
- NAs      :  40   Max.   :4779000   Max.   :16734.0  </code></pre>
+<pre><code> category_name           goal         backers_count    
+ Length:1609        Min.   :      1   Min.   :    0.0  
+ Class :character   1st Qu.:   1200   1st Qu.:    5.0  
+ Mode  :character   Median :   5000   Median :   25.0  
+                    Mean   :  18568   Mean   :  119.9  
+                    3rd Qu.:  12000   3rd Qu.:   83.0  
+                    Max.   :4779000   Max.   :16734.0  </code></pre>
 </div>
 </div>
 <p>To get the same results using dplyr and the |&gt;, we could use:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(category_name, goal, backers_count) <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(category_name, goal, backers_count) <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   category_name       goal         backers_count    
- Length   :1609   Min.   :      1   Min.   :    0.0  
- N.unique : 119   1st Qu.:   1200   1st Qu.:    5.0  
- N.blank  :   0   Median :   5000   Median :   25.0  
- Min.nchar:   3   Mean   :  18568   Mean   :  119.9  
- Max.nchar:  17   3rd Qu.:  12000   3rd Qu.:   83.0  
- NAs      :  40   Max.   :4779000   Max.   :16734.0  </code></pre>
+<pre><code> category_name           goal         backers_count    
+ Length:1609        Min.   :      1   Min.   :    0.0  
+ Class :character   1st Qu.:   1200   1st Qu.:    5.0  
+ Mode  :character   Median :   5000   Median :   25.0  
+                    Mean   :  18568   Mean   :  119.9  
+                    3rd Qu.:  12000   3rd Qu.:   83.0  
+                    Max.   :4779000   Max.   :16734.0  </code></pre>
 </div>
 </div>
 </section>
@@ -508,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="anchored" data-anchor-id="table"><code>table</code></h4>
 <p><code>table</code> provides a simple frequency table for a categorical (usually factor or character) variable.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(kstarter<span class="sc">$</span>category_parent_name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(kstarter<span class="sc">$</span>category_parent_name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
          Art       Comics       Crafts        Dance       Design      Fashion 
@@ -531,28 +360,28 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 <h4 class="anchored" data-anchor-id="bar-charts-with-geom_bar">Bar Charts with <code>geom_bar</code></h4>
 <p>We can represent categorical variables with a bar chart, using a ggplot with a <code>geom_bar</code> layer. <code>geom_bar</code>requires us to provide only one categorical variable as an aesthetic (x for vertical bars or y for horizontal ones) then plots frequency on the other axis.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> kstarter, <span class="fu">aes</span>(<span class="at">y =</span> category_parent_name)) <span class="sc">+</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> kstarter, <span class="fu">aes</span>(<span class="at">y =</span> category_parent_name)) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Using <code>fct_infreq</code> will quickly re-arrange our categories to be plotted in frequency order. I’ve also used <code>labs</code> layers to provide better labels for our axes.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> kstarter, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fct_rev</span>(<span class="fu">fct_infreq</span>(category_parent_name)))) <span class="sc">+</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Kickstarter Categories"</span>,</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Number of Projects"</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> kstarter, <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fct_rev</span>(<span class="fu">fct_infreq</span>(category_parent_name)))) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Kickstarter Categories"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Number of Projects"</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -566,14 +395,14 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 </blockquote>
 <p>Unfortunately, with continuous variables, we usually have too many distinct values to make a table or bar chart useful.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Music"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> backers_count)) <span class="sc">+</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Music"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> backers_count)) <span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -582,15 +411,15 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 <h4 class="anchored" data-anchor-id="histograms-with-geom_hist">Histograms with <code>geom_hist</code></h4>
 <p>A common way to overcome this problem is to bin values into ranges with a histogram.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Music"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> backers_count)) <span class="sc">+</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Music"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> backers_count)) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -600,7 +429,7 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -610,15 +439,15 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 <h4 class="anchored" data-anchor-id="boxplots-with-geom_boxplot">Boxplots with <code>geom_boxplot</code></h4>
 <p>The boxplot provides another convenient summary of a continuous variable. Adding a theme layer to this plot changes its overall appearance - in this case, providing more contrast.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Music"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> backers_count, <span class="at">y =</span> category_name)) <span class="sc">+</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Music"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> backers_count, <span class="at">y =</span> category_name)) <span class="sc">+</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -647,28 +476,28 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 </blockquote>
 <p>The most common way to explore the interaction between two continuous variables is with a scatterplot, using <code>geom_point</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> backers_count, <span class="at">y =</span> pledged)) <span class="sc">+</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> backers_count, <span class="at">y =</span> pledged)) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>As in many large datasets, we have so many points in certain areas that it can be hard to tell how many observations are actually represented. We can get a better sense of how many observations are in a given area by adding some transparency, using the <code>alpha</code> aesthetic of <code>geom_point</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> backers_count, <span class="at">y =</span> pledged)) <span class="sc">+</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.08</span>) <span class="sc">+</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> backers_count, <span class="at">y =</span> pledged)) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.08</span>) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -678,7 +507,7 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -693,7 +522,7 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 </blockquote>
 <p>We can use <code>table</code> with two variables to get a quick summary.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(kstarter<span class="sc">$</span>category_parent_name, kstarter<span class="sc">$</span>goal_exceeded)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(kstarter<span class="sc">$</span>category_parent_name, kstarter<span class="sc">$</span>goal_exceeded)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              
                FALSE TRUE
@@ -716,15 +545,15 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 </div>
 <p>We can represent this graphically in a number of ways. For example, we can use <code>geom_count</code> to plot points sized by frequency. This has the benefit of avoiding overlapping points.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> goal_exceeded, <span class="at">y =</span> category_parent_name)) <span class="sc">+</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_count</span>() <span class="sc">+</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_area</span>(<span class="at">max_size =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> goal_exceeded, <span class="at">y =</span> category_parent_name)) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_count</span>() <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_area</span>(<span class="at">max_size =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -737,10 +566,10 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 </blockquote>
 <p>Let’s continue looking at room types, but lets compare a continuous variable, prices, across the categories. Recall that we can use <code>group_by</code> and <code>summarize</code> from earlier to get a summary table:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Publishing"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(category_name) <span class="sc">|&gt;</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_goal =</span> <span class="fu">mean</span>(goal), <span class="at">median_goal =</span> <span class="fu">median</span>(goal))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Publishing"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(category_name) <span class="sc">|&gt;</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_goal =</span> <span class="fu">mean</span>(goal), <span class="at">median_goal =</span> <span class="fu">median</span>(goal))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 16 × 3
    category_name     mean_goal median_goal
@@ -765,46 +594,46 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 </div>
 <p>However, we’ll usually get a better sense of the data with a visualization such as a boxplot.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Publishing"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> goal, <span class="at">y =</span> category_name)) <span class="sc">+</span> </span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Publishing"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> goal, <span class="at">y =</span> category_name)) <span class="sc">+</span> </span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>We can control the order of boxplots with <code>reorder</code>. <code>reorder(category_name, goal, median)</code> will reorder the categories of publishing projects based on median goal. Below, we’ve also filtered out publishing projects without a category name.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Publishing"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(category_name)) <span class="sc">|&gt;</span> </span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> goal, <span class="at">y =</span> <span class="fu">reorder</span>(category_name, goal, median))) <span class="sc">+</span> </span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Publishing"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(category_name)) <span class="sc">|&gt;</span> </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> goal, <span class="at">y =</span> <span class="fu">reorder</span>(category_name, goal, median))) <span class="sc">+</span> </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Unfortunately, for histograms, we already have counts on the y axis by default, so we’ll use facets instead. Facets allow you to create multiple plots - one for each level of a categorical variable.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Publishing"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> goal)) <span class="sc">+</span> </span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(category_name)) <span class="sc">+</span></span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Publishing"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> goal)) <span class="sc">+</span> </span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(category_name)) <span class="sc">+</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -812,15 +641,15 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 <p>To place several histograms in one overlapping plot, we should to convert the bar representation into lines, to make overlaps easier to see and understand. We’ll use the <code>color</code> aesthetic to separate our categories.</p>
 <p>*<code>geom_freqpoly</code> represents each histogram as a line plot through the top of each bar. We’ll use the <code>size</code> parameter for <code>geom_freqpoly</code> to make the lines a little thicker than the default.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Publishing"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> goal, <span class="at">color =</span> category_name)) <span class="sc">+</span></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_freqpoly</span>(<span class="at">bins =</span> <span class="dv">20</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category_parent_name <span class="sc">==</span> <span class="st">"Publishing"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> goal, <span class="at">color =</span> category_name)) <span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_freqpoly</span>(<span class="at">bins =</span> <span class="dv">20</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -832,11 +661,11 @@ Film &amp; Video         Food        Games   Journalism        Music  Photograph
 </blockquote>
 <p>If we want to look for correlations between variables, we can use the <code>cor()</code> function. This will only work with numeric variables, however the function will automatically convert logical variables to numeric.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>kstarter_cm <span class="ot">&lt;-</span> kstarter <span class="sc">|&gt;</span> </span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric) <span class="sc">|</span> <span class="fu">where</span>(is.logical), <span class="sc">-</span>id) <span class="sc">|&gt;</span> </span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>()</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>kstarter_cm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>kstarter_cm <span class="ot">&lt;-</span> kstarter <span class="sc">|&gt;</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric) <span class="sc">|</span> <span class="fu">where</span>(is.logical), <span class="sc">-</span>id) <span class="sc">|&gt;</span> </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>()</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>kstarter_cm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      goal    pledged percent_funded backers_count goal_reached
 goal            1.00000000 0.03321195    -0.01590598    0.03563924  -0.08098327
@@ -860,12 +689,12 @@ staff_pick        0.31632515  0.30972716  1.00000000</code></pre>
 </div>
 <p><code>cor()</code> outputs a matrix that shows us the correlation coefficient for every possible pair of variables. This output can be easier to read if we first convert it to a table, then a dataframe.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>kstarter_cdf <span class="ot">&lt;-</span> kstarter_cm <span class="sc">|&gt;</span> </span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.table</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Coef =</span> Freq)</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(kstarter_cdf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>kstarter_cdf <span class="ot">&lt;-</span> kstarter_cm <span class="sc">|&gt;</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.table</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Coef =</span> Freq)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(kstarter_cdf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            Var1 Var2        Coef
 1           goal goal  1.00000000
@@ -878,20 +707,205 @@ staff_pick        0.31632515  0.30972716  1.00000000</code></pre>
 </div>
 <p>Making those conversions also creates an dataframe that can be visualized using <code>geom_tile()</code>. <code>geom_tile()</code> allows us to produce a nicely organized correlation matrix with a color scale, also called a “heatmap”.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(kstarter_cdf, <span class="fu">aes</span>(Var1, Var2, <span class="at">fill =</span> Coef)) <span class="sc">+</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(Coef, <span class="dv">2</span>)), <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(kstarter_cdf, <span class="fu">aes</span>(Var1, Var2, <span class="at">fill =</span> Coef)) <span class="sc">+</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(Coef, <span class="dv">2</span>)), <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="R_OpenLabs_reports_EDA_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Looking at the heatmap, we can see that being chosen as a “staff pick” has a weak affect on pledges and backers and whether or not a project reaches or exceeds its goal. However, if a project is chosen as a “spotlight”, it is very likely to reach and exceed its goal!</p>
+</section>
+</section>
+<section id="reproducible-reports-using-quarto" class="level2">
+<h2 class="anchored" data-anchor-id="reproducible-reports-using-quarto">Reproducible Reports using Quarto</h2>
+<p>Quarto provides a straightforward way to create reports that combine code and the output from that code with text commentary. This allows for the creation of automated, reproducible reports. Quarto can knit together your analysis results with text and output it directly into HTML, PDF, or Word documents. In fact, we have been using Quarto to generate the webpage for all of our R Open Labs workshops!</p>
+<section id="note-r-markdown" class="level3">
+<h3 class="anchored" data-anchor-id="note-r-markdown">Note: R Markdown</h3>
+<p>Quarto is very similar to an older tool, R Markdown, that these workshops were originally created in. Quarto and R Markdown syntax and behind the scenes functionality are similar, but Quarto is designed to be more compatible with other languages like Python and Julia. In most cases, you can convert old R Markdown .Rmd documents into Quarto documents with no changes. If you’ve never heard of R Markdown, then you can ignore this!</p>
+</section>
+<section id="quarto-structure" class="level3">
+<h3 class="anchored" data-anchor-id="quarto-structure">Quarto Structure</h3>
+<p>Quarto has three components.</p>
+<ol type="1">
+<li>An (optional) header in a language called YAML. This allows you to specify the type of output file and configure other options.</li>
+<li>R code chunks wrapped by <code>```</code></li>
+<li>Text mixed with simple formatting markup.</li>
+</ol>
+<p>To create a new Quarto document (.qmd), select File -&gt; New File -&gt; Quarto Document.</p>
+<p>You will have the option to select the output: we’ll use the default HTML for this workshop. Give the document a title and enter your name as author: this will create the header for you at the top of your new .html page! RStudio will create a new Quarto document filled with examples of code chunks and text.</p>
+<section id="header" class="level4">
+<h4 class="anchored" data-anchor-id="header">Header</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>title: "beginR: Reproducible Reports Using Quarto &amp; Exploratory Data Analysis (EDA)"</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>author: </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  name: University of North Carolina at Chapel Hill</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>execute:</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>    echo: true</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>format: </span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  html:</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    theme: spacelab</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>    toc: true</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>    toc-location: left</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>    page-layout: article</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>---</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>At the top of the page is the optional Yet Another Markup Language (YAML) header. This header is a powerful way to edit the formatting of your report (e.g.&nbsp;figure dimensions, presence of a table of contents, identifying the location of a bibliography file).</p>
+</section>
+<section id="code-chunks" class="level4">
+<h4 class="anchored" data-anchor-id="code-chunks">Code Chunks</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>#| label: setup</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>#| warning: false</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>library(tidyverse)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>```</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>R code chunks are surrounded by <code>```</code>. Inside the curly braces, it specifies that this code chunk will use R.</p>
+<p><code>#|</code> precedes options for this code chunk. In this case:</p>
+<ul>
+<li><code>#| label: setup</code> names this chunk “setup”. (Names are optional)</li>
+<li><code>#| warning: false</code> tells Quarto to hide any warnings generated by our code in the final HTML document.</li>
+</ul>
+<p>Finally the code <code>library(tidyverse)</code> is executed as usual. When creating a document, you can use the buttons at the top right of the code chunk to run all code before and run the code in this block respectively.</p>
+<p>Use CTRL+ALT+i (PC) or CMD+OPTION+i (Mac) to insert R code blocks.</p>
+</section>
+<section id="formatted-text" class="level4">
+<h4 class="anchored" data-anchor-id="formatted-text">Formatted Text</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>## Quarto</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see &lt;https://quarto.org&gt;.</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>## Running Code</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="figures/text.png" class="img-fluid"></p>
+<p>This is plain text with simple formatting added. The <code>##</code> tells Quarto that “Quarto” and “Running Code are section headers. The <code>**</code> around”Render” tells Quarto to make that word <strong>bold</strong>.</p>
+<p>The Posit team has helpfully condensed these code chunk and text formatting options into a <a href="https://rstudio.github.io/cheatsheets/quarto.pdf">cheatsheet</a>.</p>
+<p>You can get pretty far with options in the Quarto cheatsheet, but Quarto is a very powerful, flexible language that we do not have time to fully cover. More detailed references are available here: <a href="https://quarto.org/docs/authoring/markdown-basics.html" class="uri">https://quarto.org/docs/authoring/markdown-basics.html</a></p>
+</section>
+<section id="visual-editor" class="level4">
+<h4 class="anchored" data-anchor-id="visual-editor">Visual Editor</h4>
+<p>R Studio provides a visual editor for Quarto documents. This can be accessed by toggling between the “Source” and “Visual” options in the top left corner of your Qmd script editor pane.</p>
+<p>Once activated, this interface is similar to a word processing software like Microsoft Word - shortcuts for bolding, italics, etc. are usually the same and there are icons and drop down menus available for lists, bullets, links, and more.</p>
+<p>You can still use CTRL+ALT+i (PC) or CMD+OPTION+i (Mac) to insert R code blocks, or use the Insert&gt;Code Chunk&gt;R menu in the visual editor.</p>
+<p>Read more about the visual editor here:<br>
+<a href="https://quarto.org/docs/visual-editor/" class="uri">https://quarto.org/docs/visual-editor/</a></p>
+</section>
+</section>
+</section>
+<section id="generating-the-html-document" class="level2">
+<h2 class="anchored" data-anchor-id="generating-the-html-document">Generating the HTML document</h2>
+<p>Let’s try converting some of our exploratory data analysis code into a Quarto document.</p>
+<ol type="1">
+<li>Go to <strong>File &gt; New File &gt; Quarto Document</strong>.</li>
+<li>Edit the YAML header to adjust the title of the report.</li>
+<li>Copy the code below into body of the new document.</li>
+<li>Save the Quarto document into your RStudio project directory</li>
+<li>Click the <strong>Render</strong> button, and R Studio will generate an HTML report based on your document.</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>### Data Import</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>library(tidyverse)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>kstarter &lt;- read_csv("data/Kickstarter_nc.csv")</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>### Useful functions for exploring dataframes</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>Include one of the following in your document. We've used `eval = FALSE` here to prevent this code chunk from running!</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>#| label: misc</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>#| eval: FALSE</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>head(kstarter)</span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>tail(kstarter)</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>summary(kstarter)</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>### Tables and `knitr::kable`</span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>By default, Quarto will display tables the way they appear in the R console. We can use `knitr::kable function` to get cleaner tables.</span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>#| label: kable</span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>knitr::kable(head(kstarter), caption = "The first six rows of the Kickstarter data")</span>
+<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a>### Categorical Variables</span>
+<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a>#### `table`</span>
+<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a>`table` provides a simple frequency table for a categorical (usually factor or character) variable.  </span>
+<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a>#| label: freq_table</span>
+<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a>knitr::kable(table(kstarter$category_parent_name), caption = "Frequency Table")</span>
+<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb48-40"><a href="#cb48-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-41"><a href="#cb48-41" aria-hidden="true" tabindex="-1"></a>Games are the most popular types of Kickstarter projects in North Carolina, with Publishing and Comics coming in second and third.</span>
+<span id="cb48-42"><a href="#cb48-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-43"><a href="#cb48-43" aria-hidden="true" tabindex="-1"></a>#### Bar Charts with `geom_bar`</span>
+<span id="cb48-44"><a href="#cb48-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-45"><a href="#cb48-45" aria-hidden="true" tabindex="-1"></a>We can represent categorical variables with a bar chart, using a ggplot with a `geom_bar` layer. `geom_bar`requires us to provide only one categorical variable as an aesthetic (x for vertical bars or y for horizontal ones) then plots frequency on the other axis.</span>
+<span id="cb48-46"><a href="#cb48-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-47"><a href="#cb48-47" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb48-48"><a href="#cb48-48" aria-hidden="true" tabindex="-1"></a>#| label: bar_chart</span>
+<span id="cb48-49"><a href="#cb48-49" aria-hidden="true" tabindex="-1"></a>ggplot(data = kstarter, aes(y = category_parent_name)) +</span>
+<span id="cb48-50"><a href="#cb48-50" aria-hidden="true" tabindex="-1"></a>  geom_bar()</span>
+<span id="cb48-51"><a href="#cb48-51" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb48-52"><a href="#cb48-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-53"><a href="#cb48-53" aria-hidden="true" tabindex="-1"></a>Using `fct_infreq` will quickly re-arrange our categories to be plotted in frequency order. I've also used `labs` layers to provide better labels for our axes.</span>
+<span id="cb48-54"><a href="#cb48-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-55"><a href="#cb48-55" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb48-56"><a href="#cb48-56" aria-hidden="true" tabindex="-1"></a>#| sorted_bar_chart</span>
+<span id="cb48-57"><a href="#cb48-57" aria-hidden="true" tabindex="-1"></a>ggplot(data = kstarter, aes(y = fct_rev(fct_infreq(category_parent_name)))) +</span>
+<span id="cb48-58"><a href="#cb48-58" aria-hidden="true" tabindex="-1"></a>  geom_bar() +</span>
+<span id="cb48-59"><a href="#cb48-59" aria-hidden="true" tabindex="-1"></a>  labs(</span>
+<span id="cb48-60"><a href="#cb48-60" aria-hidden="true" tabindex="-1"></a>    y = "Kickstarter Categories",</span>
+<span id="cb48-61"><a href="#cb48-61" aria-hidden="true" tabindex="-1"></a>    x = "Number of Projects"</span>
+<span id="cb48-62"><a href="#cb48-62" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb48-63"><a href="#cb48-63" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb48-64"><a href="#cb48-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-65"><a href="#cb48-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-66"><a href="#cb48-66" aria-hidden="true" tabindex="-1"></a>### Continuous Variables</span>
+<span id="cb48-67"><a href="#cb48-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-68"><a href="#cb48-68" aria-hidden="true" tabindex="-1"></a>Unfortunately, with continuous variables, we usually have too many distinct values to make a table or bar chart useful.</span>
+<span id="cb48-69"><a href="#cb48-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-70"><a href="#cb48-70" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb48-71"><a href="#cb48-71" aria-hidden="true" tabindex="-1"></a>#| label: continuous_bar_chart</span>
+<span id="cb48-72"><a href="#cb48-72" aria-hidden="true" tabindex="-1"></a>kstarter |&gt; </span>
+<span id="cb48-73"><a href="#cb48-73" aria-hidden="true" tabindex="-1"></a>  filter(category_parent_name == "Music") |&gt; </span>
+<span id="cb48-74"><a href="#cb48-74" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(y = backers_count)) +</span>
+<span id="cb48-75"><a href="#cb48-75" aria-hidden="true" tabindex="-1"></a>    geom_bar()</span>
+<span id="cb48-76"><a href="#cb48-76" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb48-77"><a href="#cb48-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-78"><a href="#cb48-78" aria-hidden="true" tabindex="-1"></a>#### Histograms with `geom_hist`</span>
+<span id="cb48-79"><a href="#cb48-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-80"><a href="#cb48-80" aria-hidden="true" tabindex="-1"></a>A common way to overcome this problem is to bin values into ranges with a histogram.</span>
+<span id="cb48-81"><a href="#cb48-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-82"><a href="#cb48-82" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb48-83"><a href="#cb48-83" aria-hidden="true" tabindex="-1"></a># label: histogram</span>
+<span id="cb48-84"><a href="#cb48-84" aria-hidden="true" tabindex="-1"></a>kstarter |&gt; </span>
+<span id="cb48-85"><a href="#cb48-85" aria-hidden="true" tabindex="-1"></a>  filter(category_parent_name == "Music") |&gt; </span>
+<span id="cb48-86"><a href="#cb48-86" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x = backers_count)) +</span>
+<span id="cb48-87"><a href="#cb48-87" aria-hidden="true" tabindex="-1"></a>    geom_histogram(bins = 20) +</span>
+<span id="cb48-88"><a href="#cb48-88" aria-hidden="true" tabindex="-1"></a>    theme_bw()</span>
+<span id="cb48-89"><a href="#cb48-89" aria-hidden="true" tabindex="-1"></a>```</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="bibliography" class="level3">
+<h3 class="anchored" data-anchor-id="bibliography">Bibliography</h3>
+<p>Quarto also provides a nifty way to incorporate a bibliography and references. We’ll haven an example of this in the exercises, but here’s a brief summary of the steps required to use a BibTex bibliography.</p>
+<ol type="1">
+<li>Create a plain-text .bib file in the same directory as your .qmd document.</li>
+<li>Fill that .bib file with BibTex citations. Many academic databases or the <a href="http://www.citationmachine.net/bibtex/cite-a-book">Citation Machine</a> can generate the BibTex citations for you.</li>
+<li>Make sure each citation has a unique citation-key, the first entry</li>
+<li>Add a bibliography field to the YAML header that tells Quarto the name of your bibliography file, for example <code>bibliography: references.bib</code></li>
+<li>Add citations throughout the document using square brackets.</li>
+</ol>
 </section>
 </section>
 <section id="review" class="level2">
