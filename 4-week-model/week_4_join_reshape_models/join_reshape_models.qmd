@@ -18,6 +18,7 @@ format:
 ```{r}
 #install.packages("patchwork")
 library(patchwork) #combining and organizing multiple ggplots
+#install.packages("broom")
 library(broom) #We'll be using this for the modeling portion of the lesson.
 ```
 
@@ -392,6 +393,7 @@ How do we choose between lines?  A common metric, especially in prediction, invo
   residual = actual value - prediction
 
 These can be graphically represented as lines parallel to the y-axis:
+
 ```{r fig.width=8, fig.height=4,message=FALSE, warning=FALSE}
 
 moddf <- moddf |> 
@@ -416,6 +418,7 @@ plot2 <- ggplot(data=moddf, aes(x=x, y=y)) +
 #Making use of patchwork library to combine plots
 plot1 + plot2
 ```
+Note: In the code block above, we are using [the patchwork package](https://patchwork.data-imaginist.com/articles/patchwork.html) to combine our ggplots.
 
 
 Ordinary Least Squares (OLS), often referred to simply as "Linear Regression", finds the line that minimizes the sum of the squared residuals above.
@@ -439,6 +442,8 @@ The arguments given to `lm` are:
   + The dataframe containing the variables of interest.
 
 The values listed under `Estimate` provide estimates for the intercept,`r fit$coefficient[1]`, and slope,`r fit$coefficient[2]`. 
+
+Note: In the next code block, we are using [the broom package](https://broom.tidymodels.org/articles/broom.html) to turn our fitted model into a tidy data frame.
 
 ```{r fig.width=4, fig.height=4}
 moddf <- augment(fit) #using broom::augment to add fitted values to data frame
@@ -587,12 +592,10 @@ for (i in 1:nsims){
   
   #Analyze
   fit <- lm(y ~ x, data = moddf)
-  # coef is a base R function that grabs the coefficients from a model
-  # Generally recommend using broom::tidy to get coefficients
-  # because it's easier to explicitly grab model components by name
-  # But can use coef if you know how the model components are indexed by number
-  int[i] <- coef(fit)[1] 
-  sl[i] <- coef(fit)[2]
+
+  coefs <- tidy(fit)
+  int[i] <- coefs |> filter(term == "(Intercept)") |> select(estimate) |> pull()
+  sl[i] <- coefs |> filter(term == "x") |> select(estimate) |> pull()
 }
 
 sim_results <- data.frame(int, sl)
@@ -620,13 +623,11 @@ for (i in 1:nsims){
   y <- 3.4 * x + rnorm(sample_size, 0, 5)
   moddf <- data.frame(x,y)
   fit <- lm(y ~ x, data = moddf)
+  
   index[i] <- i
-  # confint is a base R function that grabs the confidence intervals for each coefficient from a model
-  # Generally recommend using broom::tidy with conf.int = TRUE argument to get confidence intervals
-  # because it's easier to explicitly grab model components by name
-  # But can use confint if you know how the model components are indexed by number
-  lower[i] <- confint(fit)[2, 1]
-  upper[i] <- confint(fit)[2, 2]
+  coefs <- tidy(fit, conf.int = TRUE)
+  lower[i] <- coefs |> filter(term == "x") |> select(conf.low) |> pull()
+  upper[i]  <- coefs |> filter(term == "x") |> select(conf.high) |> pull()
 }
 
 sim_results <- data.frame(index, lower, upper)
@@ -660,8 +661,9 @@ for (i in 1:nsims){
   moddf <- data.frame(x,y)
 
   fit <- lm(y ~ x, data = moddf)
-  int[i] <- coef(fit)[1]
-  sl[i] <- coef(fit)[2]
+  coefs <- tidy(fit)
+  int[i] <- coefs |> filter(term == "(Intercept)") |> select(estimate) |> pull()
+  sl[i] <- coefs |> filter(term == "x") |> select(estimate) |> pull()
 }
 
 sim_results <- data.frame(int, sl)
